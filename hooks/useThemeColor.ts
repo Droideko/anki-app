@@ -6,16 +6,22 @@
 import { useTheme } from "@/components/CustomThemeProvide";
 import { ThemeColors, ThemeTypes } from "@/constants/Colors";
 
-export function useThemeColor<T extends keyof ThemeColors>(
-  props: { light?: string; dark?: string },
-  colorName: T
-): ThemeColors[T] | string | undefined {
-  const { theme, colorScheme } = useTheme();
-  const colorFromProps = props[colorScheme]; // TODO check if need
+export function useThemeColor(): ThemeTypes["colors"] {
+  const { theme } = useTheme();
 
-  if (colorFromProps) {
-    return colorFromProps;
-  } else {
-    return theme.colors[colorName];
-  }
+  return theme.colors;
 }
+
+// export function useThemeColor<T extends keyof ThemeColors>(
+//   props: { light?: string; dark?: string },
+//   colorName: T
+// ): ThemeColors[T] | string | undefined {
+//   const { theme, colorScheme } = useTheme();
+//   const colorFromProps = props[colorScheme]; // TODO check if need
+
+//   if (colorFromProps) {
+//     return colorFromProps;
+//   } else {
+//     return theme.colors[colorName];
+//   }
+// }

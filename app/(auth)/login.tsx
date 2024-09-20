@@ -4,11 +4,14 @@ import { ThemedView } from "@/components/ThemedView";
 import { Text } from "@/components/ThemedText";
 import { Link } from "expo-router";
 import { Button } from "react-native-paper";
+import i18n from "@/global/i18n";
 
 export default function LogInScreen() {
+  console.log("rerender");
+
   return (
     <ThemedView style={styles.titleContainer}>
-      <Text type="title">Log In Page</Text>
+      <Text>{i18n.t("common.yes")}</Text>
 
       <ThemedView>
         <Button

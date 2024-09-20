@@ -3,15 +3,18 @@ import { ThemedView } from "@/components/ThemedView";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
 
-function DeskItem() {
+function DeckItem() {
   const { id } = useLocalSearchParams();
+
+  // get Information from Server or Storage (SQLLite)
+  
 
   return (
     <ThemedView>
-      <Stack.Screen options={{ headerTitle: `Desk #${id}` }} />
-      <Text>Desk - {id}</Text>
+      <Stack.Screen options={{ headerTitle: `Deck #${id}` }} />
+      <Text>Deck - {id}</Text>
     </ThemedView>
   );
 }
 
-export default DeskItem;
+export default DeckItem;

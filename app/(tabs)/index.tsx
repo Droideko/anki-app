@@ -1,11 +1,4 @@
-import {
-  Image,
-  StyleSheet,
-  Platform,
-  Button,
-  useColorScheme,
-  Pressable,
-} from "react-native";
+import { Image, StyleSheet, Button, Pressable } from "react-native";
 
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
@@ -13,8 +6,12 @@ import { Text } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Link } from "expo-router";
 import CustomSwitch from "@/components/CustomSwitch";
+import { i18n } from "@/store/languageStore";
+import useRenderChangedLanguage from "@/hooks/useRenderChangedLanguage";
 
 export default function HomeScreen() {
+  useRenderChangedLanguage();
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
@@ -29,7 +26,7 @@ export default function HomeScreen() {
         <Pressable onPress={() => console.log("WWWWWWW")}></Pressable>
       </ThemedView>
       <ThemedView style={styles.titleContainer}>
-        <Text type="title">Welco!me!!!</Text>
+        <Text>{i18n.t("common.yes")}</Text>
         <Link href="/login">Log In</Link>
         <HelloWave />
       </ThemedView>
@@ -47,8 +44,8 @@ export default function HomeScreen() {
         </Link>
       </ThemedView>
       <ThemedView style={styles.titleContainer}>
-        <Link href="/desks" asChild>
-          <Button title="Open Desks"></Button>
+        <Link href="/decks" asChild>
+          <Button title="Open decks"></Button>
         </Link>
       </ThemedView>
       <ThemedView style={styles.titleContainer}>

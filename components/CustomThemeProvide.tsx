@@ -64,7 +64,7 @@ export default function ThemeProvider({ children }: Props) {
   };
 
   const currentTheme = isDarkTheme ? theme.dark : theme.light;
-  const colorScheme = isDarkTheme ? THEME.DARK : THEME.LIGHT;
+  const colorScheme = isDarkTheme ? THEME.DARK : THEME.LIGHT; // Нужно проверить, используется ли это
 
   return (
     <ThemeContext.Provider

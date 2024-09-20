@@ -1,17 +1,57 @@
 import { Tabs } from "expo-router";
 import React from "react";
 
-import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-// import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { useTheme } from "@/components/CustomThemeProvide";
+import { BottomNavigation, Text } from "react-native-paper";
+import HomeScreen from ".";
+import DecksScreen from "./decks";
+import SettingsScreen from "./settings";
+import { TabBarIcon } from "@/components/navigation/TabBarIcon";
+import i18n from "@/global/i18n";
+import { getLocales } from "expo-localization";
+
+// export default function TabLayout() {
+//   const [index, setIndex] = React.useState(0);
+//   const [routes] = React.useState([
+//     {
+//       key: "index",
+//       title: "Home",
+//       focusedIcon: "home",
+//       unfocusedIcon: "home-outline",
+//     },
+//     {
+//       key: "decks",
+//       title: "Decks",
+//       focusedIcon: "folder",
+//       unfocusedIcon: "folder-outline",
+
+//     },
+//     {
+//       key: "settings",
+//       title: "Settings",
+//       focusedIcon: "cog",
+//       unfocusedIcon: "cog-outline",
+//     },
+//   ]);
+
+//   const renderScene = BottomNavigation.SceneMap({
+//     index: HomeScreen,
+//     decks: DecksScreen,
+//     settings: SettingsScreen,
+//   });
+
+//   return (
+//     <BottomNavigation
+//       navigationState={{ index, routes }}
+//       onIndexChange={setIndex}
+//       renderScene={renderScene}
+//     />
+//   );
+// }
 
 export default function TabLayout() {
-  // const colorScheme = useColorScheme();
-
   const { theme } = useTheme();
-
-  // console.log("Tabs: ", colorScheme);
 
   return (
     <Tabs
@@ -29,7 +69,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: `${i18n.t("tabs.home")}`,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               name={focused ? "home" : "home-outline"}
@@ -40,9 +80,9 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="desks"
+        name="decks"
         options={{
-          title: "Desks", // NOT NEED (just example)
+          title: `${i18n.t("tabs.decks")}`, // NOT NEED (just example)
           headerShown: false, // NOT NEED (just example)
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
@@ -56,8 +96,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="settings"
         options={{
-          title: "Settings",
-          headerShown: true,
+          title: `${i18n.t("tabs.settings")}`,
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               name={focused ? "settings" : "settings-outline"}

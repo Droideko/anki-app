@@ -3,17 +3,18 @@ import { StyleSheet, Image, Platform } from "react-native";
 
 import { Text } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import LanguageSetting from "@/components/LanguageSetting";
 
 export default function SettingsScreen() {
+  console.log("Settings screen rerender");
+
   return (
     <ThemedView
       style={{
         flex: 1,
-        justifyContent: "space-between",
-        alignItems: "center",
       }}
     >
-      <Text type="title">Settings: </Text>
+      <LanguageSetting />
     </ThemedView>
   );
 }

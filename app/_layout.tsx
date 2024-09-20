@@ -1,19 +1,54 @@
-import { useFonts } from "expo-font";
+import { Suspense, useEffect, useState } from "react";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
-import "react-native-reanimated";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-
+import { useFonts } from "expo-font";
 import { PaperProvider } from "react-native-paper";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import "react-native-reanimated";
+import { getLocales } from "expo-localization";
 
 import ThemeProvider, { useTheme } from "@/components/CustomThemeProvide";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { i18n, useLanguageStore } from "@/store/languageStore";
+
+import { Text } from "react-native";
+import { SQLiteProvider } from "@/contexts/SQLiteProvider";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
+function Stacks() {
+  const { background } = useThemeColor();
+
+  return (
+    <Stack>
+      <Stack.Screen
+        name="(auth)"
+        options={{ headerShown: false, title: "Log In" }}
+      />
+      <Stack.Screen name="drawer" options={{ headerShown: false }} />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="broken-view" options={{ headerShown: false }} />
+      {/* <Stack.Screen name="decks" options={{ headerShown: false }} /> */}
+      <Stack.Screen
+        name="modal"
+        options={{
+          presentation: "modal",
+          headerStyle: {
+            backgroundColor: background, // Цвет фона заголовка
+          },
+          headerTintColor: "#fff", // Цвет текста заголовка
+          headerTitleStyle: {
+            fontWeight: "bold", // Стиль текста заголовка
+          },
+        }}
+      />
+      <Stack.Screen name="+not-found" />
+    </Stack>
+  );
+}
+
 function Layout({ children }: any) {
-  // const colorScheme = useColorScheme();
   const { theme } = useTheme();
 
   return (
@@ -29,6 +64,11 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
+  const { initializeLanguage } = useLanguageStore();
+
+  useEffect(() => {
+    initializeLanguage();
+  }, []);
 
   useEffect(() => {
     if (loaded) {
@@ -43,27 +83,11 @@ export default function RootLayout() {
   return (
     <ThemeProvider>
       <Layout>
-        <Stack>
-          <Stack.Screen
-            name="(auth)" // CAN USE (auth)/login without _layout.tsx in (auth)
-            options={{ headerShown: false, title: "Log In" }}
-          />
-          <Stack.Screen name="drawer" options={{ headerShown: false }} />
-
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-
-          <Stack.Screen name="broken-view" options={{ headerShown: false }} />
-
-          {/* <Stack.Screen
-            name="details/[id]/options"
-            options={{ headerShown: false }}
-          /> */}
-
-          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-
-          <Stack.Screen name="+not-found" />
-        </Stack>
+        <SQLiteProvider>
+          <Stacks />
+        </SQLiteProvider>
       </Layout>
     </ThemeProvider>
   );
 }
+

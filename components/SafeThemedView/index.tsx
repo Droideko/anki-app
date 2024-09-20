@@ -1,9 +1,8 @@
-import { Text } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { ThemedView } from "../ThemedView";
 
-function BroKenView() {
+export function SafeThemedView({ children }: { children: React.ReactNode }) {
   const insets = useSafeAreaInsets();
 
   return (
@@ -18,9 +17,7 @@ function BroKenView() {
         paddingRight: insets.right,
       }}
     >
-      <Text>BroKenView</Text>
+      {children}
     </ThemedView>
   );
 }
-
-export default BroKenView;
