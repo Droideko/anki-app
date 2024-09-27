@@ -30,4 +30,17 @@ export const de = {
     settings: "Einstellungen",
     decks: "Stapel",
   },
+  auth: {
+    rules: {
+      email: {
+        required: "E-Mail ist erforderlich",
+        invalid: "Ungültiges E-Mail-Format",
+      },
+      password: {
+        required: "Passwort ist erforderlich",
+        minLength: "Passwort muss mindestens 8 Zeichen lang sein",
+      },
+    },
+    placeholder: "erforderlich",
+  },
 };

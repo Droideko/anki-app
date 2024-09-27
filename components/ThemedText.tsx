@@ -7,8 +7,6 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 export function Text({ style, ...rest }: TextProps<string>) {
   const { text } = useThemeColor();
 
-  // console.log(color);
-
   return <DefaultText style={[{ color: text }, style]} {...rest} />;
 }
 

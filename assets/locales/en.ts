@@ -30,4 +30,17 @@ export const en = {
     settings: "Settings",
     decks: "Decks",
   },
+  auth: {
+    rules: {
+      email: {
+        required: "Email is required",
+        invalid: "Email is invalid",
+      },
+      password: {
+        required: "Password is required",
+        minLength: "Password must be at least 8 characters",
+      },
+    },
+    placeholder: "required",
+  },
 };

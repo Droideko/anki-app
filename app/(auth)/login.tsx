@@ -1,29 +1,31 @@
 import { StyleSheet } from "react-native";
-
-import { ThemedView } from "@/components/ThemedView";
 import { Text } from "@/components/ThemedText";
-import { Link } from "expo-router";
-import { Button } from "react-native-paper";
-import i18n from "@/global/i18n";
+import KeyboardAvoidingContainer from "@/components/KeyboardAvoidingContainer";
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import TermsAndPrivacyNotice from "@/components/auth/TermsAndPrivacyNotice";
+import TextDivider from "@/components/TextDivider";
+import GoogleButton from "@/components/auth/GoogleButton";
+import AppleButton from "@/components/auth/AppleButton";
+import SignUpPrompt from "@/components/auth/SignUpPrompt";
+import ForgotPasswordLink from "@/components/auth/ForgotPasswordLink";
+import LoginForm from "@/components/auth/LoginForm";
 
 export default function LogInScreen() {
-  console.log("rerender");
-
   return (
-    <ThemedView style={styles.titleContainer}>
-      <Text>{i18n.t("common.yes")}</Text>
-
-      <ThemedView>
-        <Button
-          icon="camera"
-          mode="contained"
-          onPress={() => console.log("Pressed")}
-        >
-          Press me
-        </Button>
-        <Link href={"/"}>Home</Link>
-      </ThemedView>
-    </ThemedView>
+    <KeyboardAvoidingContainer>
+      <ParallaxScrollView style={styles.titleContainer}>
+        <Text style={styles.title} variant="headlineMedium">
+          Log In
+        </Text>
+        <LoginForm />
+        <ForgotPasswordLink />
+        <TextDivider />
+        <GoogleButton />
+        <AppleButton />
+        <SignUpPrompt />
+        <TermsAndPrivacyNotice style={{ marginBottom: 20 }} />
+      </ParallaxScrollView>
+    </KeyboardAvoidingContainer>
   );
 }
 
@@ -34,18 +36,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
-  },
-  link: {
-    color: "white",
+  title: {
+    marginBottom: 16,
+    textAlign: "center",
   },
 });

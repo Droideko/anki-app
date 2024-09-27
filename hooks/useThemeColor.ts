@@ -4,7 +4,7 @@
  */
 
 import { useTheme } from "@/components/CustomThemeProvide";
-import { ThemeColors, ThemeTypes } from "@/constants/Colors";
+import { ThemeColors, ThemeTypes } from "@/src/constants/Colors";
 
 export function useThemeColor(): ThemeTypes["colors"] {
   const { theme } = useTheme();

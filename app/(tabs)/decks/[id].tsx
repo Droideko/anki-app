@@ -7,7 +7,6 @@ function DeckItem() {
   const { id } = useLocalSearchParams();
 
   // get Information from Server or Storage (SQLLite)
-  
 
   return (
     <ThemedView>

@@ -9,7 +9,7 @@ import {
   THEME_KEY,
   Themes,
   ThemeTypes,
-} from "@/constants/Colors";
+} from "@/src/constants/Colors";
 
 type Props = {
   children: React.ReactNode;
@@ -47,13 +47,6 @@ export default function ThemeProvider({ children }: Props) {
     getTheme();
   }, []);
 
-  // React.useEffect(() => {
-  //   // set theme to system selected theme
-  //   if (colorScheme) {
-  //     setTheme(colorScheme);
-  //   }
-  // }, [colorScheme]);
-
   const toggleTheme = async (newTheme?: Themes) => {
     const newIsDarkTheme = newTheme ? newTheme === THEME.DARK : !isDarkTheme;
     setIsDarkTheme(newIsDarkTheme);
@@ -84,5 +77,3 @@ export function useTheme() {
 
   return context;
 }
-
-// export const useTheme = () => React.useContext(ThemeContext);
