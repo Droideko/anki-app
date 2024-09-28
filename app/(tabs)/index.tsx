@@ -10,6 +10,7 @@ import { i18n } from "@/store/languageStore";
 import useRenderChangedLanguage from "@/hooks/useRenderChangedLanguage";
 import LogOutButton from "@/components/auth/LogOutButton";
 import { useSession } from "@/src/contexts/SessionProvider";
+import HomeContainer from "@/src/components/home/HomeContainer";
 
 // const configureGoogleSignIn = () => {
 //   GoogleSignin.configure({
@@ -23,12 +24,7 @@ import { useSession } from "@/src/contexts/SessionProvider";
 // };
 
 export default function HomeScreen() {
-  console.log("rerender");
-
   const { user, isLoading } = useSession();
-
-  console.log("USER : ", user);
-
   useRenderChangedLanguage();
 
   // const signIn = async () => {
@@ -66,55 +62,7 @@ export default function HomeScreen() {
     return <Redirect href="/welcome" />;
   }
 
-  return (
-    <ParallaxScrollView>
-      <ThemedView style={styles.titleContainer}>
-        <Pressable onPress={() => console.log("WWWWWWW")}></Pressable>
-      </ThemedView>
-      <ThemedView style={styles.titleContainer}>
-        <Text>{i18n.t("common.yes")}</Text>
-        <Link href="/login">Log In</Link>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.titleContainer}>
-        <Link href="/details/25">Details 25</Link>
-      </ThemedView>
-      <ThemedView style={styles.titleContainer}>
-        <Link href="/drawer/profile" asChild>
-          <Button title="drawer"></Button>
-        </Link>
-      </ThemedView>
-      <ThemedView style={styles.titleContainer}>
-        <Link href="/details/115" asChild>
-          <Button title="Open Details 115"></Button>
-        </Link>
-      </ThemedView>
-      <ThemedView style={styles.titleContainer}>
-        <Link href="/decks" asChild>
-          <Button title="Open decks"></Button>
-        </Link>
-      </ThemedView>
-      <ThemedView style={styles.titleContainer}>
-        <Link href="/broken-view" asChild>
-          <Button title="broken-view"></Button>
-        </Link>
-      </ThemedView>
-      {/* <ThemedView style={styles.titleContainer}>
-        <Button title="Войти через Google" onPress={signIn} />
-      </ThemedView> */}
-      <ThemedView style={styles.titleContainer}>
-        <Link href="/modal" asChild>
-          <Button title="modal"></Button>
-        </Link>
-      </ThemedView>
-      <ThemedView>
-        <CustomSwitch />
-      </ThemedView>
-      <ThemedView>
-        <LogOutButton />
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+  return <HomeContainer />;
 }
 
 const styles = StyleSheet.create({

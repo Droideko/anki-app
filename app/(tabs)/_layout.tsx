@@ -1,69 +1,22 @@
 import { Tabs } from "expo-router";
-import React from "react";
-
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { useTheme } from "@/components/CustomThemeProvide";
-import { BottomNavigation, Text } from "react-native-paper";
-import HomeScreen from ".";
-import DecksScreen from "./decks";
-import SettingsScreen from "./settings";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import i18n from "@/global/i18n";
-import { getLocales } from "expo-localization";
-
-// export default function TabLayout() {
-//   const [index, setIndex] = React.useState(0);
-//   const [routes] = React.useState([
-//     {
-//       key: "index",
-//       title: "Home",
-//       focusedIcon: "home",
-//       unfocusedIcon: "home-outline",
-//     },
-//     {
-//       key: "decks",
-//       title: "Decks",
-//       focusedIcon: "folder",
-//       unfocusedIcon: "folder-outline",
-
-//     },
-//     {
-//       key: "settings",
-//       title: "Settings",
-//       focusedIcon: "cog",
-//       unfocusedIcon: "cog-outline",
-//     },
-//   ]);
-
-//   const renderScene = BottomNavigation.SceneMap({
-//     index: HomeScreen,
-//     decks: DecksScreen,
-//     settings: SettingsScreen,
-//   });
-
-//   return (
-//     <BottomNavigation
-//       navigationState={{ index, routes }}
-//       onIndexChange={setIndex}
-//       renderScene={renderScene}
-//     />
-//   );
-// }
 
 export default function TabLayout() {
-  const { theme } = useTheme();
+  const { tint, background } = useThemeColor();
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: theme.colors.tint,
-        // headerTintColor: "red",
-        // tabBarInactiveTintColor: "red",
-        // tabBarActiveBackgroundColor: "red",
-        // headerPressColor: "red",
-        // tabBarInactiveBackgroundColor: "red",
-        // tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        tabBarActiveTintColor: tint,
+        tabBarActiveBackgroundColor: background,
+        tabBarInactiveBackgroundColor: background,
         headerShown: false,
+        tabBarStyle: {
+          // borderTopColor: "red",
+          backgroundColor: background, // TODO сделать немного другой бэк (добавить более светлый глобальный бэк)
+        },
       }}
     >
       <Tabs.Screen

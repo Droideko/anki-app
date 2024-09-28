@@ -9,8 +9,6 @@ export function SafeThemedView({ children }: { children: React.ReactNode }) {
     <ThemedView
       style={{
         flex: 1,
-        // justifyContent: "center",
-        // alignItems: "center",
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
         paddingLeft: insets.left,

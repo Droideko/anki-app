@@ -44,14 +44,12 @@ function Stacks() {
   );
 }
 
-function Layout({ children }: any) {
+function Layout({ children }: { children: React.ReactNode }) {
   const { theme } = useTheme();
 
   return (
     <PaperProvider theme={theme}>
-      {/* <ThemeProvider value={theme}> {нужен импорт с @react-navigation/native для настраивание темы по дефолту} */}
       <SafeAreaProvider>{children}</SafeAreaProvider>
-      {/* </ThemeProvider> */}
     </PaperProvider>
   );
 }
