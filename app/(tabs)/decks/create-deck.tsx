@@ -1,7 +1,7 @@
-import ThemedIconButton from "@/components/ThemedIconButton";
-import { Text } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import ThemedIconButton from "@/src/shared/components/ui/ThemedIconButton";
+import { Text } from "@/src/shared/components/ui/ThemedText";
+import { ThemedView } from "@/src/shared/components/ui/ThemedView";
+import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
 // import { StatusBar } from "expo-status-bar";
 import { Controller, useForm } from "react-hook-form";
 import { KeyboardAvoidingView, Platform, StyleSheet } from "react-native";

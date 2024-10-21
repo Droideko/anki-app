@@ -1,4 +1,4 @@
-import { Text } from "@/components/ThemedText";
+import { Text } from "@/src/shared/components/ui/ThemedText";
 import React from "react";
 
 function Profile() {

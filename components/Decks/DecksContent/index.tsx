@@ -1,9 +1,9 @@
-import { ThemedView } from "@/components/ThemedView";
+import { ThemedView } from "@/src/shared/components/ui/ThemedView";
 import React from "react";
 import { StyleSheet } from "react-native";
 import DecksList from "./DecksList";
-import CreateIconButton from "../CreateIconButton";
-import { WaveIconWrapper } from "@/components/WaveIconWrapper";
+import { WaveIconWrapper } from "@/src/shared/components/WaveIconWrapper";
+import CreateIconButton from "../../../src/shared/components/CreateIconButton";
 
 const ICON_SIZE = 50;
 
@@ -16,7 +16,7 @@ export default function DecksContent() {
         isActivePulse={true}
         iconSize={ICON_SIZE} // было бы хорошо убрать от привязки size и чтобы он автоматически вычислял границы анимации
       >
-        <CreateIconButton size={ICON_SIZE} />
+        <CreateIconButton href="" size={ICON_SIZE} />
       </WaveIconWrapper>
     </ThemedView>
   );

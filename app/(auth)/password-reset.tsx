@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import { StyleSheet } from "react-native";
-import FormInput from "@/components/FormInput";
-import KeyboardAvoidingContainer from "@/components/KeyboardAvoidingContainer";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import ThemedButton from "@/components/ThemedButton";
-import { Text } from "@/components/ThemedText";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import FormInput from "@/src/shared/components/forms/FormInput";
+import KeyboardAvoidingContainer from "@/src/shared/components/KeyboardAvoidingContainer";
+import ScrollView from "@/src/shared/components/ScrollView";
+import ThemedButton from "@/src/shared/components/ui/ThemedButton";
+import { Text } from "@/src/shared/components/ui/ThemedText";
+import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
 
 export default function PasswordReset() {
   const { primary } = useThemeColor();
@@ -22,7 +22,7 @@ export default function PasswordReset() {
 
   return (
     <KeyboardAvoidingContainer>
-      <ParallaxScrollView style={styles.titleContainer}>
+      <ScrollView style={styles.titleContainer}>
         <Text style={styles.title} variant="headlineMedium">
           Reset Password
         </Text>
@@ -51,7 +51,7 @@ export default function PasswordReset() {
         <ThemedButton onPress={handleSubmit(onSubmit)} buttonColor={primary}>
           Reset Password
         </ThemedButton>
-      </ParallaxScrollView>
+      </ScrollView>
     </KeyboardAvoidingContainer>
   );
 }

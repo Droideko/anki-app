@@ -1,5 +1,5 @@
 import DecksContainer from "@/components/Decks/DecksContainer";
-import { SafeThemedView } from "@/components/SafeThemedView";
+import { SafeThemedView } from "@/src/shared/components/SafeThemedView";
 
 export default function DecksScreen() {
   return (

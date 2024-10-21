@@ -1,34 +1,22 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { StyleSheet, Image, Platform } from "react-native";
-
-import { Text } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import LanguageSetting from "@/components/LanguageSetting";
+import { StyleSheet } from "react-native";
+import { ThemedView } from "@/src/shared/components/ui/ThemedView";
+import LanguageSetting from "@/src/features/settings/components/LanguageSetting";
+import LogOutButton from "@/src/features/settings/components/LogOutButton";
+import DeleteAccountButton from "@/src/features/settings/components/DeleteAccountButton";
 
 export default function SettingsScreen() {
-  console.log("Settings screen rerender");
-
   return (
-    <ThemedView
-      style={{
-        flex: 1,
-      }}
-    >
+    <ThemedView style={styles.container}>
       <LanguageSetting />
+      <LogOutButton />
+      <DeleteAccountButton />
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: "#808080",
-    bottom: -90,
-    left: -35,
-    position: "absolute",
-  },
-  titleContainer: {
+  container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    padding: 12,
   },
 });

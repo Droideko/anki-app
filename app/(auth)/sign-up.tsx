@@ -1,28 +1,28 @@
 import { StyleSheet } from "react-native";
-import { Text } from "@/components/ThemedText";
-import KeyboardAvoidingContainer from "@/components/KeyboardAvoidingContainer";
-import TextDivider from "@/components/TextDivider";
-import TermsAndPrivacyNotice from "@/components/auth/TermsAndPrivacyNotice";
-import GoogleButton from "@/components/auth/GoogleButton";
-import AppleButton from "@/components/auth/AppleButton";
-import SignInPrompt from "@/components/auth/SignInPrompt";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import SinUpForm from "@/components/auth/SignUpForm";
+import { Text } from "@/src/shared/components/ui/ThemedText";
+import KeyboardAvoidingContainer from "@/src/shared/components/KeyboardAvoidingContainer";
+import FormTextDivider from "@/src/features/authentication/components/FormTextDivider";
+import TermsAndPrivacyNotice from "@/src/features/authentication/components/TermsAndPrivacyNotice";
+import AppleButton from "@/src/features/authentication/components/AppleButton";
+import SignInPrompt from "@/src/features/authentication/components/SignInPrompt";
+import ScrollView from "@/src/shared/components/ScrollView";
+import SinUpForm from "@/src/features/authentication/components/SinUpForm";
+import GoogleButton from "@/src/features/authentication/components/GoogleButton";
 
 export default function SignUpScreen() {
   return (
     <KeyboardAvoidingContainer>
-      <ParallaxScrollView>
+      <ScrollView>
         <Text style={styles.title} variant="headlineMedium">
           Sign Up
         </Text>
         <SinUpForm />
-        <TextDivider />
+        <FormTextDivider />
         <GoogleButton />
         <AppleButton />
         <SignInPrompt />
         <TermsAndPrivacyNotice style={{ marginBottom: 20 }} />
-      </ParallaxScrollView>
+      </ScrollView>
     </KeyboardAvoidingContainer>
   );
 }

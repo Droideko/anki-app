@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "@/components/ThemedText";
+import { Text } from "@/src/shared/components/ui/ThemedText";
 
 function News() {
   return <Text>News</Text>;

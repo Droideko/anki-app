@@ -1,8 +1,8 @@
-import { Text } from "@/components/ThemedText";
+import { Text } from "@/src/shared/components/ui/ThemedText";
 import React from "react";
 import { Card, Icon } from "react-native-paper";
 import { DeckItem } from "../DecksList";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
 import { Link } from "expo-router";
 import { Pressable } from "react-native";
 

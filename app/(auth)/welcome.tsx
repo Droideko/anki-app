@@ -1,13 +1,11 @@
 import { StyleSheet } from "react-native";
-import { Link, useRouter } from "expo-router";
-import { ThemedView } from "@/components/ThemedView";
-import { Text } from "@/components/ThemedText";
-import TermsAndPrivacyNotice from "@/components/auth/TermsAndPrivacyNotice";
-import ThemedButton from "@/components/ThemedButton";
-import GoogleButton from "@/components/auth/GoogleButton";
-import AppleButton from "@/components/auth/AppleButton";
-import SignUpButton from "@/components/auth/SignUpButton";
-import SignInPrompt from "@/components/auth/SignInPrompt";
+import { ThemedView } from "@/src/shared/components/ui/ThemedView";
+import { Text } from "@/src/shared/components/ui/ThemedText";
+import TermsAndPrivacyNotice from "@/src/features/authentication/components/TermsAndPrivacyNotice";
+import AppleButton from "@/src/features/authentication/components/AppleButton";
+import SignUpButton from "@/src/features/authentication/components/SignUpButton";
+import SignInPrompt from "@/src/features/authentication/components/SignInPrompt";
+import GoogleButton from "@/src/features/authentication/components/GoogleButton";
 
 export default function WelcomeScreen() {
   return (

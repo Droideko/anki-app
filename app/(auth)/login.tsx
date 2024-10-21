@@ -1,30 +1,30 @@
 import { StyleSheet } from "react-native";
-import { Text } from "@/components/ThemedText";
-import KeyboardAvoidingContainer from "@/components/KeyboardAvoidingContainer";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import TermsAndPrivacyNotice from "@/components/auth/TermsAndPrivacyNotice";
-import TextDivider from "@/components/TextDivider";
-import GoogleButton from "@/components/auth/GoogleButton";
-import AppleButton from "@/components/auth/AppleButton";
-import SignUpPrompt from "@/components/auth/SignUpPrompt";
-import ForgotPasswordLink from "@/components/auth/ForgotPasswordLink";
-import LoginForm from "@/components/auth/LoginForm";
+import { Text } from "@/src/shared/components/ui/ThemedText";
+import KeyboardAvoidingContainer from "@/src/shared/components/KeyboardAvoidingContainer";
+import ScrollView from "@/src/shared/components/ScrollView";
+import TermsAndPrivacyNotice from "@/src/features/authentication/components/TermsAndPrivacyNotice";
+import FormTextDivider from "@/src/features/authentication/components/FormTextDivider";
+import AppleButton from "@/src/features/authentication/components/AppleButton";
+import SignUpPrompt from "@/src/features/authentication/components/SignUpPrompt";
+import ForgotPasswordLink from "@/src/features/authentication/components/ForgotPasswordLink";
+import LoginForm from "@/src/features/authentication/components/LoginForm";
+import GoogleButton from "@/src/features/authentication/components/GoogleButton";
 
 export default function LogInScreen() {
   return (
     <KeyboardAvoidingContainer>
-      <ParallaxScrollView style={styles.titleContainer}>
+      <ScrollView style={styles.titleContainer}>
         <Text style={styles.title} variant="headlineMedium">
           Log In
         </Text>
         <LoginForm />
         <ForgotPasswordLink />
-        <TextDivider />
+        <FormTextDivider />
         <GoogleButton />
         <AppleButton />
         <SignUpPrompt />
         <TermsAndPrivacyNotice style={{ marginBottom: 20 }} />
-      </ParallaxScrollView>
+      </ScrollView>
     </KeyboardAvoidingContainer>
   );
 }

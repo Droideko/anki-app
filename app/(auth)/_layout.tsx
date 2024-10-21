@@ -1,5 +1,5 @@
-import useStackScreenOptions from "@/hooks/useStackScreenOptions";
 import { Stack } from "expo-router";
+import useStackScreenOptions from "@/src/shared/hooks/useStackScreenOptions";
 
 const DEFAULT_SCREEN_OPTIONS = {
   headerShown: true,

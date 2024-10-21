@@ -1,6 +1,6 @@
 import React from "react";
-import { ThemedView } from "@/components/ThemedView";
-import { Text } from "@/components/ThemedText";
+import { ThemedView } from "@/src/shared/components/ui/ThemedView";
+import { Text } from "@/src/shared/components/ui/ThemedText";
 import { Stack, useLocalSearchParams } from "expo-router";
 
 const Options = () => {

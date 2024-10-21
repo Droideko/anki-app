@@ -1,16 +1,10 @@
-import { Image, StyleSheet, Button, Pressable } from "react-native";
+import { StyleSheet } from "react-native";
 
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { Text } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { Link, Redirect } from "expo-router";
-import CustomSwitch from "@/components/CustomSwitch";
-import { i18n } from "@/store/languageStore";
-import useRenderChangedLanguage from "@/hooks/useRenderChangedLanguage";
-import LogOutButton from "@/components/auth/LogOutButton";
-import { useSession } from "@/src/contexts/SessionProvider";
-import HomeContainer from "@/src/components/home/HomeContainer";
+import { Text } from "@/src/shared/components/ui/ThemedText";
+import { Redirect } from "expo-router";
+import useRenderChangedLanguage from "@/src/shared/hooks/useRenderChangedLanguage";
+import HomeContainer from "@/src/features/home/components/HomeContainer";
+import { useSession } from "@/src/shared/contexts/SessionProvider";
 
 // const configureGoogleSignIn = () => {
 //   GoogleSignin.configure({

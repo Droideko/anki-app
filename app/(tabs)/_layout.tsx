@@ -1,7 +1,7 @@
 import { Tabs } from "expo-router";
-import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import i18n from "@/global/i18n";
+import { TabBarIcon } from "@/src/shared/components/TabBarIcon";
+import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
+import i18n from "@/src/shared/utils/i18n";
 
 export default function TabLayout() {
   const { tint, background } = useThemeColor();
@@ -26,6 +26,20 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               name={focused ? "home" : "home-outline"}
+              color={color}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="categories"
+        options={{
+          title: `Categories`, // NOT NEED (just example)
+          headerShown: false, // NOT NEED (just example)
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? "folder-open" : "folder-open-outline"}
               color={color}
             />
           ),

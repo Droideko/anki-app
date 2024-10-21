@@ -1,5 +1,5 @@
-import { Text } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
+import { Text } from "@/src/shared/components/ui/ThemedText";
+import { ThemedView } from "@/src/shared/components/ui/ThemedView";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
 
