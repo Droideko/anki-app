@@ -1,16 +1,17 @@
-import { ElementPosition } from "@/src/shared/store/useModalStore";
-import { MenuHeight, MenuWidth } from "@/src/types/category";
-import { Dimensions } from "react-native";
+import { Dimensions } from 'react-native';
+
+import { ElementPosition } from '@shared/store/useModalStore';
+import { MenuHeight, MenuWidth } from '@features/categories/types';
 
 const TABS_MENU_HEIGHT = 50;
 const OFFSET_BETWEEN_MENU_AND_ITEM = 10;
 
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export const getMenuTop = (
   elementPosition: ElementPosition | null,
-  menuHeight: MenuHeight
+  menuHeight: MenuHeight,
 ): number => {
   if (!elementPosition) {
     return 0;
@@ -35,7 +36,7 @@ export const getMenuTop = (
 
 export const getMenuLeft = (
   elementPosition: ElementPosition | null,
-  menuWidth: MenuWidth
+  menuWidth: MenuWidth,
 ): number => {
   if (!elementPosition) {
     return 0;

@@ -1,10 +1,12 @@
-import { StyleSheet } from "react-native";
-import { ThemedView } from "@/src/shared/components/ui/ThemedView";
-import { Text } from "@/src/shared/components/ui/ThemedText";
-import { useFetchCategories } from "@/src/features/categories/hooks/useFetchCategories";
-import { CategoryItem } from "./CategoryItem";
-import CategoryBlurModal from "./CategoryBlurModal";
-import DeleteModal from "./DeleteModal";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+
+import { CategoryItem } from '@features/categories/components/CategoryItem';
+import CategoryBlurModal from '@features/categories/components/CategoryBlurModal';
+import DeleteModal from '@features/categories/components/DeleteModal';
+import { ThemedView } from '@shared/components/ui/ThemedView';
+import { Text } from '@shared/components/ui/ThemedText';
+import { useFetchCategories } from '@features/categories/hooks/useFetchCategories';
 
 export default function CategoryDataContent() {
   const { loading, error, categories } = useFetchCategories();
@@ -35,7 +37,7 @@ export default function CategoryDataContent() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 16,
     paddingBottom: 16,
+    paddingTop: 16,
   },
 });

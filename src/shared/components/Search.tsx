@@ -1,8 +1,8 @@
-import React from "react";
-import { Searchbar } from "react-native-paper";
+import React from 'react';
+import { Searchbar } from 'react-native-paper';
 
 function Search() {
-  const [searchQuery, setSearchQuery] = React.useState("");
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   return (
     <Searchbar

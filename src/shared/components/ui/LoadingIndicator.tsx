@@ -1,5 +1,7 @@
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
-import { ActivityIndicator } from "react-native-paper";
+import React from 'react';
+import { ActivityIndicator } from 'react-native-paper';
+
+import { useThemeColor } from '@shared/hooks/useThemeColor';
 
 function LoadingIndicator() {
   const { primary } = useThemeColor();

@@ -1,10 +1,11 @@
-import { useEffect, useState, useMemo } from "react";
-import { useCategoriesStore } from "@/src/shared/store/useCategoriesStore";
-import { useCategoryRepository } from "@/src/features/categories/hooks/useCategoryRepository";
-import { NormalizedCategory } from "@/src/features/categories/utils/normalizeCategories";
-import { useMountedState } from "@/src/shared/hooks/useMountedState";
-import { useShallow } from "zustand/react/shallow";
-import { Deck } from "../../../shared/types/deck";
+import { useEffect, useState, useMemo } from 'react';
+import { useShallow } from 'zustand/react/shallow';
+
+import { Deck } from '@shared/types/deck';
+import { useCategoriesStore } from '@shared/store/useCategoriesStore';
+import { useCategoryRepository } from '@features/categories/hooks/useCategoryRepository';
+import { useMountedState } from '@shared/hooks/useMountedState';
+import { NormalizedCategory } from '@shared/types/category';
 
 interface UseFetchCategoriesResult {
   loading: boolean;
@@ -14,7 +15,7 @@ interface UseFetchCategoriesResult {
 }
 
 export function useFetchCategories(
-  categoryId?: number
+  categoryId?: number,
 ): UseFetchCategoriesResult {
   const isMounted = useMountedState();
 
@@ -23,7 +24,7 @@ export function useFetchCategories(
       categoriesById: state.categoriesById,
       rootCategoryIds: state.rootCategoryIds,
       decksById: state.decksById,
-    }))
+    })),
   );
 
   const { getCategories, getCategory } = useCategoryRepository();
@@ -34,14 +35,14 @@ export function useFetchCategories(
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (typeof categoryId === "number") {
+        if (typeof categoryId === 'number') {
           await getCategory(categoryId);
         } else {
           await getCategories();
         }
       } catch (err: any) {
         if (isMounted()) {
-          console.error("Ошибка при загрузке категорий:", err);
+          console.error('Ошибка при загрузке категорий:', err);
           setError(err);
         }
       } finally {
@@ -62,13 +63,13 @@ export function useFetchCategories(
     let categoryList: NormalizedCategory[] = [];
     let deckList: Deck[] = [];
 
-    if (typeof categoryId === "number") {
+    if (typeof categoryId === 'number') {
       const category = categoriesById[categoryId];
 
       if (category) {
         // Получаем подкатегории
         categoryList = category.childIds.map(
-          (childId) => categoriesById[childId]
+          (childId) => categoriesById[childId],
         );
 
         // Получаем колоды, связанные с категорией
@@ -89,12 +90,12 @@ export function useFetchCategories(
     // Сортируем категории и колоды по updatedAt
     categoryList.sort(
       (a, b) =>
-        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
     );
 
     deckList.sort(
       (a, b) =>
-        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
     );
 
     return { categories: categoryList, decks: deckList };

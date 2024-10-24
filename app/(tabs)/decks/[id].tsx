@@ -1,7 +1,8 @@
-import { Text } from "@/src/shared/components/ui/ThemedText";
-import { ThemedView } from "@/src/shared/components/ui/ThemedView";
-import { Stack, useLocalSearchParams } from "expo-router";
-import React from "react";
+import { Stack, useLocalSearchParams } from 'expo-router';
+import React from 'react';
+
+import { Text } from '@shared/components/ui/ThemedText';
+import { ThemedView } from '@shared/components/ui/ThemedView';
 
 function DeckItem() {
   const { id } = useLocalSearchParams();

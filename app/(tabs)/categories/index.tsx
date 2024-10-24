@@ -1,9 +1,11 @@
-import ScrollView from "@/src/shared/components/ScrollView";
-import { ThemedView } from "@/src/shared/components/ui/ThemedView";
-import Search from "@/src/shared/components/Search";
-import WaveButton from "@/src/shared/components/WaveButton";
-import { StyleSheet } from "react-native";
-import CategoryDataContent from "@/src/features/categories/components/CategoryDataContent";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+
+import ScrollView from '@shared/components/ScrollView';
+import { ThemedView } from '@shared/components/ui/ThemedView';
+import Search from '@shared/components/Search';
+import WaveButton from '@shared/components/WaveButton';
+import CategoryDataContent from '@features/categories/components/CategoryDataContent';
 
 export default function CategoriesScreen() {
   return (

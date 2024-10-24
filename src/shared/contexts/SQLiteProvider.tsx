@@ -1,8 +1,8 @@
 import {
   type SQLiteDatabase,
   SQLiteProvider as SQLiteProviderExpo,
-} from "expo-sqlite";
-import { Platform } from "react-native";
+} from 'expo-sqlite';
+import { Platform } from 'react-native';
 
 export async function initializeDatabase(db: SQLiteDatabase) {
   await db.execAsync(`
@@ -133,38 +133,36 @@ export async function initializeDatabase(db: SQLiteDatabase) {
     );
   `);
 
-  await addColumnIfNotExists(db, "Category", "type", "TEXT DEFAULT 'CATEGORY'");
+  // await addColumnIfNotExists(db, 'Category', 'type', "TEXT DEFAULT 'CATEGORY'");
 
-  // Проверяем и добавляем столбец 'type' в таблицу Deck
-  await addColumnIfNotExists(db, "Deck", "type", "TEXT DEFAULT 'DECK'");
+  // // Проверяем и добавляем столбец 'type' в таблицу Deck
+  // await addColumnIfNotExists(db, 'Deck', 'type', "TEXT DEFAULT 'DECK'");
 }
 
-async function addColumnIfNotExists(
-  db: SQLiteDatabase,
-  tableName: string,
-  columnName: string,
-  columnDefinition: string
-) {
-  // Проверяем, есть ли столбец в таблице
-  const result = await db.getAllAsync(`PRAGMA table_info(${tableName});`);
+// async function addColumnIfNotExists(
+//   db: SQLiteDatabase,
+//   tableName: string,
+//   columnName: string,
+//   columnDefinition: string,
+// ) {
+//   // Проверяем, есть ли столбец в таблице
+//   const result = await db.getAllAsync(`PRAGMA table_info(${tableName});`);
 
-  const columnExists = result.some((column: any) => column.name === columnName);
+//   const columnExists = result.some((column: any) => column.name === columnName);
 
-  if (!columnExists) {
-    // Добавляем столбец
-    await db.runAsync(
-      `ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${columnDefinition};`
-    );
-    console.log(`Столбец '${columnName}' добавлен в таблицу '${tableName}'.`);
-  }
-}
+//   if (!columnExists) {
+//     // Добавляем столбец
+//     await db.runAsync(
+//       `ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${columnDefinition};`,
+//     );
+//     console.log(`Столбец '${columnName}' добавлен в таблицу '${tableName}'.`);
+//   }
+// }
 
 export function SQLiteProvider({ children }: any) {
-  if (Platform.OS === "web") {
+  if (Platform.OS === 'web') {
     return <>{children}</>;
   }
-
-  console.log("SQLiteProvider");
 
   return (
     <SQLiteProviderExpo

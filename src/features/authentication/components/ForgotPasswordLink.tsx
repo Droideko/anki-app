@@ -1,18 +1,16 @@
-import React from "react";
-import { Text } from "../../../shared/components/ui/ThemedText";
-import { Link } from "expo-router";
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
-import { StyleSheet } from "react-native";
+import React from 'react';
+import { Link } from 'expo-router';
+import { StyleSheet } from 'react-native';
+
+import { useThemeColor } from '@shared/hooks/useThemeColor';
+import { Text } from '@shared/components/ui/ThemedText';
 
 function ForgotPasswordLink() {
   const { primary } = useThemeColor();
 
   return (
     <Text style={styles.text} variant="bodyMedium">
-      <Link
-        style={{ fontWeight: "bold", color: primary }}
-        href={"/password-reset"}
-      >
+      <Link style={[{ color: primary }, styles.link]} href={'/password-reset'}>
         Forgot password?
       </Link>
     </Text>
@@ -20,9 +18,12 @@ function ForgotPasswordLink() {
 }
 
 const styles = StyleSheet.create({
+  link: {
+    fontWeight: 'bold',
+  },
   text: {
-    textAlign: "right",
     marginBottom: 16,
+    textAlign: 'right',
   },
 });
 

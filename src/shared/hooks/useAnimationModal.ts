@@ -1,11 +1,12 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 import {
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
-} from "react-native-reanimated";
-import { useModalStore } from "../store/useModalStore";
+} from 'react-native-reanimated';
+
+import { useModalStore } from '../store/useModalStore';
 
 const useAnimationModal = () => {
   const {

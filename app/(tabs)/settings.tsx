@@ -1,8 +1,10 @@
-import { StyleSheet } from "react-native";
-import { ThemedView } from "@/src/shared/components/ui/ThemedView";
-import LanguageSetting from "@/src/features/settings/components/LanguageSetting";
-import LogOutButton from "@/src/features/settings/components/LogOutButton";
-import DeleteAccountButton from "@/src/features/settings/components/DeleteAccountButton";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+
+import { ThemedView } from '@shared/components/ui/ThemedView';
+import LanguageSetting from '@features/settings/components/LanguageSetting';
+import LogOutButton from '@features/settings/components/LogOutButton';
+import DeleteAccountButton from '@features/settings/components/DeleteAccountButton';
 
 export default function SettingsScreen() {
   return (

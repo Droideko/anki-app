@@ -1,7 +1,8 @@
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
-import { Ionicons } from "@expo/vector-icons";
-import { Stack } from "expo-router";
-import React from "react";
+import { Ionicons } from '@expo/vector-icons';
+import { Stack } from 'expo-router';
+import React from 'react';
+
+import { useThemeColor } from '@shared/hooks/useThemeColor';
 
 function CategoryLayout() {
   const { primary, text, secondaryBackground } = useThemeColor();
@@ -18,9 +19,9 @@ function CategoryLayout() {
       <Stack.Screen
         name="index"
         options={{
-          headerTitle: "Categories",
+          headerTitle: 'Categories',
           headerRight: () => (
-            <Ionicons color={primary} size={22} name={"filter"} />
+            <Ionicons color={primary} size={22} name={'filter'} />
           ),
         }}
       />
@@ -28,31 +29,31 @@ function CategoryLayout() {
         name="create-category"
         options={{
           headerShown: true,
-          presentation: "modal",
-          headerTitle: "Create new category",
+          presentation: 'modal',
+          headerTitle: 'Create new category',
         }}
       />
       <Stack.Screen
         name="[id]/create-deck-or-subcategory"
         options={{
           headerShown: true,
-          presentation: "modal",
-          headerTitle: "Create new",
+          presentation: 'modal',
+          headerTitle: 'Create new',
         }}
       />
       <Stack.Screen
         name="[id]/decks/[deckId]/create-card"
         options={{
           headerShown: true,
-          presentation: "modal",
-          headerTitle: "Create Card",
+          presentation: 'modal',
+          headerTitle: 'Create Card',
         }}
       />
       <Stack.Screen
         name="[id]/edit"
         options={{
           headerShown: true,
-          presentation: "modal",
+          presentation: 'modal',
         }}
       />
     </Stack>

@@ -1,18 +1,19 @@
-import { apiService } from "../../../shared/api/apiService";
-import NetInfo from "@react-native-community/netinfo";
+import NetInfo from '@react-native-community/netinfo';
+import { useSQLiteContext } from 'expo-sqlite';
+
+import saveCategoryToSQLite from '@features/categories/services/saveCategoryToSQLite';
+import { useUserStore } from '@shared/store/useUserStore';
+import getCategoryFromSQLite from '@features/categories/services/getCategoryFromSQLite';
+import deleteCategoryFromSQLite from '@features/categories/services/deleteCategoryFromSQLite';
+import isWeb from '@shared/utils/isWeb';
+import { useCategoriesStore } from '@shared/store/useCategoriesStore';
+import getCategoriesFromSQLite from '@features/categories/services/getCategoriesFromSQLite';
+import { Category } from '@shared/types/category';
+import { categoryService } from '@features/categories/services/categoryService';
 import {
-  Category,
   CategoryFormData,
   CategoryWithoutSubcategories,
-} from "@/src/features/categories/types";
-import { useSQLiteContext } from "expo-sqlite";
-import { useUserStore } from "@/src/shared/store/useUserStore";
-import getCategoryFromSQLite from "@/src/features/categories/services/getCategoryFromSQLite";
-import deleteCategoryFromSQLite from "@/src/features/categories/services/deleteCategoryFromSQLite";
-import isWeb from "@/src/shared/utils/isWeb";
-import { useCategoriesStore } from "@/src/shared/store/useCategoriesStore";
-import getCategoriesFromSQLite from "@/src/features/categories/services/getCategoriesFromSQLite";
-import saveCategoryToSQLite from "../services/saveCategoryToSQLite";
+} from '@features/categories/types';
 
 export const useCategoryRepository = () => {
   const db = isWeb() ? null : useSQLiteContext();
@@ -29,7 +30,7 @@ export const useCategoryRepository = () => {
 
     if (networkState.isConnected) {
       try {
-        const response = await apiService.getCategories();
+        const response = await categoryService.getCategories();
         const categories = response.data;
 
         if (db) {
@@ -48,15 +49,15 @@ export const useCategoryRepository = () => {
       } catch (error: unknown) {
         if (error instanceof Error) {
           throw new Error(
-            "Ошибка при создании категории на сервере: " + error.message
+            'Ошибка при создании категории на сервере: ' + error.message,
           );
         }
-        throw new Error("Somethings was wrong!");
+        throw new Error('Somethings was wrong!');
       }
     } else {
       try {
         if (!db) {
-          throw new Error("Used Browser");
+          throw new Error('Used Browser');
         }
 
         const categories = await getCategoriesFromSQLite(db);
@@ -68,10 +69,10 @@ export const useCategoryRepository = () => {
       } catch (error: unknown) {
         if (error instanceof Error) {
           throw new Error(
-            "Ошибка при создании категории на сервере: " + error.message
+            'Ошибка при создании категории на сервере: ' + error.message,
           );
         }
-        throw new Error("Somethings was wrong!");
+        throw new Error('Somethings was wrong!');
       }
     }
   };
@@ -81,7 +82,7 @@ export const useCategoryRepository = () => {
 
     if (networkState.isConnected) {
       try {
-        const response = await apiService.getCategory(id);
+        const response = await categoryService.getCategory(id);
         const category = response.data;
 
         // Сохраняем категорию в SQLite
@@ -96,13 +97,13 @@ export const useCategoryRepository = () => {
         return category;
       } catch (error: any) {
         throw new Error(
-          "Ошибка при получении категории с сервера: " + error.message
+          'Ошибка при получении категории с сервера: ' + error.message,
         );
       }
     } else {
       try {
         if (!db) {
-          throw new Error("Used Browser");
+          throw new Error('Used Browser');
         }
 
         const category = await getCategoryFromSQLite(db, id);
@@ -113,14 +114,14 @@ export const useCategoryRepository = () => {
         return category;
       } catch (error: any) {
         throw new Error(
-          "Ошибка при получении категории из SQLite: " + error.message
+          'Ошибка при получении категории из SQLite: ' + error.message,
         );
       }
     }
   };
 
   const createCategory = async (
-    data: CategoryFormData
+    data: CategoryFormData,
   ): Promise<CategoryWithoutSubcategories> => {
     if (!user?.id) {
       throw new Error("User is't login");
@@ -130,7 +131,7 @@ export const useCategoryRepository = () => {
 
     if (networkState.isConnected) {
       try {
-        const response = await apiService.createCategory(data);
+        const response = await categoryService.createCategory(data);
         const category = response.data;
 
         // Сохраняем категорию в SQLite
@@ -144,13 +145,13 @@ export const useCategoryRepository = () => {
         return category;
       } catch (error: any) {
         throw new Error(
-          "Ошибка при создании категории на сервере: " + error.message
+          'Ошибка при создании категории на сервере: ' + error.message,
         );
       }
     } else {
       try {
         if (!db) {
-          throw Error("Used browser");
+          throw Error('Used browser');
         }
         // Генерируем временный ID (нужно продумать механизм синхронизации)
         const tempId = Date.now();
@@ -160,8 +161,8 @@ export const useCategoryRepository = () => {
           name: data.name,
           userId: Number(user.id),
           parentId: data.parentId || null, // TODO подумать по поводу null
-          accessLevel: "PRIVATE", // data.accessLevel || "PRIVATE",
-          type: "CATEGORY",
+          accessLevel: 'PRIVATE', // data.accessLevel || "PRIVATE",
+          type: 'CATEGORY',
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           subcategories: [],
@@ -179,7 +180,7 @@ export const useCategoryRepository = () => {
         return newCategory;
       } catch (error: any) {
         throw new Error(
-          "Ошибка при создании категории в офлайн-режиме: " + error.message
+          'Ошибка при создании категории в офлайн-режиме: ' + error.message,
         );
       }
     }
@@ -187,13 +188,13 @@ export const useCategoryRepository = () => {
 
   const updateCategory = async (
     id: number,
-    data: Partial<CategoryFormData>
+    data: Partial<CategoryFormData>,
   ): Promise<CategoryWithoutSubcategories> => {
     const networkState = await NetInfo.fetch();
 
     if (networkState.isConnected) {
       try {
-        const response = await apiService.updateCategory(id, data);
+        const response = await categoryService.updateCategory(id, data);
         const category = response.data;
 
         // Обновляем категорию в SQLite
@@ -207,13 +208,13 @@ export const useCategoryRepository = () => {
         return category;
       } catch (error: any) {
         throw new Error(
-          "Ошибка при обновлении категории на сервере: " + error.message
+          'Ошибка при обновлении категории на сервере: ' + error.message,
         );
       }
     } else {
       try {
         if (!db) {
-          throw Error("Used browser");
+          throw Error('Used browser');
         }
 
         // Обновляем категорию в SQLite
@@ -228,7 +229,7 @@ export const useCategoryRepository = () => {
           data.parentId ?? null,
           data.accessLevel ?? null,
           new Date().toISOString(),
-          id
+          id,
         );
 
         // Получаем обновленную категорию из SQLite
@@ -242,7 +243,7 @@ export const useCategoryRepository = () => {
         return category;
       } catch (error: any) {
         throw new Error(
-          "Ошибка при обновлении категории в офлайн-режиме: " + error.message
+          'Ошибка при обновлении категории в офлайн-режиме: ' + error.message,
         );
       }
     }
@@ -250,13 +251,13 @@ export const useCategoryRepository = () => {
 
   const deleteCategory = async (
     id: number,
-    newParentId: number | null = null
+    newParentId: number | null = null,
   ): Promise<void> => {
     const networkState = await NetInfo.fetch();
 
     if (networkState.isConnected) {
       try {
-        await apiService.deleteCategory(id, newParentId);
+        await categoryService.deleteCategory(id, newParentId);
 
         // Удаляем категорию из SQLite
         if (db) {
@@ -268,14 +269,14 @@ export const useCategoryRepository = () => {
         // Если newParentId не null, нужно обновить родительскую категорию в хранилище
       } catch (error: any) {
         throw new Error(
-          "Ошибка при удалении категории на сервере: " + error.message
+          'Ошибка при удалении категории на сервере: ' + error.message,
         );
       }
     } else {
       // Оффлайн-режим
       try {
         if (!db) {
-          throw new Error("Used Browser");
+          throw new Error('Used Browser');
         }
         // Удаляем категорию из SQLite
         await deleteCategoryFromSQLite(db, id, newParentId);
@@ -286,7 +287,7 @@ export const useCategoryRepository = () => {
         // Добавляем в очередь синхронизации, если требуется
       } catch (error: any) {
         throw new Error(
-          "Ошибка при удалении категории в офлайн-режиме: " + error.message
+          'Ошибка при удалении категории в офлайн-режиме: ' + error.message,
         );
       }
     }
@@ -297,18 +298,18 @@ export const useCategoryRepository = () => {
 
     if (networkState.isConnected) {
       try {
-        await apiService.deleteAllCategories();
+        await categoryService.deleteAllCategories();
 
         // Очищаем таблицу Category в SQLite
         if (db) {
-          await db.runAsync("DELETE FROM Category;");
+          await db.runAsync('DELETE FROM Category;');
         }
 
         // Обновляем Zustand-хранилище
         setCategories([]);
       } catch (error: any) {
         throw new Error(
-          "Ошибка при удалении всех категорий на сервере: " + error.message
+          'Ошибка при удалении всех категорий на сервере: ' + error.message,
         );
       }
     } else {
@@ -316,9 +317,9 @@ export const useCategoryRepository = () => {
       try {
         // Очищаем таблицу Category в SQLite
         if (!db) {
-          throw Error("Used Browser");
+          throw Error('Used Browser');
         }
-        await db.runAsync("DELETE FROM Category;");
+        await db.runAsync('DELETE FROM Category;');
 
         // Обновляем Zustand-хранилище
         setCategories([]);
@@ -326,7 +327,8 @@ export const useCategoryRepository = () => {
         // Добавляем в очередь синхронизации, если требуется
       } catch (error: any) {
         throw new Error(
-          "Ошибка при удалении всех категорий в офлайн-режиме: " + error.message
+          'Ошибка при удалении всех категорий в офлайн-режиме: ' +
+            error.message,
         );
       }
     }

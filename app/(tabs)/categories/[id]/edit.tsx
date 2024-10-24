@@ -1,22 +1,23 @@
-import { useEffect } from "react";
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { ThemedView } from "@/src/shared/components/ui/ThemedView";
-import { StyleSheet } from "react-native";
-import KeyboardAvoidingContainer from "@/src/shared/components/KeyboardAvoidingContainer";
+import React, { useEffect } from 'react';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { StyleSheet } from 'react-native';
+import { useForm } from 'react-hook-form';
+
+import { ThemedView } from '@shared/components/ui/ThemedView';
+import KeyboardAvoidingContainer from '@shared/components/KeyboardAvoidingContainer';
 import {
   CREATE_CATEGORY_ICON_SIZE,
   KEYBOARD_OFFSET_IOS,
-} from "@/src/features/categories/constants";
-import { Text } from "@/src/shared/components/ui/ThemedText";
-import { useCategoryRepository } from "@/src/features/categories/hooks/useCategoryRepository";
-import useSnackbarStore from "@/src/shared/store/useSnackbarStore";
-import { useAsyncFn } from "@/src/shared/hooks/useAsyncFn";
-import { useForm } from "react-hook-form";
-import { SNACKBAR_TYPE } from "@/src/shared/constants/snackbar";
-import FormInput from "@/src/shared/components/forms/FormInput";
-import ThemedButton from "@/src/shared/components/ui/ThemedButton";
-import ThemedIconButton from "@/src/shared/components/ui/ThemedIconButton";
-import LoadingIndicator from "@/src/shared/components/ui/LoadingIndicator";
+} from '@features/categories/constants';
+import { Text } from '@shared/components/ui/ThemedText';
+import { useCategoryRepository } from '@features/categories/hooks/useCategoryRepository';
+import useSnackbarStore from '@shared/store/useSnackbarStore';
+import { useAsyncFn } from '@shared/hooks/useAsyncFn';
+import { SNACKBAR_TYPE } from '@shared/constants/snackbar';
+import FormInput from '@shared/components/forms/FormInput';
+import ThemedButton from '@shared/components/ui/ThemedButton';
+import ThemedIconButton from '@shared/components/ui/ThemedIconButton';
+import LoadingIndicator from '@shared/components/ui/LoadingIndicator';
 
 const CategoryEdit = () => {
   const { id, name } = useLocalSearchParams<{ id: string; name: string }>();
@@ -26,7 +27,7 @@ const CategoryEdit = () => {
 
   const { control, handleSubmit } = useForm<{ name: string }>({
     defaultValues: {
-      name: name || "",
+      name: name || '',
     },
   });
 
@@ -34,12 +35,12 @@ const CategoryEdit = () => {
 
   const [state, onSubmit] = useAsyncFn(async (data: { name: string }) => {
     if (!id) {
-      throw new Error("id is undefined");
+      throw new Error('id is undefined');
     }
     const category = await updateCategory(Number(id), data);
     showSnackbar(
       `Category '${category.name}' has been successful edited`,
-      SNACKBAR_TYPE.SUCCESS
+      SNACKBAR_TYPE.SUCCESS,
     );
     router.back();
   }, []);
@@ -47,8 +48,8 @@ const CategoryEdit = () => {
   useEffect(() => {
     if (!id || !name) {
       showSnackbar(
-        "Ошибка: отсутствуют необходимые данные для редактирования.",
-        SNACKBAR_TYPE.ERROR
+        'Ошибка: отсутствуют необходимые данные для редактирования.',
+        SNACKBAR_TYPE.ERROR,
       );
       router.back();
     }
@@ -63,7 +64,7 @@ const CategoryEdit = () => {
       <Stack.Screen
         options={{
           headerTitle: `Edit ${name}`,
-          presentation: "modal",
+          presentation: 'modal',
         }}
       />
       <KeyboardAvoidingContainer offsetIOS={KEYBOARD_OFFSET_IOS}>
@@ -73,11 +74,11 @@ const CategoryEdit = () => {
             label="Category name"
             name="name"
             placeholder="required"
-            rules={{ required: "Name is required" }}
+            rules={{ required: 'Name is required' }}
             autoFocus={true}
           />
           <ThemedButton mode="contained" onPress={handleSubmit(onSubmit)}>
-            Done
+            <Text>Done</Text>
           </ThemedButton>
           <ThemedIconButton
             style={styles.iconCreate}
@@ -99,12 +100,12 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   iconCreate: {
-    position: "absolute",
-    width: CREATE_CATEGORY_ICON_SIZE,
+    bottom: 20,
     height: CREATE_CATEGORY_ICON_SIZE,
     margin: 0,
+    position: 'absolute',
     right: 10,
-    bottom: 20,
+    width: CREATE_CATEGORY_ICON_SIZE,
   },
 });
 

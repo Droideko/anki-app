@@ -1,23 +1,25 @@
-import {
+import React, {
+  useState,
   useEffect,
   useContext,
   createContext,
   type PropsWithChildren,
-  useState,
-} from "react";
-import { SignUpFormData } from "@/src/features/authentication/types";
-import { User } from "../types/auth";
-import { useUserRepository } from "@/src/features/authentication/hooks/userRepository";
+} from 'react';
+
+import { User } from '@shared/types/auth';
+import { useUserRepository } from '@shared/hooks/repository/userRepository';
+import { SignUpFormData } from '@shared/types/category';
+import useSnackbarStore from '@shared/store/useSnackbarStore';
+import { SNACKBAR_TYPE } from '@shared/constants/snackbar';
 
 export function useSession() {
-  const value = useContext(AuthContext);
-  if (process.env.NODE_ENV !== "production") {
-    if (!value) {
-      throw new Error("useSession must be wrapped in a <SessionProvider />");
-    }
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error('useSession must be wrapped in a <SessionProvider />');
   }
 
-  return value;
+  return context;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -34,6 +36,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const userRepository = useUserRepository();
+  const { showSnackbar } = useSnackbarStore();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -43,8 +46,11 @@ export function SessionProvider({ children }: PropsWithChildren) {
           const userProfile = await userRepository.getUserProfile();
           setUser(userProfile);
         }
-      } catch (error) {
-        console.error("Ошибка при проверке авторизации:", error);
+      } catch (error: unknown) {
+        showSnackbar(
+          `Error checking authorization: ${error}`,
+          SNACKBAR_TYPE.ERROR,
+        );
       } finally {
         setIsLoading(false);
       }
@@ -57,37 +63,16 @@ export function SessionProvider({ children }: PropsWithChildren) {
     <AuthContext.Provider
       value={{
         signIn: async (data: SignUpFormData) => {
-          // setIsLoading(true);
-          try {
-            const user = await userRepository.login(data);
-            setUser(user);
-          } catch (error) {
-            throw error; // чтобы обработать ошибку в компоненте
-          } finally {
-            setIsLoading(false);
-          }
+          const user = await userRepository.login(data);
+          setUser(user);
         },
         signOut: async () => {
-          setIsLoading(true);
-          try {
-            await userRepository.logout();
-            setUser(null);
-          } catch (error) {
-            console.error("Ошибка при выходе:", error);
-          } finally {
-            setIsLoading(false);
-          }
+          await userRepository.logout();
+          setUser(null);
         },
         signUp: async (data: SignUpFormData) => {
-          setIsLoading(true);
-          try {
-            const user = await userRepository.signUp(data);
-            setUser(user);
-          } catch (error) {
-            console.error("Ошибка при регистрации:", error);
-          } finally {
-            setIsLoading(false);
-          }
+          await userRepository.signUp(data);
+          setUser(user);
         },
         isLoading,
         user,

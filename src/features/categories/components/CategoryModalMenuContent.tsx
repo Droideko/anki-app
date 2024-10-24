@@ -1,8 +1,10 @@
-import { Pressable, StyleSheet } from "react-native";
-import { Divider, Icon } from "react-native-paper";
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
-import { useModalStore } from "@/src/shared/store/useModalStore";
-import { Text } from "@/src/shared/components/ui/ThemedText";
+import React from 'react';
+import { Pressable, StyleSheet } from 'react-native';
+import { Divider, Icon } from 'react-native-paper';
+
+import { useThemeColor } from '@shared/hooks/useThemeColor';
+import { useModalStore } from '@shared/store/useModalStore';
+import { Text } from '@shared/components/ui/ThemedText';
 
 function CategoryModalMenuContent() {
   const { error } = useThemeColor();
@@ -32,10 +34,10 @@ function CategoryModalMenuContent() {
 
 const styles = StyleSheet.create({
   item: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     padding: 10,
   },
 });

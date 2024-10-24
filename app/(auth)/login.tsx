@@ -1,14 +1,16 @@
-import { StyleSheet } from "react-native";
-import { Text } from "@/src/shared/components/ui/ThemedText";
-import KeyboardAvoidingContainer from "@/src/shared/components/KeyboardAvoidingContainer";
-import ScrollView from "@/src/shared/components/ScrollView";
-import TermsAndPrivacyNotice from "@/src/features/authentication/components/TermsAndPrivacyNotice";
-import FormTextDivider from "@/src/features/authentication/components/FormTextDivider";
-import AppleButton from "@/src/features/authentication/components/AppleButton";
-import SignUpPrompt from "@/src/features/authentication/components/SignUpPrompt";
-import ForgotPasswordLink from "@/src/features/authentication/components/ForgotPasswordLink";
-import LoginForm from "@/src/features/authentication/components/LoginForm";
-import GoogleButton from "@/src/features/authentication/components/GoogleButton";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+
+import { Text } from '@shared/components/ui/ThemedText';
+import KeyboardAvoidingContainer from '@shared/components/KeyboardAvoidingContainer';
+import ScrollView from '@shared/components/ScrollView';
+import TermsAndPrivacyNotice from '@features/authentication/components/TermsAndPrivacyNotice';
+import FormTextDivider from '@features/authentication/components/FormTextDivider';
+import AppleButton from '@features/authentication/components/AppleButton';
+import SignUpPrompt from '@features/authentication/components/SignUpPrompt';
+import ForgotPasswordLink from '@features/authentication/components/ForgotPasswordLink';
+import LoginForm from '@features/authentication/components/LoginForm';
+import GoogleButton from '@features/authentication/components/GoogleButton';
 
 export default function LogInScreen() {
   return (
@@ -30,14 +32,14 @@ export default function LogInScreen() {
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   title: {
     marginBottom: 16,
-    textAlign: "center",
+    textAlign: 'center',
+  },
+  titleContainer: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
 });

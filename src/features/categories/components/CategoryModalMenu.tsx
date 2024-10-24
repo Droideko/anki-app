@@ -1,22 +1,18 @@
-import { useState } from "react";
-import { LayoutRectangle, StyleSheet } from "react-native";
+import React, { useState } from 'react';
+import { LayoutRectangle, StyleSheet } from 'react-native';
 import Animated, {
   SharedValue,
   useAnimatedStyle,
-} from "react-native-reanimated";
+} from 'react-native-reanimated';
+
+import CategoryModalMenuContent from '@features/categories/components/CategoryModalMenuContent';
 import {
   getMenuLeft,
   getMenuTop,
-} from "@/src/features/categories/utils/getBlurModalPosition";
-import { useModalStore } from "@/src/shared/store/useModalStore";
-import { MenuHeight, MenuWidth } from "@/src/types/category";
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
-import CategoryModalMenuContent from "./CategoryModalMenuContent";
-
-type BrandedMenuSize = {
-  height: MenuHeight;
-  width: MenuWidth;
-};
+} from '@features/categories/utils/getBlurModalPosition';
+import { useModalStore } from '@shared/store/useModalStore';
+import { useThemeColor } from '@shared/hooks/useThemeColor';
+import { BrandedMenuSize } from '@features/categories/types';
 
 interface CategoryModalMenuProps {
   scale: SharedValue<number>;
@@ -61,16 +57,15 @@ export default function CategoryModalMenu({ scale }: CategoryModalMenuProps) {
 }
 
 const styles = StyleSheet.create({
+  // eslint-disable-next-line react-native/no-color-literals
   menu: {
-    position: "absolute",
     borderRadius: 5,
-    width: 150,
-    // Shadow for iOS
-    shadowColor: "#000",
+    elevation: 5,
+    position: 'absolute',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
-    // Elevation для Android
-    elevation: 5,
+    width: 150,
   },
 });

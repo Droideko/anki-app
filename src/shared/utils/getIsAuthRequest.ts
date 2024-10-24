@@ -1,8 +1,7 @@
-import { AUTH_EXCLUDED_PATHS } from "@/src/shared/constants/api";
-import { InternalAxiosRequestConfig } from "axios";
+import { InternalAxiosRequestConfig } from 'axios';
 
-export default function getIsAuthRequest(
-  config: InternalAxiosRequestConfig<any>
-) {
+import { AUTH_EXCLUDED_PATHS } from '@shared/constants/api';
+
+export default function getIsAuthRequest(config: InternalAxiosRequestConfig) {
   return AUTH_EXCLUDED_PATHS.some((url) => config.url?.includes(url));
 }

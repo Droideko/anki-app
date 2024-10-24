@@ -1,5 +1,5 @@
-import { Stack } from "expo-router";
-import React from "react";
+import { Stack } from 'expo-router';
+import React from 'react';
 
 function DecksLayout() {
   return (
@@ -7,7 +7,7 @@ function DecksLayout() {
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen
         name="create-deck"
-        options={{ headerShown: false, presentation: "modal" }}
+        options={{ headerShown: false, presentation: 'modal' }}
       />
       {/* <Stack.Screen
         name="[id]"

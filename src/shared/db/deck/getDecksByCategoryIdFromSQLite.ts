@@ -1,13 +1,14 @@
-import { Deck } from "@/src/shared/types/deck";
-import { SQLiteDatabase } from "expo-sqlite";
+import { SQLiteDatabase } from 'expo-sqlite';
+
+import { Deck } from '@shared/types/deck';
 
 const getDecksByCategoryIdFromSQLite = async (
   db: SQLiteDatabase,
-  categoryId: number
+  categoryId: number,
 ): Promise<Deck[]> => {
   const decks = await db.getAllAsync<Deck>(
-    "SELECT * FROM Deck WHERE categoryId = ?;",
-    categoryId
+    'SELECT * FROM Deck WHERE categoryId = ?;',
+    categoryId,
   );
 
   return decks;

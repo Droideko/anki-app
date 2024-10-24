@@ -1,16 +1,14 @@
-import { create } from "zustand";
-import {
-  normalizeCategories,
-  NormalizedCategory,
-} from "@/src/features/categories/utils/normalizeCategories";
-import { Deck } from "../types/deck";
-import { Categories, Category } from "@/src/features/categories/types";
+import { create } from 'zustand';
+
+import { normalizeCategories } from '@shared/utils/normalizeCategories';
+import type { NormalizedCategory, Category } from '@shared/types/category';
+import type { Deck } from '@shared//types/deck';
 
 interface CategoriesState {
   categoriesById: Record<number, NormalizedCategory>;
   decksById: Record<number, Deck>;
   rootCategoryIds: number[];
-  setCategories: (categories: Categories) => void;
+  setCategories: (categories: Category[]) => void;
   addCategory: (category: Category) => void;
   updateCategoryInStore: (category: Category) => void;
   deleteCategoryFromStore: (id: number) => void;
@@ -31,7 +29,6 @@ export const useCategoriesStore = create<CategoriesState>((set) => ({
         decksById: newDecksById,
       } = normalizeCategories(categories);
 
-      // Объединяем categoriesById аккуратно
       const categoriesById = { ...state.categoriesById };
       Object.keys(newCategoriesById).forEach((id) => {
         const numberId = Number(id);
@@ -60,12 +57,10 @@ export const useCategoriesStore = create<CategoriesState>((set) => ({
         }
       });
 
-      // Объединяем rootCategoryIds без дубликатов
       const rootCategoryIds = [
         ...new Set([...state.rootCategoryIds, ...newRootCategoryIds]),
       ];
 
-      // Объединяем decksById
       const decksById = { ...state.decksById, ...newDecksById };
 
       return {
@@ -76,26 +71,25 @@ export const useCategoriesStore = create<CategoriesState>((set) => ({
     }),
   addCategory: (category) =>
     set((state) => {
-      // Нормализуем категорию и её подкатегории
       const {
         categoriesById: newCategoriesById,
         decksById: newDecksById,
         rootCategoryIds: newRootCategoryIds,
       } = normalizeCategories([category]);
 
-      // Объединяем новые категории и колоды с существующим состоянием
+      // Merge new categories and decks with existing state
       const categoriesById = { ...state.categoriesById, ...newCategoriesById };
       const decksById = { ...state.decksById, ...newDecksById };
 
       let rootCategoryIds = state.rootCategoryIds;
 
       if (!category.parentId) {
-        // Если это корневая категория, добавляем её в rootCategoryIds
+        // If this is the root category, add it to rootCategoryIds
         if (!rootCategoryIds.includes(category.id)) {
           rootCategoryIds = [...state.rootCategoryIds, category.id];
         }
       } else {
-        // Если это подкатегория, обновляем childIds родительской категории
+        // If it is a subcategory, update the childIds of the parent category
         const parentCategory =
           categoriesById[category.parentId] ||
           state.categoriesById[category.parentId];
@@ -109,12 +103,12 @@ export const useCategoriesStore = create<CategoriesState>((set) => ({
               childIds: [...childIds, category.id],
             };
 
-            // Обновляем categoriesById с обновлённой родительской категорией
+            // Update childIds of parent category without duplicates
             categoriesById[category.parentId] = updatedParentCategory;
           }
         } else {
           console.warn(
-            `Parent category with id ${category.parentId} hasn't found.`
+            `Parent category with id ${category.parentId} hasn't found.`,
           );
         }
       }
@@ -137,23 +131,22 @@ export const useCategoriesStore = create<CategoriesState>((set) => ({
         return {};
       }
 
-      // Проверяем, изменился ли parentId
+      // Check if parentId has changed
       if (existingCategory.parentId !== category.parentId) {
-        // Удаляем из childIds старого родителя
+        // Remove the old parent from childIds
         if (existingCategory.parentId) {
           const oldParent = categoriesById[existingCategory.parentId];
           if (oldParent) {
             oldParent.childIds = oldParent.childIds.filter(
-              (childId) => childId !== category.id
+              (childId) => childId !== category.id,
             );
             categoriesById[existingCategory.parentId] = oldParent;
           }
         } else {
-          // Удаляем из rootCategoryIds
+          // Remove from rootCategoryIds
           rootCategoryIds = rootCategoryIds.filter((id) => id !== category.id);
         }
-
-        // Добавляем в childIds нового родителя
+        // Add a new parent to childIds
         if (category.parentId) {
           const newParent = categoriesById[category.parentId];
           if (newParent) {
@@ -163,31 +156,26 @@ export const useCategoriesStore = create<CategoriesState>((set) => ({
             }
           } else {
             console.warn(
-              `New Parent with id ${category.parentId} hasn't found.`
+              `New Parent with id ${category.parentId} hasn't found.`,
             );
           }
         } else {
-          // Добавляем в rootCategoryIds
           if (!rootCategoryIds.includes(category.id)) {
             rootCategoryIds = [...rootCategoryIds, category.id];
           }
         }
       }
 
-      // Обновляем свойства категории
       const updatedCategory: NormalizedCategory = {
         ...existingCategory,
         ...category,
       };
 
-      // Если у категории есть обновлённые колоды, обновляем их
-      if ("decks" in category && category.decks) {
-        // Добавляем или обновляем колоды
+      // If a category has updated decks, update them
+      if ('decks' in category && category.decks) {
         category.decks.forEach((deck) => {
           decksById[deck.id] = deck;
         });
-
-        // Обновляем deckIds в категории
         updatedCategory.deckIds = category.decks.map((deck) => deck.id);
       }
 
@@ -209,31 +197,27 @@ export const useCategoriesStore = create<CategoriesState>((set) => ({
       }
 
       if (category.parentId) {
-        // Обновляем родительскую категорию
         const parentCategory = categoriesById[category.parentId];
         if (parentCategory) {
           parentCategory.childIds = parentCategory.childIds.filter(
-            (childId) => childId !== id
+            (childId) => childId !== id,
           );
           categoriesById[category.parentId] = parentCategory;
         }
       } else {
-        // Удаляем из корневых категорий
         rootCategoryIds = rootCategoryIds.filter((rootId) => rootId !== id);
       }
 
-      // Рекурсивно удаляем подкатегории и связанные колоды
+      // Recursively remove subcategories and related decks
       const deleteSubcategoriesAndDecks = (categoryId: number) => {
         const subcategory = categoriesById[categoryId];
         if (subcategory) {
-          // Удаляем связанные колоды
           if (subcategory.deckIds) {
             subcategory.deckIds.forEach((deckId) => {
               delete decksById[deckId];
             });
           }
 
-          // Рекурсивно удаляем подкатегории
           if (subcategory.childIds && subcategory.childIds.length > 0) {
             subcategory.childIds.forEach((childId) => {
               deleteSubcategoriesAndDecks(childId);
@@ -259,13 +243,12 @@ export const useCategoriesStore = create<CategoriesState>((set) => ({
       const categoriesById = { ...state.categoriesById };
       const category = categoriesById[deck.categoryId];
       if (category) {
-        // Обновляем deckIds категории без дубликатов
         if (!category.deckIds.includes(deck.id)) {
           category.deckIds = [...category.deckIds, deck.id];
           categoriesById[deck.categoryId] = category;
         }
       } else {
-        console.warn(`Категория с id ${deck.categoryId} не найдена.`);
+        console.warn(`The category with id ${deck.categoryId} was not found.`);
       }
 
       return { decksById, categoriesById };
@@ -278,22 +261,22 @@ export const useCategoriesStore = create<CategoriesState>((set) => ({
       const categoriesById = { ...state.categoriesById };
 
       if (!existingDeck) {
-        console.warn(`Колода с id ${deck.id} не найдена.`);
+        console.warn(`Deck with id ${deck.id} was not found.`);
         return {};
       }
 
-      // Проверяем, изменился ли categoryId
+      // whether categoryId has changed
       if (existingDeck.categoryId !== deck.categoryId) {
-        // Удаляем deckId из старой категории
+        // Remove deckId from old category
         const oldCategory = categoriesById[existingDeck.categoryId];
         if (oldCategory) {
           oldCategory.deckIds = oldCategory.deckIds.filter(
-            (deckId) => deckId !== deck.id
+            (deckId) => deckId !== deck.id,
           );
           categoriesById[existingDeck.categoryId] = oldCategory;
         }
 
-        // Добавляем deckId в новую категорию
+        // Add deckId to a new category
         const newCategory = categoriesById[deck.categoryId];
         if (newCategory) {
           if (!newCategory.deckIds.includes(deck.id)) {
@@ -301,11 +284,12 @@ export const useCategoriesStore = create<CategoriesState>((set) => ({
             categoriesById[deck.categoryId] = newCategory;
           }
         } else {
-          console.warn(`Категория с id ${deck.categoryId} не найдена.`);
+          console.warn(
+            `The category with id ${deck.categoryId} was not found.`,
+          );
         }
       }
 
-      // Обновляем свойства колоды
       decksById[deck.id] = {
         ...existingDeck,
         ...deck,
@@ -321,11 +305,10 @@ export const useCategoriesStore = create<CategoriesState>((set) => ({
       const deck = decksById[id];
 
       if (!deck) {
-        console.warn(`Колода с id ${id} не найдена.`);
+        console.warn(`Deck with id ${id} was not found.`);
         return {};
       }
 
-      // Удаляем deckId из категории
       const category = categoriesById[deck.categoryId];
       if (category) {
         category.deckIds = category.deckIds.filter((deckId) => deckId !== id);

@@ -5,7 +5,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react-native/all',
     'plugin:prettier/recommended',
-    'prettier', // Добавлено расширение 'prettier'
+    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -49,7 +49,7 @@ module.exports = {
         map: [
           ['@features', './src/features'],
           ['@shared', './src/shared'],
-          ['@app', './app'],
+          // ['@app', './app'],
         ],
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
@@ -61,7 +61,17 @@ module.exports = {
   rules: {
     'no-unused-vars': 'warn',
     'no-console': 'off',
-    '@typescript-eslint/no-unused-vars': ['warn'],
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      {
+        vars: 'all',
+        args: 'after-used',
+        ignoreRestSiblings: false,
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        ignoreImports: true,
+      },
+    ],
     'react/prop-types': 'off',
     'react-native/no-unused-styles': 'warn',
     'react-native/split-platform-components': 'warn',

@@ -1,9 +1,11 @@
-import { Snackbar } from "react-native-paper";
-import { Text } from "@/src/shared/components/ui/ThemedText";
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
-import useSnackbarStore from "@/src/shared/store/useSnackbarStore";
-import { SNACKBAR_TYPE } from "../constants/snackbar";
-import { useMountedState } from "../hooks/useMountedState";
+import React from 'react';
+import { Snackbar } from 'react-native-paper';
+
+import { SNACKBAR_TYPE } from '@shared/constants/snackbar';
+import { Text } from '@shared/components/ui/ThemedText';
+import { useThemeColor } from '@shared/hooks/useThemeColor';
+import useSnackbarStore from '@shared/store/useSnackbarStore';
+import { useMountedState } from '@shared/hooks/useMountedState';
 
 // TODO Осторожно, так как поверх модалки не открывается снэкбар
 function GlobalSnackbar() {
@@ -45,7 +47,7 @@ function GlobalSnackbar() {
       onDismiss={hideSnackbar}
       duration={Snackbar.DURATION_SHORT}
       action={{
-        label: "Close",
+        label: 'Close',
         onPress: hideSnackbar,
         textColor: getTextColor(),
       }}

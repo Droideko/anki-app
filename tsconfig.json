@@ -10,6 +10,8 @@
     //   "@/*": ["./*"]
     // },
     "paths": {
+      "@features/*": ["./src/features/*"],
+      "@shared/*": ["./src/shared/*"],
       "@/*": ["./*"]
     },
     "types": ["jest", "@testing-library/jest-native/extend-expect"]

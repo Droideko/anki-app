@@ -1,13 +1,14 @@
-import { DependencyList, useEffect } from "react";
+import { DependencyList, useEffect } from 'react';
+
 import {
   useAsyncFn,
   FunctionReturningPromise,
   StateFromFunctionReturningPromise,
-} from "./useAsyncFn";
+} from './useAsyncFn';
 
 export function useAsync<T extends FunctionReturningPromise>(
   fn: T,
-  deps: DependencyList = []
+  deps: DependencyList = [],
 ): StateFromFunctionReturningPromise<T> {
   const [state, callback] = useAsyncFn(fn, deps, {
     loading: true,

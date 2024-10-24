@@ -1,8 +1,8 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const QUEUE_KEY = "REQUEST_QUEUE";
+const QUEUE_KEY = 'REQUEST_QUEUE';
 
-export async function addToQueue(request: any) {
+export async function addToQueue(request: unknown) {
   const queue = await getQueue();
   queue.push(request);
   await AsyncStorage.setItem(QUEUE_KEY, JSON.stringify(queue));

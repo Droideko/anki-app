@@ -1,9 +1,11 @@
-import { StyleSheet } from "react-native";
-import KeyboardAvoidingContainer from "@/src/shared/components/KeyboardAvoidingContainer";
-import useSegmentedButtons from "@/src/features/categories/hooks/useSegmentedButtons";
-import { ThemedView } from "@/src/shared/components/ui/ThemedView";
-import { KEYBOARD_OFFSET_IOS } from "@/src/features/categories/constants";
-import { Text } from "@/src/shared/components/ui/ThemedText";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+
+import KeyboardAvoidingContainer from '@shared/components/KeyboardAvoidingContainer';
+import useSegmentedButtons from '@features/categories/hooks/useSegmentedButtons';
+import { ThemedView } from '@shared/components/ui/ThemedView';
+import { KEYBOARD_OFFSET_IOS } from '@features/categories/constants';
+import { Text } from '@shared/components/ui/ThemedText';
 
 export default function CreateDeckOrSubcategory() {
   const [value, onChange] = useSegmentedButtons();
@@ -23,8 +25,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   iconCreate: {
-    position: "absolute",
-    right: 0,
     bottom: 0,
+    position: 'absolute',
+    right: 0,
   },
 });

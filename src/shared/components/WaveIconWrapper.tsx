@@ -1,6 +1,7 @@
-import React from "react";
-import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
-import { WaveCircle } from "./WaveCircle";
+import React from 'react';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+
+import { WaveCircle } from './WaveCircle';
 
 interface OwnProps {
   children: React.ReactNode;
@@ -25,14 +26,8 @@ export function WaveIconWrapper({
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  iconButton: {
-    position: "absolute",
-  },
-  backgroundCover: {
-    position: "absolute",
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
   },
 });

@@ -1,6 +1,8 @@
-import { DependencyList, useCallback, useRef, useState } from "react";
-import { useMountedState } from "./useMountedState";
+import { DependencyList, useCallback, useRef, useState } from 'react';
 
+import { useMountedState } from './useMountedState';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FunctionReturningPromise<T = any> = (...args: any[]) => Promise<T>;
 export type PromiseType<T> = T extends Promise<infer U> ? U : never;
 
@@ -11,18 +13,18 @@ export type AsyncState<T> =
   | { loading: false; error?: undefined; value: T };
 
 export type StateFromFunctionReturningPromise<
-  T extends FunctionReturningPromise
+  T extends FunctionReturningPromise,
 > = AsyncState<PromiseType<ReturnType<T>>>;
 
 export type AsyncFnReturn<T extends FunctionReturningPromise> = [
   StateFromFunctionReturningPromise<T>,
-  T
+  T,
 ];
 
 export function useAsyncFn<T extends FunctionReturningPromise>(
   fn: T,
   deps: DependencyList = [],
-  initialState: StateFromFunctionReturningPromise<T> = { loading: false }
+  initialState: StateFromFunctionReturningPromise<T> = { loading: false },
 ): AsyncFnReturn<T> {
   const lastCallId = useRef<number>(0);
   const isMounted = useMountedState();
@@ -50,7 +52,7 @@ export function useAsyncFn<T extends FunctionReturningPromise>(
           setState({ error, loading: false });
         }
         return error;
-      }
+      },
     );
 
     return promise as ReturnType<T>;

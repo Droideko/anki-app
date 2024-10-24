@@ -1,7 +1,9 @@
-import { StyleSheet } from "react-native";
-import { ThemedView } from "@/src/shared/components/ui/ThemedView";
-import { Text } from "@/src/shared/components/ui/ThemedText";
-import { useAsync } from "@/src/shared/hooks/useAsync";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+
+import { ThemedView } from '@shared/components/ui/ThemedView';
+import { Text } from '@shared/components/ui/ThemedText';
+import { useAsync } from '@shared/hooks/useAsync';
 
 interface CategoryContentProps<T> {
   fetchData: () => Promise<T[] | undefined>;
@@ -36,7 +38,7 @@ export default function CategoryDataContent<T>({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 16,
     paddingBottom: 16,
+    paddingTop: 16,
   },
 });

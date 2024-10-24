@@ -1,5 +1,6 @@
-import { useEffect } from "react";
-import { useLanguageStore } from "../store/useLanguageStore";
+import { useEffect } from 'react';
+
+import { useLanguageStore } from '../store/useLanguageStore';
 
 const useRenderChangedLanguage = (): void => {
   const { language } = useLanguageStore();

@@ -1,7 +1,8 @@
-import React from "react";
-import { ThemedView } from "@/src/shared/components/ui/ThemedView";
-import { Text } from "@/src/shared/components/ui/ThemedText";
-import { Stack, useLocalSearchParams } from "expo-router";
+import React from 'react';
+import { Stack, useLocalSearchParams } from 'expo-router';
+
+import { ThemedView } from '@shared/components/ui/ThemedView';
+import { Text } from '@shared/components/ui/ThemedText';
 
 const Options = () => {
   const { id, optionId, user } = useLocalSearchParams();

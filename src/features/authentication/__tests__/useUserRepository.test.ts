@@ -1,32 +1,32 @@
-import { useUserRepository } from "@/src/features/authentication/hooks/userRepository";
-import { renderHook } from "@testing-library/react-native";
+import { renderHook } from '@testing-library/react-native';
+import NetInfo from '@react-native-community/netinfo';
+import { useSQLiteContext } from 'expo-sqlite';
+import * as SecureStore from 'expo-secure-store';
 
-jest.mock("@/src/api/apiService");
-jest.mock("@react-native-community/netinfo");
-jest.mock("expo-sqlite");
-jest.mock("@/src/store/useUserStore");
-jest.mock("@/src/api/utils/auth");
-jest.mock("@/src/utils/isWeb");
-jest.mock("expo-secure-store");
+jest.mock('@/src/api/apiService');
+jest.mock('@react-native-community/netinfo');
+jest.mock('expo-sqlite');
+jest.mock('@/src/store/useUserStore');
+jest.mock('@/src/api/utils/auth');
+jest.mock('@/src/utils/isWeb');
+jest.mock('expo-secure-store');
 
 // Import the modules you're mocking
-import { apiService } from "@/src/shared/api/apiService";
-import NetInfo from "@react-native-community/netinfo";
-import { useSQLiteContext } from "expo-sqlite";
-import { useUserStore } from "@/src/shared/store/useUserStore";
-import * as authUtils from "@/src/shared/utils/authTokens";
-import isWeb from "@/src/shared/utils/isWeb";
-import * as SecureStore from "expo-secure-store";
+import { apiService } from '@shared/api/apiService';
+import { useUserRepository } from '@shared/hooks/repository/userRepository';
+import { useUserStore } from '@shared/store/useUserStore';
+import * as authUtils from '@shared/utils/authTokens';
+import isWeb from '@shared/utils/isWeb';
 
 // Start writing your tests
-describe("useUserRepository", () => {
-  describe("isAuthenticated", () => {
-    test("returns true when access token exists", async () => {
+describe('useUserRepository', () => {
+  describe('isAuthenticated', () => {
+    test('returns true when access token exists', async () => {
       const getAccessTokenMock =
         authUtils.getAccessToken as jest.MockedFunction<
           typeof authUtils.getAccessToken
         >;
-      getAccessTokenMock.mockResolvedValue("some-token");
+      getAccessTokenMock.mockResolvedValue('some-token');
 
       const { result } = renderHook(() => useUserRepository());
 
@@ -36,7 +36,7 @@ describe("useUserRepository", () => {
       expect(getAccessTokenMock).toHaveBeenCalled();
     });
 
-    test("returns false when access token does not exist", async () => {
+    test('returns false when access token does not exist', async () => {
       const getAccessTokenMock =
         authUtils.getAccessToken as jest.MockedFunction<
           typeof authUtils.getAccessToken
@@ -52,8 +52,8 @@ describe("useUserRepository", () => {
     });
   });
 
-  describe("signUp", () => {
-    test("successfully registers a user when online", async () => {
+  describe('signUp', () => {
+    test('successfully registers a user when online', async () => {
       const { saveTokens } = authUtils;
 
       (useUserStore as jest.MockedFunction<any>).mockReturnValue({
@@ -63,21 +63,21 @@ describe("useUserRepository", () => {
 
       const mockUser = {
         id: 1,
-        email: "test@example.com",
-        name: "Test User",
-        role: "USER",
+        email: 'test@example.com',
+        name: 'Test User',
+        role: 'USER',
       };
 
       const mockResponse = {
         data: {
           user: mockUser,
-          accessToken: "access-token",
-          refreshToken: "refresh-token",
+          accessToken: 'access-token',
+          refreshToken: 'refresh-token',
         },
       };
 
       (apiService.signUp as jest.MockedFunction<any>).mockResolvedValue(
-        mockResponse
+        mockResponse,
       );
       (NetInfo.fetch as jest.MockedFunction<any>).mockResolvedValue({
         isConnected: true,
@@ -92,28 +92,28 @@ describe("useUserRepository", () => {
       const { result } = renderHook(() => useUserRepository());
 
       const signUpData = {
-        email: "test@example.com",
-        password: "password123",
-        name: "Test User",
+        email: 'test@example.com',
+        password: 'password123',
+        name: 'Test User',
       };
 
       const user = await result.current.signUp(signUpData);
 
       expect(apiService.signUp).toHaveBeenCalledWith(signUpData);
-      expect(saveTokens).toHaveBeenCalledWith("access-token", "refresh-token");
+      expect(saveTokens).toHaveBeenCalledWith('access-token', 'refresh-token');
       expect(mockDb.runAsync).toHaveBeenCalledWith(
-        "INSERT OR REPLACE INTO User (id, email, name, role, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?);",
+        'INSERT OR REPLACE INTO User (id, email, name, role, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?);',
         mockUser.id,
         mockUser.email,
         mockUser.name,
         mockUser.role,
         expect.any(String),
-        expect.any(String)
+        expect.any(String),
       );
       expect(user).toEqual(mockUser);
     });
 
-    test("throws error when offline", async () => {
+    test('throws error when offline', async () => {
       (NetInfo.fetch as jest.MockedFunction<any>).mockResolvedValue({
         isConnected: false,
       });
@@ -121,19 +121,19 @@ describe("useUserRepository", () => {
       const { result } = renderHook(() => useUserRepository());
 
       const signUpData = {
-        email: "test@example.com",
-        password: "password123",
-        name: "Test User",
+        email: 'test@example.com',
+        password: 'password123',
+        name: 'Test User',
       };
 
       await expect(result.current.signUp(signUpData)).rejects.toThrow(
-        "Нет подключения к сети. Пожалуйста, подключитесь к Интернету и попробуйте снова."
+        'Нет подключения к сети. Пожалуйста, подключитесь к Интернету и попробуйте снова.',
       );
     });
   });
 
-  describe("login", () => {
-    test("successfully logs in a user when online", async () => {
+  describe('login', () => {
+    test('successfully logs in a user when online', async () => {
       const { saveTokens } = authUtils;
       (useUserStore as jest.MockedFunction<any>).mockReturnValue({
         setUser: jest.fn(),
@@ -142,21 +142,21 @@ describe("useUserRepository", () => {
 
       const mockUser = {
         id: 1,
-        email: "test@example.com",
-        name: "Test User",
-        role: "USER",
+        email: 'test@example.com',
+        name: 'Test User',
+        role: 'USER',
       };
 
       const mockResponse = {
         data: {
           user: mockUser,
-          accessToken: "access-token",
-          refreshToken: "refresh-token",
+          accessToken: 'access-token',
+          refreshToken: 'refresh-token',
         },
       };
 
       (apiService.login as jest.MockedFunction<any>).mockResolvedValue(
-        mockResponse
+        mockResponse,
       );
       (NetInfo.fetch as jest.MockedFunction<any>).mockResolvedValue({
         isConnected: true,
@@ -170,36 +170,36 @@ describe("useUserRepository", () => {
       const { result } = renderHook(() => useUserRepository());
 
       const loginData = {
-        email: "test@example.com",
-        password: "password123",
+        email: 'test@example.com',
+        password: 'password123',
       };
 
       const user = await result.current.login(loginData);
 
       expect(apiService.login).toHaveBeenCalledWith(loginData);
-      expect(saveTokens).toHaveBeenCalledWith("access-token", "refresh-token");
+      expect(saveTokens).toHaveBeenCalledWith('access-token', 'refresh-token');
       expect(mockDb.runAsync).toHaveBeenCalledWith(
-        "INSERT OR REPLACE INTO User (id, email, name, role, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?);",
+        'INSERT OR REPLACE INTO User (id, email, name, role, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?);',
         mockUser.id,
         mockUser.email,
         mockUser.name,
         mockUser.role,
         expect.any(String),
-        expect.any(String)
+        expect.any(String),
       );
       expect(user).toEqual(mockUser);
     });
 
-    test("retrieves user from local DB when offline and user exists", async () => {
+    test('retrieves user from local DB when offline and user exists', async () => {
       (NetInfo.fetch as jest.MockedFunction<any>).mockResolvedValue({
         isConnected: false,
       });
 
       const mockUser = {
         id: 1,
-        email: "test@example.com",
-        name: "Test User",
-        role: "USER",
+        email: 'test@example.com',
+        name: 'Test User',
+        role: 'USER',
       };
 
       const mockDb = {
@@ -210,20 +210,20 @@ describe("useUserRepository", () => {
       const { result } = renderHook(() => useUserRepository());
 
       const loginData = {
-        email: "test@example.com",
-        password: "password123",
+        email: 'test@example.com',
+        password: 'password123',
       };
 
       const user = await result.current.login(loginData);
 
       expect(mockDb.getFirstAsync).toHaveBeenCalledWith(
-        "SELECT * FROM User WHERE email = ?;",
-        loginData.email
+        'SELECT * FROM User WHERE email = ?;',
+        loginData.email,
       );
       expect(user).toEqual(mockUser);
     });
 
-    test("throws error when offline and user does not exist in local DB", async () => {
+    test('throws error when offline and user does not exist in local DB', async () => {
       (NetInfo.fetch as jest.MockedFunction<any>).mockResolvedValue({
         isConnected: false,
       });
@@ -236,18 +236,18 @@ describe("useUserRepository", () => {
       const { result } = renderHook(() => useUserRepository());
 
       const loginData = {
-        email: "test@example.com",
-        password: "password123",
+        email: 'test@example.com',
+        password: 'password123',
       };
 
       await expect(result.current.login(loginData)).rejects.toThrow(
-        "Нет подключения к сети и данных в локальной базе"
+        'Нет подключения к сети и данных в локальной базе',
       );
     });
   });
 
-  describe("logout", () => {
-    test("clears tokens and user data", async () => {
+  describe('logout', () => {
+    test('clears tokens and user data', async () => {
       const { deleteTokens } = authUtils;
       const clearUser = jest.fn();
       (useUserStore as jest.MockedFunction<any>).mockReturnValue({
@@ -265,13 +265,13 @@ describe("useUserRepository", () => {
       await result.current.logout();
 
       expect(deleteTokens).toHaveBeenCalled();
-      expect(mockDb.runAsync).toHaveBeenCalledWith("DELETE FROM User;");
+      expect(mockDb.runAsync).toHaveBeenCalledWith('DELETE FROM User;');
       expect(clearUser).toHaveBeenCalled();
     });
   });
 
-  describe("getUserProfile", () => {
-    test("retrieves user from API when online", async () => {
+  describe('getUserProfile', () => {
+    test('retrieves user from API when online', async () => {
       const setUser = jest.fn();
       (useUserStore as jest.MockedFunction<any>).mockReturnValue({
         setUser,
@@ -280,9 +280,9 @@ describe("useUserRepository", () => {
 
       const mockUser = {
         id: 1,
-        email: "test@example.com",
-        name: "Test User",
-        role: "USER",
+        email: 'test@example.com',
+        name: 'Test User',
+        role: 'USER',
       };
 
       const mockResponse = {
@@ -290,7 +290,7 @@ describe("useUserRepository", () => {
       };
 
       (apiService.getUserProfile as jest.MockedFunction<any>).mockResolvedValue(
-        mockResponse
+        mockResponse,
       );
       (NetInfo.fetch as jest.MockedFunction<any>).mockResolvedValue({
         isConnected: true,
@@ -308,18 +308,18 @@ describe("useUserRepository", () => {
       expect(apiService.getUserProfile).toHaveBeenCalled();
       expect(setUser).toHaveBeenCalledWith(mockUser);
       expect(mockDb.runAsync).toHaveBeenCalledWith(
-        "INSERT OR REPLACE INTO User (id, email, name, role, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?);",
+        'INSERT OR REPLACE INTO User (id, email, name, role, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?);',
         mockUser.id,
         mockUser.email,
         mockUser.name,
         mockUser.role,
         expect.any(String),
-        expect.any(String)
+        expect.any(String),
       );
       expect(user).toEqual(mockUser);
     });
 
-    test("retrieves user from local DB when offline", async () => {
+    test('retrieves user from local DB when offline', async () => {
       const setUser = jest.fn();
       (useUserStore as jest.MockedFunction<any>).mockReturnValue({
         setUser,
@@ -328,9 +328,9 @@ describe("useUserRepository", () => {
 
       const mockUser = {
         id: 1,
-        email: "test@example.com",
-        name: "Test User",
-        role: "USER",
+        email: 'test@example.com',
+        name: 'Test User',
+        role: 'USER',
       };
 
       (NetInfo.fetch as jest.MockedFunction<any>).mockResolvedValue({
@@ -347,13 +347,13 @@ describe("useUserRepository", () => {
       const user = await result.current.getUserProfile();
 
       expect(mockDb.getFirstAsync).toHaveBeenCalledWith(
-        "SELECT * FROM User LIMIT 1;"
+        'SELECT * FROM User LIMIT 1;',
       );
       expect(setUser).toHaveBeenCalledWith(mockUser);
       expect(user).toEqual(mockUser);
     });
 
-    test("throws error when offline and no user in local DB", async () => {
+    test('throws error when offline and no user in local DB', async () => {
       (NetInfo.fetch as jest.MockedFunction<any>).mockResolvedValue({
         isConnected: false,
       });
@@ -366,7 +366,7 @@ describe("useUserRepository", () => {
       const { result } = renderHook(() => useUserRepository());
 
       await expect(result.current.getUserProfile()).rejects.toThrow(
-        "Нет данных в локальной базе"
+        'Нет данных в локальной базе',
       );
     });
   });

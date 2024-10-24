@@ -1,13 +1,14 @@
-import { SQLiteDatabase } from "expo-sqlite";
-import getDecksByCategoryIdFromSQLite from "../../decks/services/getDecksByCategoryIdFromSQLite";
-import { Categories, Category } from "../types";
+import { SQLiteDatabase } from 'expo-sqlite';
+
+import getDecksByCategoryIdFromSQLite from '@shared/db/deck/getDecksByCategoryIdFromSQLite';
+import { Category } from '@shared/types/category';
 
 const getCategoriesFromSQLite = async (
-  db: SQLiteDatabase
-): Promise<Categories> => {
+  db: SQLiteDatabase,
+): Promise<Category[]> => {
   // Получаем все категории
   const categoriesData = await db.getAllAsync<Category>(
-    "SELECT * FROM Category"
+    'SELECT * FROM Category',
   );
 
   // Создаем карту категорий по ID
@@ -28,7 +29,7 @@ const getCategoriesFromSQLite = async (
     // Загружаем колоды для текущей категории
     currentCategory.decks = await getDecksByCategoryIdFromSQLite(
       db,
-      category.id
+      category.id,
     );
 
     if (category.parentId) {

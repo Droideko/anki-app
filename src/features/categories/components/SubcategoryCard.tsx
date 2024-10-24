@@ -1,8 +1,10 @@
-import { Card, Icon } from "react-native-paper";
-import { HEIGHT_CATEGORY_CAROUSEL } from "@/src/features/categories/constants";
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
-import { SubCategoryItemTypeWithoutAddSubcategory } from "@/src/types/category";
-import { StyleProp, ViewStyle } from "react-native";
+import React from 'react';
+import { Card, Icon } from 'react-native-paper';
+import { StyleProp, ViewStyle } from 'react-native';
+
+import { useThemeColor } from '@shared/hooks/useThemeColor';
+import { SubCategoryItemTypeWithoutAddSubcategory } from '@shared/types/category';
+import { HEIGHT_CATEGORY_CAROUSEL } from '@shared/constants/category';
 
 interface SubcategoryCardProps {
   item: SubCategoryItemTypeWithoutAddSubcategory;
@@ -26,11 +28,11 @@ function SubcategoryCard({ item, style }: SubcategoryCardProps) {
     >
       <Card.Title
         style={{ minHeight: HEIGHT_CATEGORY_CAROUSEL }}
-        titleStyle={{ marginBottom: 0, alignContent: "center" }}
+        titleStyle={{ marginBottom: 0, alignContent: 'center' }}
         title={item.name}
         left={() => (
           <Icon
-            source={item.type === "CATEGORY" ? "folder" : "cards"}
+            source={item.type === 'CATEGORY' ? 'folder' : 'cards'}
             color={secondary}
             size={30}
           />

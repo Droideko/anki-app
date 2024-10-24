@@ -1,16 +1,15 @@
-import { Pressable, StyleSheet } from "react-native";
-import { useRouter } from "expo-router";
-import { Card, Icon } from "react-native-paper";
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
-import { Category } from "@/src/types/category";
-import {
-  HEIGHT_CATEGORY_CAROUSEL,
-  ITEM_SPACING,
-  ITEM_WIDTH,
-} from "@/src/features/categories/constants";
+import React from 'react';
+import { Pressable, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Card, Icon } from 'react-native-paper';
+
+import { ITEM_SPACING, ITEM_WIDTH } from '@features/categories/constants';
+import { useThemeColor } from '@shared/hooks/useThemeColor';
+import { Category } from '@shared/types/category';
+import { HEIGHT_CATEGORY_CAROUSEL } from '@shared/constants/category';
 
 interface SubcategoryAddItemProps {
-  parentCategoryId: Category["id"];
+  parentCategoryId: Category['id'];
 }
 
 export default function SubcategoryAddItem({
@@ -46,12 +45,12 @@ export default function SubcategoryAddItem({
 }
 
 const styles = StyleSheet.create({
-  subcategoryItem: {
-    width: ITEM_WIDTH,
-    marginRight: ITEM_SPACING,
-  },
   contentIcon: {
-    display: "flex",
-    alignItems: "center",
+    alignItems: 'center',
+    display: 'flex',
+  },
+  subcategoryItem: {
+    marginRight: ITEM_SPACING,
+    width: ITEM_WIDTH,
   },
 });

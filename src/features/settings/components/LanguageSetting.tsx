@@ -1,11 +1,13 @@
-import React from "react";
-import { Card, Divider } from "react-native-paper";
-import { Link } from "expo-router";
-import { ThemedView } from "../../../shared/components/ui/ThemedView";
-import { StyleSheet, View } from "react-native";
-import CardSwitchTheme from "./CardSwitchTheme";
-import CardSwitchNotification from "./CardSwitchNotification";
-import LanguageList from "./LanguageList";
+import React from 'react';
+import { Card, Divider } from 'react-native-paper';
+import { Link } from 'expo-router';
+import { StyleSheet } from 'react-native';
+
+import CardSwitchTheme from '@features/settings/components/CardSwitchTheme';
+import CardSwitchNotification from '@features/settings/components/CardSwitchNotification';
+import LanguageList from '@features/settings/components/LanguageList';
+import { ThemedView } from '@shared/components/ui/ThemedView';
+import { Text } from '@shared/components/ui/ThemedText';
 
 export default function LanguageSetting() {
   return (
@@ -18,7 +20,9 @@ export default function LanguageSetting() {
           <CardSwitchNotification />
         </Card.Content>
       </Card>
-      <Link href="/login">Log In</Link>
+      <Link href="/login">
+        <Text>Log In</Text>
+      </Link>
     </ThemedView>
   );
 }

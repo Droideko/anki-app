@@ -1,5 +1,6 @@
-import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
-import { useThemeColor } from "./useThemeColor";
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+
+import { useThemeColor } from './useThemeColor';
 
 const useStackScreenOptions = (): NativeStackNavigationOptions => {
   const colors = useThemeColor();

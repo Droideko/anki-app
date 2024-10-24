@@ -1,18 +1,20 @@
-import { useForm } from "react-hook-form";
-import { StyleSheet } from "react-native";
-import FormInput from "@/src/shared/components/forms/FormInput";
-import KeyboardAvoidingContainer from "@/src/shared/components/KeyboardAvoidingContainer";
-import ScrollView from "@/src/shared/components/ScrollView";
-import ThemedButton from "@/src/shared/components/ui/ThemedButton";
-import { Text } from "@/src/shared/components/ui/ThemedText";
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { StyleSheet } from 'react-native';
+
+import FormInput from '@shared/components/forms/FormInput';
+import KeyboardAvoidingContainer from '@shared/components/KeyboardAvoidingContainer';
+import ScrollView from '@shared/components/ScrollView';
+import ThemedButton from '@shared/components/ui/ThemedButton';
+import { Text } from '@shared/components/ui/ThemedText';
+import { useThemeColor } from '@shared/hooks/useThemeColor';
 
 export default function PasswordReset() {
   const { primary } = useThemeColor();
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      email: "",
+      email: '',
     },
   });
 
@@ -38,10 +40,10 @@ export default function PasswordReset() {
           label="Email"
           placeholder="required"
           rules={{
-            required: "Email is required",
+            required: 'Email is required',
             pattern: {
               value: /^\S+@\S+\.\S+$/,
-              message: "Email is invalid",
+              message: 'Email is invalid',
             },
           }}
           keyboardType="email-address"
@@ -49,7 +51,7 @@ export default function PasswordReset() {
         />
 
         <ThemedButton onPress={handleSubmit(onSubmit)} buttonColor={primary}>
-          Reset Password
+          <Text>Reset Password</Text>
         </ThemedButton>
       </ScrollView>
     </KeyboardAvoidingContainer>
@@ -57,14 +59,14 @@ export default function PasswordReset() {
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   title: {
     marginBottom: 16,
-    textAlign: "center",
+    textAlign: 'center',
+  },
+  titleContainer: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
 });

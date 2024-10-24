@@ -1,7 +1,8 @@
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
-import * as React from "react";
-import { StyleSheet } from "react-native";
-import { Button, ButtonProps } from "react-native-paper";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { Button, ButtonProps } from 'react-native-paper';
+
+import { useThemeColor } from '@shared/hooks/useThemeColor';
 
 interface OwnProps extends ButtonProps {
   children: React.ReactNode;
@@ -13,7 +14,7 @@ const ThemedButton = ({ children, ...props }: OwnProps) => {
   return (
     <Button
       buttonColor={props.buttonColor || primary} // background
-      mode={props.mode || "outlined"}
+      mode={props.mode || 'outlined'}
       textColor={props.textColor || onPrimary} // onSecondary
       style={[{ ...styles.button }, props.style]}
       contentStyle={styles.contentStyle}
@@ -28,8 +29,8 @@ export default ThemedButton;
 
 const styles = StyleSheet.create({
   button: {
-    marginBottom: 16,
     fontSize: 16,
+    marginBottom: 16,
   },
   contentStyle: {
     paddingBottom: 6,

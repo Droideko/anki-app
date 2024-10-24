@@ -6,7 +6,7 @@ export interface Deck {
   accessLevel: string;
   createdAt: string;
   updatedAt: string;
-  type: "DECK";
+  type: 'DECK';
 }
 
 export type DeckFormData = {

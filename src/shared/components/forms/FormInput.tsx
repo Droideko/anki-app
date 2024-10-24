@@ -1,15 +1,17 @@
-import React, { useRef } from "react";
-import { Text, StyleSheet, TextInput as TextI } from "react-native";
-import { TextInput, TextInputProps } from "react-native-paper";
+import React from 'react';
+import { Text, StyleSheet } from 'react-native';
+import { TextInput, TextInputProps } from 'react-native-paper';
 import {
   Control,
   Controller,
   FieldValues,
   Path,
   RegisterOptions,
-} from "react-hook-form";
-import { IconSource } from "react-native-paper/lib/typescript/components/Icon";
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
+} from 'react-hook-form';
+// eslint-disable-next-line import/no-unresolved
+import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
+
+import { useThemeColor } from '@shared/hooks/useThemeColor';
 
 export interface FormInputProps<TFieldValues extends FieldValues>
   extends TextInputProps {
@@ -74,11 +76,11 @@ const FormInput = <TFieldValues extends FieldValues>({
 };
 
 const styles = StyleSheet.create({
-  input: {
-    marginBottom: 2,
-  },
   errorText: {
+    marginBottom: 2,
     minHeight: 20,
+  },
+  input: {
     marginBottom: 2,
   },
 });

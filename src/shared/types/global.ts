@@ -1,9 +1,10 @@
-import { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from 'axios';
 
 export interface ErrorResponseData {
   statusCode: number;
   message: string | string[];
   error: string;
+  errors?: Record<string, unknown>;
 }
 
 export interface CustomAxiosRequestConfig extends AxiosRequestConfig {

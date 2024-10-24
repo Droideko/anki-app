@@ -1,4 +1,4 @@
-import { getQueue, clearQueue } from "./requestQueue";
+import { getQueue, clearQueue } from './requestQueue';
 // import { isConnected } from "@/src/shared/hooks/useNetworkStatus";
 
 export async function syncQueue() {
@@ -8,17 +8,16 @@ export async function syncQueue() {
 
   for (const request of queue) {
     try {
-      // Выполнение запроса
+      // Executing the request
       await fetch(request.url, request.options);
 
-      // Обработка успешного ответа, обновление локальных данных
+      // Handling a successful response, updating local data
     } catch (error) {
-      console.error("Ошибка при выполнении запроса из очереди:", error);
-      // Останавливаем синхронизацию при ошибке
+      console.error('Error executing request from the queue:', error);
       return;
     }
   }
 
-  // Очищаем очередь после успешной синхронизации
+  // Clear the queue after successful synchronization
   await clearQueue();
 }

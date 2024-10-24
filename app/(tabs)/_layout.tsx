@@ -1,7 +1,9 @@
-import { Tabs } from "expo-router";
-import { TabBarIcon } from "@/src/shared/components/TabBarIcon";
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
-import i18n from "@/src/shared/utils/i18n";
+import React from 'react';
+import { Tabs } from 'expo-router';
+
+import { TabBarIcon } from '@shared/components/TabBarIcon';
+import { useThemeColor } from '@shared/hooks/useThemeColor';
+import i18n from '@shared/utils/i18n';
 
 export default function TabLayout() {
   const { tint, background } = useThemeColor();
@@ -22,10 +24,10 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: `${i18n.t("tabs.home")}`,
+          title: `${i18n.t('tabs.home')}`,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
-              name={focused ? "home" : "home-outline"}
+              name={focused ? 'home' : 'home-outline'}
               color={color}
             />
           ),
@@ -39,7 +41,7 @@ export default function TabLayout() {
           headerShown: false, // NOT NEED (just example)
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
-              name={focused ? "folder-open" : "folder-open-outline"}
+              name={focused ? 'folder-open' : 'folder-open-outline'}
               color={color}
             />
           ),
@@ -49,11 +51,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="decks"
         options={{
-          title: `${i18n.t("tabs.decks")}`, // NOT NEED (just example)
+          title: `${i18n.t('tabs.decks')}`, // NOT NEED (just example)
           headerShown: false, // NOT NEED (just example)
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
-              name={focused ? "folder-open" : "folder-open-outline"}
+              name={focused ? 'folder-open' : 'folder-open-outline'}
               color={color}
             />
           ),
@@ -63,11 +65,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="settings"
         options={{
-          title: `${i18n.t("tabs.settings")}`,
+          title: `${i18n.t('tabs.settings')}`,
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
-              name={focused ? "settings" : "settings-outline"}
+              name={focused ? 'settings' : 'settings-outline'}
               color={color}
             />
           ),

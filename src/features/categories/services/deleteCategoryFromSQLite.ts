@@ -1,22 +1,22 @@
-import { SQLiteDatabase } from "expo-sqlite";
+import { SQLiteDatabase } from 'expo-sqlite';
 
 const deleteCategoryFromSQLite = async (
   db: SQLiteDatabase,
   id: number,
-  newParentId: number | null = null
+  newParentId: number | null = null,
 ) => {
   if (newParentId !== null) {
     // Переносим подкатегории в другую категорию
     await db.runAsync(
-      "UPDATE Category SET parentId = ? WHERE parentId = ?;",
+      'UPDATE Category SET parentId = ? WHERE parentId = ?;',
       newParentId,
-      id
+      id,
     );
     // Переносим колоды в новую категорию
     await db.runAsync(
-      "UPDATE Deck SET categoryId = ? WHERE categoryId = ?;",
+      'UPDATE Deck SET categoryId = ? WHERE categoryId = ?;',
       newParentId,
-      id
+      id,
     );
   } else {
     // Рекурсивно удаляем подкатегории и связанные колоды
@@ -24,19 +24,19 @@ const deleteCategoryFromSQLite = async (
   }
 
   // Удаляем категорию
-  await db.runAsync("DELETE FROM Category WHERE id = ?;", id);
+  await db.runAsync('DELETE FROM Category WHERE id = ?;', id);
 };
 
 const deleteSubcategoriesAndDecksFromSQLite = async (
   db: SQLiteDatabase,
-  parentId: number
+  parentId: number,
 ) => {
   // Удаляем связанные колоды
-  await db.runAsync("DELETE FROM Deck WHERE categoryId = ?;", parentId);
+  await db.runAsync('DELETE FROM Deck WHERE categoryId = ?;', parentId);
 
   const subcategories = await db.getAllAsync<{ id: number }>(
-    "SELECT id FROM Category WHERE parentId = ?;",
-    parentId
+    'SELECT id FROM Category WHERE parentId = ?;',
+    parentId,
   );
 
   for (const subcategory of subcategories) {
@@ -44,7 +44,7 @@ const deleteSubcategoriesAndDecksFromSQLite = async (
     await deleteSubcategoriesAndDecksFromSQLite(db, subcategory.id);
 
     // Удаляем подкатегорию
-    await db.runAsync("DELETE FROM Category WHERE id = ?;", subcategory.id);
+    await db.runAsync('DELETE FROM Category WHERE id = ?;', subcategory.id);
   }
 };
 

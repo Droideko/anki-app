@@ -1,15 +1,17 @@
+import React from 'react';
 import {
   Modal,
   Pressable,
   StyleSheet,
   TouchableOpacity,
   View,
-} from "react-native";
-import { useModalStore } from "@/src/shared/store/useModalStore";
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
-import { useCategoryRepository } from "@/src/features/categories/hooks/useCategoryRepository";
-import { ThemedView } from "@/src/shared/components/ui/ThemedView";
-import { Text } from "@/src/shared/components/ui/ThemedText";
+} from 'react-native';
+
+import { useModalStore } from '@shared/store/useModalStore';
+import { useThemeColor } from '@shared/hooks/useThemeColor';
+import { useCategoryRepository } from '@features/categories/hooks/useCategoryRepository';
+import { ThemedView } from '@shared/components/ui/ThemedView';
+import { Text } from '@shared/components/ui/ThemedText';
 
 export default function DeleteModal() {
   const { isDeleteModalVisible, hideDeleteModal, selectedCategory } =
@@ -21,7 +23,7 @@ export default function DeleteModal() {
   const onDelete = async () => {
     try {
       if (selectedCategory === null) {
-        throw new Error("Selected category is null");
+        throw new Error('Selected category is null');
       }
       await deleteCategory(selectedCategory.id);
     } catch (error: unknown) {
@@ -51,7 +53,7 @@ export default function DeleteModal() {
             pointerEvents="box-none"
           >
             <Text style={styles.deleteModalText}>
-              Delete "{selectedCategory.name}"?
+              Delete &quot;{selectedCategory.name}&quot;?
             </Text>
             <View style={styles.deleteModalButtons}>
               <TouchableOpacity
@@ -75,35 +77,35 @@ export default function DeleteModal() {
 }
 
 const styles = StyleSheet.create({
-  deleteModalOverlay: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  button: {
+    borderRadius: 6,
+    minWidth: 100,
+    padding: 10,
+  },
+  buttonText: {
+    textAlign: 'center',
+  },
+  deleteModalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
   },
   deleteModalContent: {
-    width: "80%",
+    width: '80%',
   },
   deleteModalContentInner: {
-    padding: 20,
     borderRadius: 15,
     borderWidth: 1,
+    padding: 20,
+  },
+  deleteModalOverlay: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
   },
   deleteModalText: {
     fontSize: 18,
     marginBottom: 20,
-    textAlign: "center",
-  },
-  deleteModalButtons: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-  },
-  button: {
-    minWidth: 100,
-    padding: 10,
-    borderRadius: 6,
-  },
-  buttonText: {
-    textAlign: "center",
+    textAlign: 'center',
   },
 });

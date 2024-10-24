@@ -1,17 +1,16 @@
-import { useEffect } from "react";
-import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { useFonts } from "expo-font";
-import { PaperProvider } from "react-native-paper";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import ThemeProvider, {
-  useTheme,
-} from "@/src/shared/contexts/CustomThemeProvide";
-import GlobalSnackbar from "@/src/shared/components/GlobalSnackbar";
-import { SQLiteProvider } from "@/src/shared/contexts/SQLiteProvider";
-import { SessionProvider } from "@/src/shared/contexts/SessionProvider";
-import { useLanguageStore } from "@/src/shared/store/useLanguageStore";
-import "react-native-reanimated";
+import React, { useEffect } from 'react';
+import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { useFonts } from 'expo-font';
+import { PaperProvider } from 'react-native-paper';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import ThemeProvider, { useTheme } from '@shared/contexts/CustomThemeProvide';
+import GlobalSnackbar from '@shared/components/GlobalSnackbar';
+import { SQLiteProvider } from '@shared/contexts/SQLiteProvider';
+import { SessionProvider } from '@shared/contexts/SessionProvider';
+import { useLanguageStore } from '@shared/store/useLanguageStore';
+import 'react-native-reanimated';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -96,7 +95,8 @@ export default function RootLayout() {
   // };
 
   const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
   const { initializeLanguage } = useLanguageStore();
 

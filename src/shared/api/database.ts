@@ -1,15 +1,15 @@
-import * as SQLite from "expo-sqlite";
+import * as SQLite from 'expo-sqlite';
 
 let dbInstance: SQLite.SQLiteDatabase | null = null;
 
 export async function getDatabase(): Promise<SQLite.SQLiteDatabase> {
-  console.log("createdDB");
+  console.log('createdDB');
 
   if (dbInstance) {
     return dbInstance;
   }
 
-  dbInstance = await SQLite.openDatabaseAsync("anki.db");
+  dbInstance = await SQLite.openDatabaseAsync('anki.db');
   await initializeDatabase(dbInstance);
 
   return dbInstance;
@@ -144,17 +144,17 @@ async function initializeDatabase(db: SQLite.SQLiteDatabase) {
     );
   `);
 
-  await addColumnIfNotExists(db, "Category", "type", "TEXT DEFAULT 'CATEGORY'");
+  await addColumnIfNotExists(db, 'Category', 'type', "TEXT DEFAULT 'CATEGORY'");
 
   // Проверяем и добавляем столбец 'type' в таблицу Deck
-  await addColumnIfNotExists(db, "Deck", "type", "TEXT DEFAULT 'DECK'");
+  await addColumnIfNotExists(db, 'Deck', 'type', "TEXT DEFAULT 'DECK'");
 }
 
 async function addColumnIfNotExists(
   db: SQLite.SQLiteDatabase,
   tableName: string,
   columnName: string,
-  columnDefinition: string
+  columnDefinition: string,
 ) {
   // Проверяем, есть ли столбец в таблице
   const result = await db.getAllAsync(`PRAGMA table_info(${tableName});`);
@@ -164,7 +164,7 @@ async function addColumnIfNotExists(
   if (!columnExists) {
     // Добавляем столбец
     await db.runAsync(
-      `ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${columnDefinition};`
+      `ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${columnDefinition};`,
     );
     console.log(`Столбец '${columnName}' добавлен в таблицу '${tableName}'.`);
   }

@@ -1,6 +1,7 @@
-import ScrollView from "@/src/shared/components/ScrollView";
-import { ThemedView } from "@/src/shared/components/ui/ThemedView";
-import React from "react";
+import React from 'react';
+
+import ScrollView from '@shared/components/ScrollView';
+import { ThemedView } from '@shared/components/ui/ThemedView';
 
 function HomeContainer() {
   return (

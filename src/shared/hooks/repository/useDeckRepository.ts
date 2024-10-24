@@ -1,12 +1,14 @@
-import { apiService } from "../../../shared/api/apiService";
-import NetInfo from "@react-native-community/netinfo";
-import { useSQLiteContext } from "expo-sqlite";
-import { useUserStore } from "@/src/shared/store/useUserStore";
-import isWeb from "@/src/shared/utils/isWeb";
-import { useCategoriesStore } from "@/src/shared/store/useCategoriesStore";
-import { Deck, DeckFormData } from "@/src/shared/types/deck";
-import saveDeckToSQLite from "@/src/features/decks/services/saveDeckToSQLite";
-import getDeckFromSQLite from "@/src/features/decks/services/getDeckFromSQLite";
+import NetInfo from '@react-native-community/netinfo';
+import { useSQLiteContext } from 'expo-sqlite';
+
+// import { deckService } from '@shared/api/apiService';
+import { useUserStore } from '@shared/store/useUserStore';
+import isWeb from '@shared/utils/isWeb';
+import { useCategoriesStore } from '@shared/store/useCategoriesStore';
+import { Deck, DeckFormData } from '@shared/types/deck';
+import saveDeckToSQLite from '@shared/db/deck/saveDeckToSQLite';
+import getDeckFromSQLite from '@shared/db/deck/getDeckFromSQLite';
+import { deckService } from '@shared/api/deckService';
 
 export const useDeckRepository = () => {
   const db = isWeb() ? null : useSQLiteContext();
@@ -74,7 +76,7 @@ export const useDeckRepository = () => {
 
     if (networkState.isConnected) {
       try {
-        const response = await apiService.getDeck(id);
+        const response = await deckService.getDeck(id);
         const deck = response.data;
 
         if (db) {
@@ -87,13 +89,13 @@ export const useDeckRepository = () => {
         return deck;
       } catch (error: any) {
         throw new Error(
-          "Ошибка при получении колоды с сервера: " + error.message
+          'Ошибка при получении колоды с сервера: ' + error.message,
         );
       }
     } else {
       try {
         if (!db) {
-          throw new Error("Браузер не поддерживается");
+          throw new Error('Браузер не поддерживается');
         }
 
         const deck = await getDeckFromSQLite(db, id);
@@ -104,7 +106,7 @@ export const useDeckRepository = () => {
         return deck;
       } catch (error: any) {
         throw new Error(
-          "Ошибка при получении колоды из SQLite: " + error.message
+          'Ошибка при получении колоды из SQLite: ' + error.message,
         );
       }
     }
@@ -112,14 +114,14 @@ export const useDeckRepository = () => {
 
   const createDeck = async (data: DeckFormData): Promise<Deck> => {
     if (!user?.id) {
-      throw new Error("Пользователь не авторизован");
+      throw new Error('Пользователь не авторизован');
     }
 
     const networkState = await NetInfo.fetch();
 
     if (networkState.isConnected) {
       try {
-        const response = await apiService.createDeck(data);
+        const response = await deckService.createDeck(data);
         const deck = response.data;
 
         if (db) {
@@ -132,13 +134,13 @@ export const useDeckRepository = () => {
         return deck;
       } catch (error: any) {
         throw new Error(
-          "Ошибка при создании колоды на сервере: " + error.message
+          'Ошибка при создании колоды на сервере: ' + error.message,
         );
       }
     } else {
       try {
         if (!db) {
-          throw new Error("Браузер не поддерживается");
+          throw new Error('Браузер не поддерживается');
         }
 
         // Генерируем временный ID (нужно продумать механизм синхронизации)
@@ -146,13 +148,13 @@ export const useDeckRepository = () => {
 
         const newDeck: Deck = {
           id: tempId,
-          name: data.name || "Untitled Deck",
+          name: data.name || 'Untitled Deck',
           userId: Number(user.id),
           categoryId: data.categoryId!,
-          accessLevel: "PRIVATE",
+          accessLevel: 'PRIVATE',
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-          type: "DECK",
+          type: 'DECK',
         };
 
         // Сохраняем колоду в SQLite
@@ -166,7 +168,7 @@ export const useDeckRepository = () => {
         return newDeck;
       } catch (error: any) {
         throw new Error(
-          "Ошибка при создании колоды в офлайн-режиме: " + error.message
+          'Ошибка при создании колоды в офлайн-режиме: ' + error.message,
         );
       }
     }

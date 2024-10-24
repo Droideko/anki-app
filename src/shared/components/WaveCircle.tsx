@@ -1,14 +1,15 @@
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
-import React, { useEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import React, { useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
 import Animated, {
   Easing,
   useSharedValue,
   useAnimatedProps,
   withTiming,
   withRepeat,
-} from "react-native-reanimated";
-import Svg, { Circle } from "react-native-svg";
+} from 'react-native-reanimated';
+import Svg, { Circle } from 'react-native-svg';
+
+import { useThemeColor } from '@shared/hooks/useThemeColor';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -39,7 +40,7 @@ export function WaveCircle({ iconSize }: { iconSize: number }) {
         easing: Easing.out(Easing.ease),
       }),
       -1,
-      false
+      false,
     );
 
     opacity.value = withRepeat(
@@ -48,7 +49,7 @@ export function WaveCircle({ iconSize }: { iconSize: number }) {
         easing: Easing.out(Easing.ease),
       }),
       -1,
-      false
+      false,
     );
   }, []);
 
@@ -75,6 +76,6 @@ export function WaveCircle({ iconSize }: { iconSize: number }) {
 
 const styles = StyleSheet.create({
   backgroundCover: {
-    position: "absolute",
+    position: 'absolute',
   },
 });

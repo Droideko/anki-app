@@ -1,12 +1,13 @@
-import { useState } from "react";
-import { Pressable, StyleSheet } from "react-native";
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
-import { Divider, Icon, Menu } from "react-native-paper";
-import ThemedIconButton from "@/src/shared/components/ui/ThemedIconButton";
-import { NormalizedCategory } from "@/src/features/categories/utils/normalizeCategories";
-import { router } from "expo-router";
-import { useModalStore } from "@/src/shared/store/useModalStore";
-import { Text } from "@/src/shared/components/ui/ThemedText";
+import React, { useState } from 'react';
+import { Pressable, StyleSheet } from 'react-native';
+import { Divider, Icon, Menu } from 'react-native-paper';
+import { router } from 'expo-router';
+
+import { useThemeColor } from '@shared/hooks/useThemeColor';
+import ThemedIconButton from '@shared/components/ui/ThemedIconButton';
+import { useModalStore } from '@shared/store/useModalStore';
+import { Text } from '@shared/components/ui/ThemedText';
+import { NormalizedCategory } from '@shared/types/category';
 
 const MENU_ICON_SIZE = 32;
 
@@ -89,13 +90,13 @@ const CategorySegmentButtons = ({ item }: { item: NormalizedCategory }) => {
 };
 
 const styles = StyleSheet.create({
-  iconButton: { margin: 0, width: MENU_ICON_SIZE, height: MENU_ICON_SIZE },
+  iconButton: { height: MENU_ICON_SIZE, margin: 0, width: MENU_ICON_SIZE },
   item: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     minWidth: 150,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
     padding: 10,
   },
 });

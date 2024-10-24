@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Switch } from "react-native-paper";
+import * as React from 'react';
+import { Switch } from 'react-native-paper';
 
 const NotificationSwitch = () => {
   const [isToggled, setToggle] = React.useState(false);

@@ -1,21 +1,24 @@
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
-import ThemedButton from "../../../shared/components/ui/ThemedButton";
+import React from 'react';
+import { router } from 'expo-router';
+
+import ThemedButton from '@shared/components/ui/ThemedButton';
+import { useThemeColor } from '@shared/hooks/useThemeColor';
+import { Text } from '@shared/components/ui/ThemedText';
 // import { useSession } from "@/src/contexts/SessionProvider";
-import { router } from "expo-router";
 
 function DeleteAccountButton() {
   // const { signOut } = useSession();
-  const { error, backdrop, background } = useThemeColor();
+  const { error, background } = useThemeColor();
 
   const onPress = async () => {
     // await signOut();
     // delete account
-    router.replace("/welcome");
+    router.replace('/welcome');
   };
 
   return (
     <ThemedButton buttonColor={background} textColor={error} onPress={onPress}>
-      Delete Account
+      <Text>Delete Account</Text>
     </ThemedButton>
   );
 }

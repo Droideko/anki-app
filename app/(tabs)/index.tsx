@@ -1,10 +1,10 @@
-import { StyleSheet } from "react-native";
+import React from 'react';
+import { Redirect } from 'expo-router';
 
-import { Text } from "@/src/shared/components/ui/ThemedText";
-import { Redirect } from "expo-router";
-import useRenderChangedLanguage from "@/src/shared/hooks/useRenderChangedLanguage";
-import HomeContainer from "@/src/features/home/components/HomeContainer";
-import { useSession } from "@/src/shared/contexts/SessionProvider";
+import { Text } from '@shared/components/ui/ThemedText';
+import useRenderChangedLanguage from '@shared/hooks/useRenderChangedLanguage';
+import HomeContainer from '@features/home/components/HomeContainer';
+import { useSession } from '@shared/contexts/SessionProvider';
 
 // const configureGoogleSignIn = () => {
 //   GoogleSignin.configure({
@@ -58,22 +58,3 @@ export default function HomeScreen() {
 
   return <HomeContainer />;
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
-  },
-});

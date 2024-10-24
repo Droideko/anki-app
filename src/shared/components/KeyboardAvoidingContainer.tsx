@@ -1,4 +1,5 @@
-import { KeyboardAvoidingView, Platform, StyleSheet } from "react-native";
+import React from 'react';
+import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 
 export default function KeyboardAvoidingContainer({
   children,
@@ -10,8 +11,8 @@ export default function KeyboardAvoidingContainer({
   return (
     <KeyboardAvoidingView
       style={styles.containerView}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? offsetIOS : 0}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? offsetIOS : 0}
     >
       {children}
     </KeyboardAvoidingView>

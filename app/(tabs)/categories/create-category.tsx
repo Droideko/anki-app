@@ -1,23 +1,25 @@
-import { router } from "expo-router";
-import { StyleSheet } from "react-native";
-import { useForm } from "react-hook-form";
-import FormInput from "@/src/shared/components/forms/FormInput";
-import KeyboardAvoidingContainer from "@/src/shared/components/KeyboardAvoidingContainer";
-import ThemedIconButton from "@/src/shared/components/ui/ThemedIconButton";
-import { ThemedView } from "@/src/shared/components/ui/ThemedView";
-import ThemedButton from "@/src/shared/components/ui/ThemedButton";
-import { useCategoryRepository } from "@/src/features/categories/hooks/useCategoryRepository";
-import { useAsyncFn } from "@/src/shared/hooks/useAsyncFn";
-import LoadingIndicator from "@/src/shared/components/ui/LoadingIndicator";
-import { Text } from "@/src/shared/components/ui/ThemedText";
-import useSnackbarStore from "@/src/shared/store/useSnackbarStore";
-import { SNACKBAR_TYPE } from "@/src/shared/constants/snackbar";
+import React from 'react';
+import { router } from 'expo-router';
+import { StyleSheet } from 'react-native';
+import { useForm } from 'react-hook-form';
+
+import FormInput from '@shared/components/forms/FormInput';
+import KeyboardAvoidingContainer from '@shared/components/KeyboardAvoidingContainer';
+import ThemedIconButton from '@shared/components/ui/ThemedIconButton';
+import { ThemedView } from '@shared/components/ui/ThemedView';
+import ThemedButton from '@shared/components/ui/ThemedButton';
+import { useCategoryRepository } from '@features/categories/hooks/useCategoryRepository';
+import { useAsyncFn } from '@shared/hooks/useAsyncFn';
+import LoadingIndicator from '@shared/components/ui/LoadingIndicator';
+import { Text } from '@shared/components/ui/ThemedText';
+import useSnackbarStore from '@shared/store/useSnackbarStore';
+import { SNACKBAR_TYPE } from '@shared/constants/snackbar';
 import {
   CREATE_CATEGORY_ICON_SIZE,
   DEFAULT_CREATE_CATEGORY_VALUES,
   KEYBOARD_OFFSET_IOS,
-} from "@/src/features/categories/constants";
-import { CreateCategoryData } from "@/src/features/categories/types";
+} from '@features/categories/constants';
+import { CreateCategoryData } from '@features/categories/types';
 
 export default function CreateCategory() {
   const { createCategory } = useCategoryRepository();
@@ -31,7 +33,7 @@ export default function CreateCategory() {
     const category = await createCategory(data);
     showSnackbar(
       `Category '${category.name}' has been successful created`,
-      SNACKBAR_TYPE.SUCCESS
+      SNACKBAR_TYPE.SUCCESS,
     );
     router.back(); // TODO наверное надо делать редирект на созданную категорию или доску
   }, []);
@@ -44,11 +46,11 @@ export default function CreateCategory() {
           label="Category name"
           name="name"
           placeholder="required"
-          rules={{ required: "Name is required" }}
+          rules={{ required: 'Name is required' }}
           autoFocus={true}
         />
         <ThemedButton mode="contained" onPress={handleSubmit(onSubmit)}>
-          Create
+          <Text>Create</Text>
         </ThemedButton>
         <ThemedIconButton
           style={styles.iconCreate}
@@ -69,8 +71,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   iconCreate: {
-    position: "absolute",
-    right: 0,
     bottom: 0,
+    position: 'absolute',
+    right: 0,
   },
 });

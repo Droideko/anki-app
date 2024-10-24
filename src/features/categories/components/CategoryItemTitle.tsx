@@ -1,7 +1,10 @@
-import { StyleSheet, View } from "react-native";
-import { Text } from "@/src/shared/components/ui/ThemedText";
-import CategorySegmentButtons from "./CategorySegmentButtons";
-import { NormalizedCategory } from "@/src/features/categories/utils/normalizeCategories";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+
+import CategorySegmentButtons from './CategorySegmentButtons';
+
+import { Text } from '@shared/components/ui/ThemedText';
+import { NormalizedCategory } from '@shared/types/category';
 
 function CategoryItemTitle({ item }: { item: NormalizedCategory }) {
   return (
@@ -15,17 +18,15 @@ function CategoryItemTitle({ item }: { item: NormalizedCategory }) {
 }
 
 const styles = StyleSheet.create({
-  categoryTitleContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 2,
-  },
   categoryTitle: {
-    display: "flex",
-    alignItems: "center",
-    // fontSize: 18,
-    // fontWeight: "bold",
+    alignItems: 'center',
+    display: 'flex',
+  },
+  categoryTitleContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 2,
   },
 });
 

@@ -1,14 +1,16 @@
-import { StyleSheet } from "react-native";
-import { SegmentedButtons } from "react-native-paper";
-import KeyboardAvoidingContainer from "@/src/shared/components/KeyboardAvoidingContainer";
-import useSegmentedButtons from "@/src/features/categories/hooks/useSegmentedButtons";
-import { ThemedView } from "@/src/shared/components/ui/ThemedView";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { SegmentedButtons } from 'react-native-paper';
+
+import KeyboardAvoidingContainer from '@shared/components/KeyboardAvoidingContainer';
+import useSegmentedButtons from '@features/categories/hooks/useSegmentedButtons';
+import { ThemedView } from '@shared/components/ui/ThemedView';
 import {
   CATEGORY_SEGMENT_BUTTON,
   KEYBOARD_OFFSET_IOS,
-} from "@/src/features/categories/constants";
-import SubcategoryContentCreation from "@/src/features/categories/components/SubcategoryContentCreation";
-import DeckContentCreation from "@/src/features/categories/components/DeckContentCreation";
+} from '@features/categories/constants';
+import SubcategoryContentCreation from '@features/categories/components/SubcategoryContentCreation';
+import DeckContentCreation from '@features/categories/components/DeckContentCreation';
 
 export default function CreateDeckOrSubcategory() {
   const [value, onChange] = useSegmentedButtons();
@@ -38,8 +40,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   iconCreate: {
-    position: "absolute",
-    right: 0,
     bottom: 0,
+    position: 'absolute',
+    right: 0,
   },
 });

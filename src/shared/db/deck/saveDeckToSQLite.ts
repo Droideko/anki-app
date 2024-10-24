@@ -1,5 +1,6 @@
-import { Deck } from "@/src/shared/types/deck";
-import { SQLiteDatabase } from "expo-sqlite";
+import { SQLiteDatabase } from 'expo-sqlite';
+
+import { Deck } from '@shared/types/deck';
 
 const saveDeckToSQLite = async (db: SQLiteDatabase, deck: Deck) => {
   // Вставляем или обновляем колоду
@@ -14,7 +15,7 @@ const saveDeckToSQLite = async (db: SQLiteDatabase, deck: Deck) => {
     deck.accessLevel,
     deck.type,
     deck.createdAt,
-    deck.updatedAt
+    deck.updatedAt,
   );
 
   // Если у вас есть связанные карточки (cards), вы можете также сохранить их здесь

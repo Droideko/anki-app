@@ -1,5 +1,6 @@
-import { create } from "zustand";
-import { SubCategoryItemTypeWithoutAddSubcategory } from "@/src/features/categories/types";
+import { create } from 'zustand';
+
+import { SubCategoryItemTypeWithoutAddSubcategory } from '@shared/types/category';
 
 export interface ElementPosition {
   x: number;
@@ -13,7 +14,7 @@ interface ModalStore {
   elementPosition: ElementPosition | null;
   showModal: (
     position: ElementPosition,
-    item: SubCategoryItemTypeWithoutAddSubcategory
+    item: SubCategoryItemTypeWithoutAddSubcategory,
   ) => void;
   hideModal: () => void;
   setElementPosition: (position: ElementPosition | null) => void;
@@ -22,7 +23,7 @@ interface ModalStore {
   // Delete Modal
   isDeleteModalVisible: boolean;
   showDeleteModal: (
-    item: null | SubCategoryItemTypeWithoutAddSubcategory
+    item: null | SubCategoryItemTypeWithoutAddSubcategory,
   ) => void;
   hideDeleteModal: () => void;
 }

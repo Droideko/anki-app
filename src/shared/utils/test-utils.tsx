@@ -2,7 +2,7 @@ import React from 'react';
 import { render, RenderOptions } from '@testing-library/react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 
-import ThemeProvider from '@/src/shared/contexts/CustomThemeProvide';
+import ThemeProvider from '@shared/contexts/CustomThemeProvide';
 
 const AllProviders = ({ children }: { children: React.ReactNode }) => {
   return (

@@ -1,13 +1,13 @@
-import { DEFAULT_SIGN_UP_VALUES } from './constants';
+import { FieldValues } from 'react-hook-form';
 
-export type SignUpFormData = Record<
-  keyof typeof DEFAULT_SIGN_UP_VALUES,
-  string
->;
-
-export type LoginFormData = Record<keyof typeof DEFAULT_SIGN_UP_VALUES, string>;
+import { FormInputProps } from '@shared/components/forms/FormInput';
 
 export type FormInputPasswordExcludedKeys =
   | 'rightIcon'
   | 'onRightIconPress'
   | 'secureTextEntry';
+
+export type FormInputPasswordProps<TFieldValues extends FieldValues> = Omit<
+  FormInputProps<TFieldValues>,
+  FormInputPasswordExcludedKeys
+>;

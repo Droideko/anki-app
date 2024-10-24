@@ -1,7 +1,9 @@
-import React from "react";
-import { useRouter } from "expo-router";
-import ThemedButton from "../../../shared/components/ui/ThemedButton";
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
+import React from 'react';
+import { useRouter } from 'expo-router';
+
+import { Text } from '@shared/components/ui/ThemedText';
+import ThemedButton from '@shared/components/ui/ThemedButton';
+import { useThemeColor } from '@shared/hooks/useThemeColor';
 
 export default function SignUpButton() {
   const { push } = useRouter();
@@ -11,9 +13,9 @@ export default function SignUpButton() {
     <ThemedButton
       buttonColor={primary}
       icon="email"
-      onPress={() => push("/sign-up")}
+      onPress={() => push('/sign-up')}
     >
-      Continue with Email
+      <Text>Continue with Email</Text>
     </ThemedButton>
   );
 }

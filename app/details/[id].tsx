@@ -1,12 +1,6 @@
-import { View, Text, Button } from "react-native";
-import React from "react";
-import {
-  Link,
-  Stack,
-  useLocalSearchParams,
-  usePathname,
-  useRouter,
-} from "expo-router";
+import React from 'react';
+import { View, Text, Button } from 'react-native';
+import { Link, Stack, useLocalSearchParams, useRouter } from 'expo-router';
 
 const Details = () => {
   const { id } = useLocalSearchParams();
@@ -23,12 +17,14 @@ const Details = () => {
         onPress={() =>
           push({
             pathname: `/details/${id}/options/44`,
-            params: { user: "jane" },
+            params: { user: 'jane' },
           })
         }
       />
-      <Link href={`/details/${id}/options/44`}>Options</Link>
-      <Button title="Update to 999" onPress={() => setParams({ id: "999" })} />
+      <Link href={`/details/${id}/options/44`}>
+        <Text>Options</Text>
+      </Link>
+      <Button title="Update to 999" onPress={() => setParams({ id: '999' })} />
     </View>
   );
 };

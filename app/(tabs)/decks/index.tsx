@@ -1,10 +1,12 @@
-import DecksContainer from "@/components/Decks/DecksContainer";
-import { SafeThemedView } from "@/src/shared/components/SafeThemedView";
+import React from 'react';
+
+import { SafeThemedView } from '@shared/components/SafeThemedView';
+import { Text } from '@shared/components/ui/ThemedText';
 
 export default function DecksScreen() {
   return (
     <SafeThemedView>
-      <DecksContainer />
+      <Text>Test</Text>
     </SafeThemedView>
   );
 }

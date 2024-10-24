@@ -1,19 +1,22 @@
-import React, { useRef } from "react";
-import { View, StyleSheet, TouchableHighlight } from "react-native";
-import Carousel from "react-native-reanimated-carousel";
-import { NormalizedCategory } from "@/src/features/categories/utils/normalizeCategories";
+import React, { useRef } from 'react';
+import { View, StyleSheet, TouchableHighlight } from 'react-native';
+import Carousel from 'react-native-reanimated-carousel';
+
+import CategoryItemTitle from './CategoryItemTitle';
+import SubcategoryItem from './SubcategoryItem';
+
 import {
   ADD_SUBCATEGORY_ITEM,
-  HEIGHT_CATEGORY_CAROUSEL,
   ITEM_SPACING,
   ITEM_WIDTH,
-} from "@/src/features/categories/constants";
-
-import { useSubcategoriesAndDecks } from "@/src/features/categories/hooks/useSubcategoriesAndDecks";
-import { useModalStore } from "@/src/shared/store/useModalStore";
-import { SubCategoryItemType } from "@/src/types/category";
-import CategoryItemTitle from "./CategoryItemTitle";
-import SubcategoryItem from "./SubcategoryItem";
+} from '@features/categories/constants';
+import { useSubcategoriesAndDecks } from '@features/categories/hooks/useSubcategoriesAndDecks';
+import { useModalStore } from '@shared/store/useModalStore';
+import {
+  NormalizedCategory,
+  SubCategoryItemType,
+} from '@shared/types/category';
+import { HEIGHT_CATEGORY_CAROUSEL } from '@shared/constants/category';
 
 export function CategoryItem({ item }: { item: NormalizedCategory }) {
   const sliderItems = useSubcategoriesAndDecks(item);
@@ -39,7 +42,7 @@ export function CategoryItem({ item }: { item: NormalizedCategory }) {
     <View style={styles.categoryItem}>
       <CategoryItemTitle item={item} />
       <Carousel
-        data={[...sliderItems, ADD_SUBCATEGORY_ITEM]} // TODO подумать, может можно оптимизировать через push код
+        data={[...sliderItems, ADD_SUBCATEGORY_ITEM]}
         renderItem={({ item: subItem }) => (
           <SubcategoryItem
             ref={(ref) => (elementRefs.current[subItem.id] = ref)}
@@ -51,13 +54,13 @@ export function CategoryItem({ item }: { item: NormalizedCategory }) {
         width={ITEM_WIDTH + ITEM_SPACING}
         height={HEIGHT_CATEGORY_CAROUSEL}
         style={styles.carousel}
-        mode="parallax" // Используем режим параллакса для частичного отображения следующего элемента
+        mode="parallax"
         modeConfig={{
           parallaxScrollingScale: 1,
           parallaxScrollingOffset: 10,
         }}
         panGestureHandlerProps={{
-          activeOffsetX: [-10, 10], // Чувствительность жестов
+          activeOffsetX: [-10, 10],
         }}
         pagingEnabled={false}
         snapEnabled={true}
@@ -68,20 +71,10 @@ export function CategoryItem({ item }: { item: NormalizedCategory }) {
 }
 
 const styles = StyleSheet.create({
+  carousel: {
+    overflow: 'visible',
+  },
   categoryItem: {
     marginBottom: 8,
-  },
-  categoryTitleContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  categoryTitle: {
-    marginBottom: 8,
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  carousel: {
-    overflow: "visible", // Позволяет отображать элементы за пределами карусели
   },
 });

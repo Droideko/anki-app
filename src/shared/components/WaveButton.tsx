@@ -1,11 +1,17 @@
-import CreateIconButton from "@/src/shared/components/CreateIconButton";
-import { WaveIconWrapper } from "@/src/shared/components/WaveIconWrapper";
-import React from "react";
-import { StyleSheet } from "react-native";
+import React from 'react';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+
+import CreateIconButton from '@shared/components/CreateIconButton';
+import { WaveIconWrapper } from '@shared/components/WaveIconWrapper';
 
 const ICON_SIZE = 50;
 
-function WaveButton({ href, style }: { href: string; style?: any }) {
+interface WaveButtonProps {
+  href: string;
+  style?: StyleProp<ViewStyle>;
+}
+
+function WaveButton({ href, style }: WaveButtonProps) {
   return (
     <WaveIconWrapper
       style={styles.iconWrapper}
@@ -21,9 +27,9 @@ export default WaveButton;
 
 const styles = StyleSheet.create({
   iconWrapper: {
-    right: 0,
     bottom: 0,
-    width: 75,
     height: 75,
+    right: 0,
+    width: 75,
   },
 });

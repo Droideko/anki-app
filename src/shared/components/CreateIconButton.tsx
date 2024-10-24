@@ -1,14 +1,15 @@
-import React from "react";
-import ThemedIconButton from "./ui/ThemedIconButton";
-import { IconButtonProps } from "react-native-paper";
-import { Link } from "expo-router";
-import { Pressable } from "react-native";
+import React from 'react';
+import { IconButtonProps } from 'react-native-paper';
+import { Link } from 'expo-router';
+import { Pressable } from 'react-native';
+
+import ThemedIconButton from '@shared/components/ui/ThemedIconButton';
 
 export default function CreateIconButton({
   href,
   style,
   size,
-}: Pick<IconButtonProps, "style" | "size"> & { href: string }) {
+}: Pick<IconButtonProps, 'style' | 'size'> & { href: string }) {
   return (
     <Link href={href} asChild>
       <Pressable>

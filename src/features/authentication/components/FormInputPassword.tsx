@@ -1,15 +1,13 @@
-import { FieldValues } from "react-hook-form";
-import FormInput, {
-  FormInputProps,
-} from "../../../shared/components/forms/FormInput";
-import usePasswordVisibility from "../hooks/usePasswordVisibility";
-import { FormInputPasswordExcludedKeys } from "../types";
+import React from 'react';
+import { FieldValues } from 'react-hook-form';
 
-interface FormInputPasswordProps<TFieldValues extends FieldValues>
-  extends Omit<FormInputProps<TFieldValues>, FormInputPasswordExcludedKeys> {}
+import usePasswordVisibility from '../hooks/usePasswordVisibility';
+import { FormInputPasswordProps } from '../types';
+
+import FormInput from '@shared/components/forms/FormInput';
 
 function FormInputPassword<TFieldValues extends FieldValues>(
-  props: FormInputPasswordProps<TFieldValues>
+  props: FormInputPasswordProps<TFieldValues>,
 ) {
   const { secureTextEntry, rightIcon, toggleVisibility } =
     usePasswordVisibility();

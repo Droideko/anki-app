@@ -1,13 +1,14 @@
-import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
-import { Text } from "react-native-paper";
+import React from 'react';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { Text } from 'react-native-paper';
 
-interface CardItem {
+interface CardItemProps {
   leftText: string;
   rightComponent: React.ReactNode;
   style?: StyleProp<ViewStyle>;
 }
 
-export function CardItem({ leftText, rightComponent, style }: CardItem) {
+export function CardItem({ leftText, rightComponent, style }: CardItemProps) {
   return (
     <View style={[styles.container, style]}>
       <Text variant="bodyLarge">{leftText}</Text>
@@ -18,9 +19,9 @@ export function CardItem({ leftText, rightComponent, style }: CardItem) {
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     // marginBottom: 16,
   },
 });

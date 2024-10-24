@@ -1,20 +1,22 @@
-import { useCategoryRepository } from "@/src/features/categories/hooks/useCategoryRepository";
-import { CreateCategoryData } from "@/src/types/category";
-import { useForm } from "react-hook-form";
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { StyleSheet, View } from 'react-native';
+
+import { useCategoryRepository } from '@features/categories/hooks/useCategoryRepository';
 import {
   CREATE_CATEGORY_ICON_SIZE,
   DEFAULT_CREATE_CATEGORY_VALUES,
-} from "@/src/features/categories/constants";
-import useSnackbarStore from "@/src/shared/store/useSnackbarStore";
-import { useAsyncFn } from "@/src/shared/hooks/useAsyncFn";
-import { SNACKBAR_TYPE } from "@/src/shared/constants/snackbar";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { StyleSheet, View } from "react-native";
-import FormInput from "@/src/shared/components/forms/FormInput";
-import ThemedButton from "@/src/shared/components/ui/ThemedButton";
-import ThemedIconButton from "@/src/shared/components/ui/ThemedIconButton";
-import LoadingIndicator from "@/src/shared/components/ui/LoadingIndicator";
-import { Text } from "@/src/shared/components/ui/ThemedText";
+} from '@features/categories/constants';
+import useSnackbarStore from '@shared/store/useSnackbarStore';
+import { useAsyncFn } from '@shared/hooks/useAsyncFn';
+import { SNACKBAR_TYPE } from '@shared/constants/snackbar';
+import FormInput from '@shared/components/forms/FormInput';
+import ThemedButton from '@shared/components/ui/ThemedButton';
+import ThemedIconButton from '@shared/components/ui/ThemedIconButton';
+import LoadingIndicator from '@shared/components/ui/LoadingIndicator';
+import { Text } from '@shared/components/ui/ThemedText';
+import { CreateCategoryData } from '@features/categories/types';
 
 export default function SubcategoryContentCreation() {
   const { createCategory } = useCategoryRepository();
@@ -33,7 +35,7 @@ export default function SubcategoryContentCreation() {
     });
     showSnackbar(
       `Subcategory '${category.name}' has been successful created`,
-      SNACKBAR_TYPE.SUCCESS
+      SNACKBAR_TYPE.SUCCESS,
     );
 
     router.replace({
@@ -49,11 +51,11 @@ export default function SubcategoryContentCreation() {
         label="Category name"
         name="name"
         placeholder="required"
-        rules={{ required: "Category name is required" }}
+        rules={{ required: 'Category name is required' }}
         autoFocus={true}
       />
       <ThemedButton mode="contained" onPress={handleSubmit(onSubmit)}>
-        Create
+        <Text>Create</Text>
       </ThemedButton>
       <ThemedIconButton
         style={styles.iconCreate}
@@ -72,11 +74,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   iconCreate: {
-    position: "absolute",
-    width: CREATE_CATEGORY_ICON_SIZE,
+    bottom: 0,
     height: CREATE_CATEGORY_ICON_SIZE,
     margin: 0,
+    position: 'absolute',
     right: 0,
-    bottom: 0,
+    width: CREATE_CATEGORY_ICON_SIZE,
   },
 });

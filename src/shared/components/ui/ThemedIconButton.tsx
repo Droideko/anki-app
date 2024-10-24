@@ -1,5 +1,7 @@
-import { IconButton, IconButtonProps } from "react-native-paper";
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
+import React from 'react';
+import { IconButton, IconButtonProps } from 'react-native-paper';
+
+import { useThemeColor } from '@shared/hooks/useThemeColor';
 
 const ThemedIconButton = (props: IconButtonProps) => {
   const { primary } = useThemeColor();

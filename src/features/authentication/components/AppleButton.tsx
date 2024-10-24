@@ -1,13 +1,15 @@
-import React from "react";
-import ThemedButton from "@/src/shared/components/ui/ThemedButton";
-import { Icon } from "react-native-paper";
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
+import React from 'react';
+import { Icon } from 'react-native-paper';
+
+import ThemedButton from '@shared/components/ui/ThemedButton';
+import { useThemeColor } from '@shared/hooks/useThemeColor';
+import { Text } from '@shared/components/ui/ThemedText';
 
 function AppleButton() {
   const { background } = useThemeColor();
 
   const onAuth = () => {
-    console.log("apple auth");
+    console.log('apple auth');
   };
 
   return (
@@ -16,7 +18,7 @@ function AppleButton() {
       icon={() => <Icon source="apple" size={20} />}
       onPress={onAuth}
     >
-      Continue with Apple
+      <Text>Continue with Apple</Text>
     </ThemedButton>
   );
 }

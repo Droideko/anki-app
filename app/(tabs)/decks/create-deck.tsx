@@ -1,11 +1,13 @@
-import ThemedIconButton from "@/src/shared/components/ui/ThemedIconButton";
-import { Text } from "@/src/shared/components/ui/ThemedText";
-import { ThemedView } from "@/src/shared/components/ui/ThemedView";
-import { useThemeColor } from "@/src/shared/hooks/useThemeColor";
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
+import { Button, TextInput } from 'react-native-paper';
+
+import ThemedIconButton from '@shared/components/ui/ThemedIconButton';
+import { Text } from '@shared/components/ui/ThemedText';
+import { ThemedView } from '@shared/components/ui/ThemedView';
+import { useThemeColor } from '@shared/hooks/useThemeColor';
 // import { StatusBar } from "expo-status-bar";
-import { Controller, useForm } from "react-hook-form";
-import { KeyboardAvoidingView, Platform, StyleSheet } from "react-native";
-import { Button, TextInput } from "react-native-paper";
 
 export default function CreateDeck() {
   const {
@@ -14,20 +16,20 @@ export default function CreateDeck() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: "",
+      name: '',
     },
   });
 
   const { error } = useThemeColor();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: unknown) => {
     console.log(data);
   };
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 0}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 50 : 0}
       style={styles.containerView}
     >
       <ThemedView style={styles.container}>
@@ -37,7 +39,7 @@ export default function CreateDeck() {
         <Controller
           control={control}
           name="name"
-          rules={{ required: "First name is required" }}
+          rules={{ required: 'First name is required' }}
           render={({ field: { onChange, onBlur, value } }) => (
             <>
               <TextInput
@@ -63,7 +65,7 @@ export default function CreateDeck() {
           mode="contained"
           onPress={handleSubmit(onSubmit)}
         >
-          Create
+          <Text>Create</Text>
         </Button>
 
         <ThemedIconButton
@@ -81,31 +83,26 @@ export default function CreateDeck() {
 }
 
 const styles = StyleSheet.create({
-  containerView: {
-    flex: 1,
+  button: {
+    marginBottom: 8,
+    marginTop: 8,
   },
   container: {
     flex: 1,
     padding: 20,
   },
-  title: {
-    marginBottom: 12,
+  containerView: {
+    flex: 1,
   },
-  separator: {
-    marginVertical: 30,
-    height: 5,
-    width: "80%",
+  iconCreate: {
+    bottom: 0,
+    position: 'absolute',
+    right: 0,
   },
   textInput: {
     marginBottom: 8,
   },
-  button: {
-    marginTop: 8,
-    marginBottom: 8,
-  },
-  iconCreate: {
-    position: "absolute",
-    right: 0,
-    bottom: 0,
+  title: {
+    marginBottom: 12,
   },
 });

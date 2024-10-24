@@ -1,8 +1,9 @@
-import { StyleProp, StyleSheet, ViewStyle } from "react-native";
-import Animated, { useAnimatedRef } from "react-native-reanimated";
+import React from 'react';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import Animated, { useAnimatedRef } from 'react-native-reanimated';
+import { PropsWithChildren } from 'react';
 
-import { ThemedView } from "@/src/shared/components/ui/ThemedView";
-import { PropsWithChildren } from "react";
+import { ThemedView } from '@shared/components/ui/ThemedView';
 
 type ScrollViewProps = PropsWithChildren<{
   style?: StyleProp<ViewStyle>;
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    overflow: 'hidden',
     padding: 20,
-    overflow: "hidden",
   },
 });

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 const usePasswordVisibility = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -6,7 +6,7 @@ const usePasswordVisibility = () => {
   const toggleVisibility = () => setIsVisible((isVisible) => !isVisible);
 
   const secureTextEntry = !isVisible;
-  const rightIcon = isVisible ? "eye-off" : "eye";
+  const rightIcon = isVisible ? 'eye-off' : 'eye';
 
   return { secureTextEntry, rightIcon, toggleVisibility };
 };

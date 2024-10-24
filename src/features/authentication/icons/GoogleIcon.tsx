@@ -1,5 +1,5 @@
-import React from "react";
-import { Path, Svg, SvgProps } from "react-native-svg";
+import React from 'react';
+import { Path, Svg, SvgProps } from 'react-native-svg';
 
 const GoogleIcon = (props: SvgProps) => (
   <Svg fill="none" viewBox="0 0 16 16" {...props}>

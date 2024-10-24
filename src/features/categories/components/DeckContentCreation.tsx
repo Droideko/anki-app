@@ -1,21 +1,20 @@
-import React from "react";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { StyleSheet, View } from "react-native";
-import { CREATE_CATEGORY_ICON_SIZE } from "@/src/features/categories/constants";
-import ThemedButton from "@/src/shared/components/ui/ThemedButton";
-import FormInput from "@/src/shared/components/forms/FormInput";
-import { SNACKBAR_TYPE } from "@/src/shared/constants/snackbar";
-import { useAsyncFn } from "@/src/shared/hooks/useAsyncFn";
-import useSnackbarStore from "@/src/shared/store/useSnackbarStore";
-import { useForm } from "react-hook-form";
-import {
-  CreateDeckData,
-  DEFAULT_CREATE_DECK_VALUES,
-} from "@/src/features/decks/constants";
-import ThemedIconButton from "@/src/shared/components/ui/ThemedIconButton";
-import { useDeckRepository } from "@/src/features/decks/hooks/useDeckRepository";
-import LoadingIndicator from "@/src/shared/components/ui/LoadingIndicator";
-import { Text } from "@/src/shared/components/ui/ThemedText";
+import React from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { StyleSheet, View } from 'react-native';
+import { useForm } from 'react-hook-form';
+
+import { CREATE_CATEGORY_ICON_SIZE } from '@features/categories/constants';
+import ThemedButton from '@shared/components/ui/ThemedButton';
+import FormInput from '@shared/components/forms/FormInput';
+import { SNACKBAR_TYPE } from '@shared/constants/snackbar';
+import { useAsyncFn } from '@shared/hooks/useAsyncFn';
+import useSnackbarStore from '@shared/store/useSnackbarStore';
+import ThemedIconButton from '@shared/components/ui/ThemedIconButton';
+import { useDeckRepository } from '@shared/hooks/repository/useDeckRepository';
+import LoadingIndicator from '@shared/components/ui/LoadingIndicator';
+import { Text } from '@shared/components/ui/ThemedText';
+import { CreateDeckData } from '@shared/types/category';
+import { DEFAULT_CREATE_DECK_VALUES } from '@shared/constants/deck';
 
 function DeckContentCreation() {
   const { createDeck } = useDeckRepository();
@@ -36,7 +35,7 @@ function DeckContentCreation() {
 
     showSnackbar(
       `Deck '${deck.name}' has been successful created`,
-      SNACKBAR_TYPE.SUCCESS
+      SNACKBAR_TYPE.SUCCESS,
     );
 
     router.replace({
@@ -52,11 +51,11 @@ function DeckContentCreation() {
         label="Deck name"
         name="name"
         placeholder="required"
-        rules={{ required: "Deck name is required" }}
+        rules={{ required: 'Deck name is required' }}
         autoFocus={true}
       />
       <ThemedButton mode="contained" onPress={handleSubmit(onSubmit)}>
-        Create
+        <Text>Create</Text>
       </ThemedButton>
       <ThemedIconButton
         style={styles.iconCreate}
@@ -75,12 +74,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   iconCreate: {
-    position: "absolute",
-    width: CREATE_CATEGORY_ICON_SIZE,
+    bottom: 0,
     height: CREATE_CATEGORY_ICON_SIZE,
     margin: 0,
+    position: 'absolute',
     right: 0,
-    bottom: 0,
+    width: CREATE_CATEGORY_ICON_SIZE,
   },
 });
 

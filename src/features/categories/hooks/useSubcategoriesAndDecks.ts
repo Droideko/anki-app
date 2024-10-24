@@ -1,6 +1,7 @@
-import { useCategoriesStore } from "@/src/shared/store/useCategoriesStore";
-import { useShallow } from "zustand/react/shallow";
-import { NormalizedCategory } from "../utils/normalizeCategories";
+import { useShallow } from 'zustand/react/shallow';
+
+import { useCategoriesStore } from '@shared/store/useCategoriesStore';
+import { NormalizedCategory } from '@shared/types/category';
 // import { ADD_SUBCATEGORY_ITEM } from "../constants/category";
 // import { Deck } from "../types/deck";
 
@@ -9,7 +10,7 @@ export function useSubcategoriesAndDecks(item: NormalizedCategory) {
     useShallow((state) => ({
       categoriesById: state.categoriesById,
       decksById: state.decksById,
-    }))
+    })),
   );
 
   const subcategories = item.childIds.map((childId) => categoriesById[childId]);
@@ -21,7 +22,7 @@ export function useSubcategoriesAndDecks(item: NormalizedCategory) {
         new Date(secondItem.updatedAt).getTime() -
         new Date(firstItem.updatedAt).getTime()
       );
-    }
+    },
   );
 
   // sliderItems.push(ADD_SUBCATEGORY_ITEM);

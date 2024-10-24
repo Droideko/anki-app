@@ -1,18 +1,17 @@
-import React from "react";
-import { render, waitFor } from "@testing-library/react-native";
-import ThemeProvider, {
-  useTheme,
-} from "@/src/shared/contexts/CustomThemeProvide";
-import { THEME, THEME_KEY } from "@/src/shared/constants/colors";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useColorScheme } from "react-native";
+import React from 'react';
+import { render, waitFor } from '@testing-library/react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useColorScheme } from 'react-native';
+
+import ThemeProvider, { useTheme } from '@shared/contexts/CustomThemeProvide';
+import { THEME, THEME_KEY } from '@shared/constants/colors';
 
 // Мокируем useColorScheme
-jest.mock("react-native/Libraries/Utilities/useColorScheme");
+jest.mock('react-native/Libraries/Utilities/useColorScheme');
 
 const mockedUseColorScheme = useColorScheme as jest.Mock;
 
-describe("Компонент ThemeProvider", () => {
+describe('Компонент ThemeProvider', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockedUseColorScheme.mockClear();
@@ -20,7 +19,7 @@ describe("Компонент ThemeProvider", () => {
     (AsyncStorage.setItem as jest.Mock).mockClear();
   });
 
-  it("устанавливает тему на основе системной темы, если сохраненная тема отсутствует", async () => {
+  it('устанавливает тему на основе системной темы, если сохраненная тема отсутствует', async () => {
     mockedUseColorScheme.mockReturnValue(THEME.DARK);
     (AsyncStorage.getItem as jest.Mock).mockResolvedValue(null);
 
@@ -34,7 +33,7 @@ describe("Компонент ThemeProvider", () => {
     render(
       <ThemeProvider>
         <TestComponent />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     await waitFor(() => {
@@ -42,7 +41,7 @@ describe("Компонент ThemeProvider", () => {
     });
   });
 
-  it("переопределяет системную тему сохраненной темой из AsyncStorage", async () => {
+  it('переопределяет системную тему сохраненной темой из AsyncStorage', async () => {
     mockedUseColorScheme.mockReturnValue(THEME.LIGHT);
     (AsyncStorage.getItem as jest.Mock).mockResolvedValue(THEME.DARK);
 
@@ -56,7 +55,7 @@ describe("Компонент ThemeProvider", () => {
     render(
       <ThemeProvider>
         <TestComponent />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     await waitFor(() => {
@@ -65,7 +64,7 @@ describe("Компонент ThemeProvider", () => {
     });
   });
 
-  it("функция toggleTheme переключает тему и обновляет AsyncStorage", async () => {
+  it('функция toggleTheme переключает тему и обновляет AsyncStorage', async () => {
     mockedUseColorScheme.mockReturnValue(THEME.LIGHT);
     (AsyncStorage.getItem as jest.Mock).mockResolvedValue(null);
 
@@ -79,7 +78,7 @@ describe("Компонент ThemeProvider", () => {
     render(
       <ThemeProvider>
         <TestComponent />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     // Дожидаемся инициализации контекста
@@ -97,25 +96,25 @@ describe("Компонент ThemeProvider", () => {
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(THEME_KEY, THEME.DARK);
   });
 
-  it("хук useTheme выбрасывает ошибку вне ThemeProvider", () => {
+  it('хук useTheme выбрасывает ошибку вне ThemeProvider', () => {
     const TestComponent = () => {
       useTheme();
       return null;
     };
 
     expect(() => render(<TestComponent />)).toThrow(
-      "ThemeContext must be used within the ThemeContext"
+      'ThemeContext must be used within the ThemeContext',
     );
   });
 
-  it("корректно обрабатывает ошибки при загрузке темы", async () => {
+  it('корректно обрабатывает ошибки при загрузке темы', async () => {
     mockedUseColorScheme.mockReturnValue(THEME.LIGHT);
     (AsyncStorage.getItem as jest.Mock).mockRejectedValue(
-      new Error("Ошибка AsyncStorage")
+      new Error('Ошибка AsyncStorage'),
     );
 
     const consoleLogSpy = jest
-      .spyOn(console, "log")
+      .spyOn(console, 'log')
       .mockImplementation(() => {});
 
     let contextValue: any;
@@ -128,7 +127,7 @@ describe("Компонент ThemeProvider", () => {
     render(
       <ThemeProvider>
         <TestComponent />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     await waitFor(() => {
@@ -136,13 +135,13 @@ describe("Компонент ThemeProvider", () => {
     });
 
     expect(consoleLogSpy).toHaveBeenCalledWith(
-      "Error loading theme:",
-      expect.any(Error)
+      'Error loading theme:',
+      expect.any(Error),
     );
     consoleLogSpy.mockRestore();
   });
 
-  it("функция toggleTheme устанавливает тему на указанное значение", async () => {
+  it('функция toggleTheme устанавливает тему на указанное значение', async () => {
     mockedUseColorScheme.mockReturnValue(THEME.LIGHT);
     (AsyncStorage.getItem as jest.Mock).mockResolvedValue(null);
 
@@ -156,7 +155,7 @@ describe("Компонент ThemeProvider", () => {
     render(
       <ThemeProvider>
         <TestComponent />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     await waitFor(() => {
@@ -172,7 +171,7 @@ describe("Компонент ThemeProvider", () => {
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(THEME_KEY, THEME.DARK);
   });
 
-  it("устанавливает значение colorScheme в соответствии с текущей темой", async () => {
+  it('устанавливает значение colorScheme в соответствии с текущей темой', async () => {
     mockedUseColorScheme.mockReturnValue(THEME.LIGHT);
     (AsyncStorage.getItem as jest.Mock).mockResolvedValue(null);
 
@@ -186,7 +185,7 @@ describe("Компонент ThemeProvider", () => {
     render(
       <ThemeProvider>
         <TestComponent />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     await waitFor(() => {

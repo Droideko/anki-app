@@ -1,14 +1,15 @@
-import { SQLiteDatabase } from "expo-sqlite";
-import getDecksByCategoryIdFromSQLite from "../../decks/services/getDecksByCategoryIdFromSQLite";
-import { Category } from "../types";
+import { SQLiteDatabase } from 'expo-sqlite';
+
+import getDecksByCategoryIdFromSQLite from '@shared/db/deck/getDecksByCategoryIdFromSQLite';
+import { Category } from '@shared/types/category';
 
 const getSubcategoriesFromSQLite = async (
   db: SQLiteDatabase,
-  parentId: number
+  parentId: number,
 ): Promise<Category[]> => {
   const subcategoriesData = await db.getAllAsync<Category>(
-    "SELECT * FROM Category WHERE parentId = ?;",
-    parentId
+    'SELECT * FROM Category WHERE parentId = ?;',
+    parentId,
   );
 
   const subcategories: Category[] = [];
@@ -17,12 +18,12 @@ const getSubcategoriesFromSQLite = async (
     // Рекурсивно получаем подкатегории
     subcategory.subcategories = await getSubcategoriesFromSQLite(
       db,
-      subcategory.id
+      subcategory.id,
     );
     // Получаем связанные колоды
     subcategory.decks = await getDecksByCategoryIdFromSQLite(
       db,
-      subcategory.id
+      subcategory.id,
     );
     subcategories.push(subcategory);
   }
@@ -32,16 +33,16 @@ const getSubcategoriesFromSQLite = async (
 
 const getCategoryFromSQLite = async (
   db: SQLiteDatabase,
-  id: number
+  id: number,
 ): Promise<Category> => {
   // Получаем категорию
   const category = await db.getFirstAsync<Category>(
-    "SELECT * FROM Category WHERE id = ?;",
-    id
+    'SELECT * FROM Category WHERE id = ?;',
+    id,
   );
 
   if (!category) {
-    throw new Error("Категория не найдена в SQLite");
+    throw new Error('Категория не найдена в SQLite');
   }
 
   // Получаем подкатегории

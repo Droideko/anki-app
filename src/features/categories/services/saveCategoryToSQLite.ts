@@ -1,6 +1,7 @@
-import { SQLiteDatabase } from "expo-sqlite";
-import { Category } from "../types";
-import saveDeckToSQLite from "../../decks/services/saveDeckToSQLite";
+import { SQLiteDatabase } from 'expo-sqlite';
+
+import saveDeckToSQLite from '@shared/db/deck/saveDeckToSQLite';
+import { Category } from '@shared/types/category';
 
 const saveCategoryToSQLite = async (db: SQLiteDatabase, category: Category) => {
   // Вставляем или обновляем категорию
@@ -15,7 +16,7 @@ const saveCategoryToSQLite = async (db: SQLiteDatabase, category: Category) => {
     category.accessLevel,
     category.type,
     category.createdAt,
-    category.updatedAt
+    category.updatedAt,
   );
 
   // Сохраняем связанные колоды

@@ -1,17 +1,20 @@
-import { StyleSheet } from "react-native";
-import { ThemedView } from "@/src/shared/components/ui/ThemedView";
-import { Text } from "@/src/shared/components/ui/ThemedText";
-import { useLocalSearchParams } from "expo-router";
-import { CategoryItem } from "./CategoryItem";
-import { useFetchCategories } from "@/src/features/categories/hooks/useFetchCategories";
-import CategoryBlurModal from "./CategoryBlurModal";
-import DeckItem from "../../decks/components/DeckItem";
-import DeleteModal from "./DeleteModal";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
+
+import { CategoryItem } from './CategoryItem';
+import CategoryBlurModal from './CategoryBlurModal';
+import DeleteModal from './DeleteModal';
+
+import DeckItem from '@features/decks/components/DeckItem';
+import { ThemedView } from '@shared/components/ui/ThemedView';
+import { Text } from '@shared/components/ui/ThemedText';
+import { useFetchCategories } from '@features/categories/hooks/useFetchCategories';
 
 export default function SubcategoryDataContent() {
   const { id } = useLocalSearchParams<{ id: string }>();
 
-  if (typeof id === "undefined") {
+  if (typeof id === 'undefined') {
     return <Text>Id category is undefined</Text>;
   }
 
@@ -45,7 +48,7 @@ export default function SubcategoryDataContent() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 16,
     paddingBottom: 16,
+    paddingTop: 16,
   },
 });

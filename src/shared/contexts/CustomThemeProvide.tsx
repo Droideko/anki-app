@@ -1,13 +1,14 @@
-import * as React from "react";
-import { useColorScheme } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as React from 'react';
+import { useColorScheme } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
   theme,
   THEME,
   THEME_KEY,
   Themes,
   ThemeTypes,
-} from "@/src/shared/constants/colors";
+} from '@/src/shared/constants/colors';
 
 type Props = {
   children: React.ReactNode;
@@ -16,12 +17,11 @@ type Props = {
 type Context = {
   theme: ThemeTypes;
   toggleTheme: (newTheme?: Themes) => Promise<void>;
-  colorScheme: Themes;
 };
 
 const ThemeContext = React.createContext<Context | undefined>(undefined);
 
-ThemeContext.displayName = "ThemeContext";
+ThemeContext.displayName = 'ThemeContext';
 
 export default function ThemeProvider({ children }: Props) {
   const systemTheme: Themes = useColorScheme() ?? THEME.LIGHT;
@@ -36,7 +36,7 @@ export default function ThemeProvider({ children }: Props) {
           setIsDarkTheme(savedTheme === THEME.DARK);
         }
       } catch (error: unknown) {
-        console.log("Error loading theme:", error);
+        console.log('Error loading theme:', error);
       }
     };
 
@@ -48,17 +48,14 @@ export default function ThemeProvider({ children }: Props) {
     setIsDarkTheme(newIsDarkTheme);
     await AsyncStorage.setItem(
       THEME_KEY,
-      newIsDarkTheme ? THEME.DARK : THEME.LIGHT
+      newIsDarkTheme ? THEME.DARK : THEME.LIGHT,
     );
   };
 
   const currentTheme = isDarkTheme ? theme.dark : theme.light;
-  const colorScheme = isDarkTheme ? THEME.DARK : THEME.LIGHT; // Нужно проверить, используется ли это
 
   return (
-    <ThemeContext.Provider
-      value={{ theme: currentTheme, toggleTheme, colorScheme }}
-    >
+    <ThemeContext.Provider value={{ theme: currentTheme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
@@ -68,7 +65,7 @@ export function useTheme() {
   const context = React.useContext(ThemeContext);
 
   if (!context) {
-    throw new Error("ThemeContext must be used within the ThemeContext");
+    throw new Error('ThemeContext must be wrapped in a <ThemeContext />');
   }
 
   return context;

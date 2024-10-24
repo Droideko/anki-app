@@ -1,6 +1,7 @@
-import { create } from "zustand";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import i18n from "@/src/shared/utils/i18n";
+import { create } from 'zustand';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import i18n from '@shared/utils/i18n';
 
 interface LanguageState {
   language: string;
@@ -14,10 +15,10 @@ const useLanguageStore = create<LanguageState>((set) => ({
   setLanguage: async (newLanguage: string) => {
     i18n.locale = newLanguage;
     set({ language: newLanguage });
-    await AsyncStorage.setItem("language", newLanguage); // Сохранение выбора пользователя
+    await AsyncStorage.setItem('language', newLanguage); // Сохранение выбора пользователя
   },
   initializeLanguage: async () => {
-    const storedLanguage = await AsyncStorage.getItem("language");
+    const storedLanguage = await AsyncStorage.getItem('language');
     if (storedLanguage) {
       i18n.locale = storedLanguage; // Установка сохраненного языка
       set({ language: storedLanguage });
