@@ -8,7 +8,7 @@ import {
   THEME_KEY,
   Themes,
   ThemeTypes,
-} from '@/src/shared/constants/colors';
+} from '@shared/constants/colors';
 
 type Props = {
   children: React.ReactNode;
@@ -65,7 +65,7 @@ export function useTheme() {
   const context = React.useContext(ThemeContext);
 
   if (!context) {
-    throw new Error('ThemeContext must be wrapped in a <ThemeContext />');
+    throw new Error('useTheme must be wrapped in a <ThemeContext />');
   }
 
   return context;

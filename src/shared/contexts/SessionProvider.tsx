@@ -32,18 +32,19 @@ interface AuthContextData {
   signUp: (data: SignUpFormData) => Promise<void>;
 }
 
-export function SessionProvider({ children }: PropsWithChildren) {
+export default function SessionProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const userRepository = useUserRepository();
+  const { isAuthenticated, getUserProfile, login, logout, signUp } =
+    useUserRepository();
   const { showSnackbar } = useSnackbarStore();
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const isAuthenticated = await userRepository.isAuthenticated();
-        if (isAuthenticated) {
-          const userProfile = await userRepository.getUserProfile();
+        const isAuth = await isAuthenticated();
+        if (isAuth) {
+          const userProfile = await getUserProfile();
           setUser(userProfile);
         }
       } catch (error: unknown) {
@@ -63,15 +64,15 @@ export function SessionProvider({ children }: PropsWithChildren) {
     <AuthContext.Provider
       value={{
         signIn: async (data: SignUpFormData) => {
-          const user = await userRepository.login(data);
+          const user = await login(data);
           setUser(user);
         },
         signOut: async () => {
-          await userRepository.logout();
+          await logout();
           setUser(null);
         },
         signUp: async (data: SignUpFormData) => {
-          await userRepository.signUp(data);
+          await signUp(data);
           setUser(user);
         },
         isLoading,

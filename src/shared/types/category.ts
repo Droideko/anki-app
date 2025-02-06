@@ -16,6 +16,7 @@ export type Category = {
   decks: Deck[];
   subcategories?: Category[];
   type: 'CATEGORY';
+  lastFetched?: string;
 };
 
 export type NormalizedCategory = Omit<Category, 'subcategories' | 'decks'> & {
@@ -28,6 +29,8 @@ export interface NormalizedCategories {
   decksById: Record<number, Deck>;
   rootCategoryIds: number[];
 }
+
+export type NormalizedCategoryOrDeck = NormalizedCategory | Deck;
 
 export type SubCategoryItemType =
   | NormalizedCategory

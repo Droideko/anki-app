@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { ElementRef, useRef } from 'react';
 import { router } from 'expo-router';
 import { StyleSheet, TouchableHighlight, View } from 'react-native';
 import { Card, Icon } from 'react-native-paper';
@@ -9,12 +9,12 @@ import { useThemeColor } from '@shared/hooks/useThemeColor';
 import { HEIGHT_CATEGORY_CAROUSEL } from '@shared/constants/category';
 
 function DeckItem({ item }: { item: Deck }) {
-  const elementRefs = useRef<TouchableHighlight | null>(null);
+  const elementRef = useRef<ElementRef<typeof TouchableHighlight> | null>(null);
 
   const { showModal } = useModalStore();
 
   const onLongPress = (item: Deck) => {
-    elementRefs.current?.measureInWindow((x, y, width, height) => {
+    elementRef.current?.measureInWindow((x, y, width, height) => {
       const position = { x, y, width, height };
       showModal(position, item);
     });
@@ -25,12 +25,16 @@ function DeckItem({ item }: { item: Deck }) {
   return (
     <View style={styles.deckItem}>
       <TouchableHighlight
-        ref={elementRefs}
+        ref={elementRef}
         onLongPress={() => onLongPress(item)}
         onPress={() => {
           router.push({
-            pathname: `/categories/${item.categoryId}/decks/${item.id}`,
-            params: { name: item.name },
+            pathname: `/categories/[id]/decks/[deckId]`,
+            params: {
+              name: item.name,
+              id: String(item.categoryId),
+              deckId: String(item.id),
+            },
           });
         }}
       >

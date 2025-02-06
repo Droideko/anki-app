@@ -11,7 +11,17 @@ import { NormalizedCategory } from '@shared/types/category';
 
 const MENU_ICON_SIZE = 32;
 
-const CategorySegmentButtons = ({ item }: { item: NormalizedCategory }) => {
+interface CategorySegmentButtonsProps {
+  item: NormalizedCategory;
+  hideMenu?: {
+    viewAll: boolean;
+  };
+}
+
+const CategorySegmentButtons = ({
+  item,
+  hideMenu = { viewAll: false },
+}: CategorySegmentButtonsProps) => {
   const { error, elevation } = useThemeColor();
   const [visible, setVisible] = useState(false);
   const { showDeleteModal } = useModalStore();
@@ -22,8 +32,8 @@ const CategorySegmentButtons = ({ item }: { item: NormalizedCategory }) => {
   const onViewAll = () => {
     closeMenu();
     router.push({
-      pathname: `/categories/${item.id}`,
-      params: { name: item.name },
+      pathname: `/categories/[id]`,
+      params: { name: item.name, id: String(item.id) },
     });
   };
 
@@ -34,13 +44,29 @@ const CategorySegmentButtons = ({ item }: { item: NormalizedCategory }) => {
 
   const onEdit = () => {
     closeMenu();
+    console.log(item.name, String(item.id));
+
     router.push({
-      pathname: `/categories/${item.id}/edit`,
-      params: { name: item.name },
+      pathname: `/categories/[id]/edit`,
+      params: { name: item.name, id: String(item.id) },
     });
   };
 
-  const onMove = () => {};
+  const onMove = () => {
+    closeMenu();
+    router.push({
+      pathname: `/categories/[id]/move`,
+      params: { name: item.name, id: String(item.id) },
+    });
+  };
+
+  const onCreate = () => {
+    closeMenu();
+    router.push({
+      pathname: `/categories/[id]/create-deck-or-subcategory`,
+      params: { id: String(item.id) },
+    });
+  };
 
   return (
     <>
@@ -61,9 +87,15 @@ const CategorySegmentButtons = ({ item }: { item: NormalizedCategory }) => {
           />
         }
       >
-        <Pressable style={styles.item} onPress={onViewAll}>
-          <Text variant="bodyMedium">View All</Text>
-          <Icon size={25} source="view-column-outline" />
+        {!hideMenu.viewAll && (
+          <Pressable style={styles.item} onPress={onViewAll}>
+            <Text variant="bodyMedium">View All</Text>
+            <Icon size={25} source="view-column-outline" />
+          </Pressable>
+        )}
+        <Pressable style={styles.item} onPress={onCreate}>
+          <Text variant="bodyMedium">Create New</Text>
+          <Icon size={25} source="plus" />
         </Pressable>
         <Pressable style={styles.item} onPress={onEdit}>
           <Text variant="bodyMedium">Edit</Text>
@@ -72,10 +104,6 @@ const CategorySegmentButtons = ({ item }: { item: NormalizedCategory }) => {
         <Pressable style={styles.item} onPress={onMove}>
           <Text variant="bodyMedium">Move</Text>
           <Icon size={25} source="arrow-right-top" />
-        </Pressable>
-        <Pressable style={styles.item} onPress={() => {}}>
-          <Text variant="bodyMedium">Share</Text>
-          <Icon size={25} source="share-variant" />
         </Pressable>
         <Divider />
         <Pressable style={styles.item} onPress={onDelete}>

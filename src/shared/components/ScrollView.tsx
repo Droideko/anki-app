@@ -1,22 +1,33 @@
-import React from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import Animated, { useAnimatedRef } from 'react-native-reanimated';
-import { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from 'react';
+import {
+  StyleProp,
+  StyleSheet,
+  ViewStyle,
+  ScrollView as ReactScrollView,
+  ScrollViewProps as RNScrollViewProps,
+} from 'react-native';
 
 import { ThemedView } from '@shared/components/ui/ThemedView';
 
 type ScrollViewProps = PropsWithChildren<{
   style?: StyleProp<ViewStyle>;
-}>;
+}> &
+  Omit<RNScrollViewProps, 'style' | 'contentContainerStyle' | 'children'>;
 
-export default function ScrollView({ children, style }: ScrollViewProps) {
-  const scrollRef = useAnimatedRef<Animated.ScrollView>();
-
+export default function ScrollView({
+  children,
+  style,
+  ...scrollViewProps
+}: ScrollViewProps) {
   return (
     <ThemedView style={[styles.container, style]}>
-      <Animated.ScrollView ref={scrollRef} scrollEventThrottle={16}>
-        <ThemedView style={styles.content}>{children}</ThemedView>
-      </Animated.ScrollView>
+      <ReactScrollView
+        scrollEventThrottle={16}
+        contentContainerStyle={styles.content}
+        {...scrollViewProps}
+      >
+        {children}
+      </ReactScrollView>
     </ThemedView>
   );
 }
@@ -26,8 +37,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    flex: 1,
-    overflow: 'hidden',
+    flexGrow: 1,
     padding: 20,
   },
 });

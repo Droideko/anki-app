@@ -1,7 +1,9 @@
 import React from 'react';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useForm } from 'react-hook-form';
+
+import { useCategoryRepository } from '../hooks/useCategoryRepository';
 
 import { CREATE_CATEGORY_ICON_SIZE } from '@features/categories/constants';
 import ThemedButton from '@shared/components/ui/ThemedButton';
@@ -10,16 +12,14 @@ import { SNACKBAR_TYPE } from '@shared/constants/snackbar';
 import { useAsyncFn } from '@shared/hooks/useAsyncFn';
 import useSnackbarStore from '@shared/store/useSnackbarStore';
 import ThemedIconButton from '@shared/components/ui/ThemedIconButton';
-import { useDeckRepository } from '@shared/hooks/repository/useDeckRepository';
 import LoadingIndicator from '@shared/components/ui/LoadingIndicator';
 import { Text } from '@shared/components/ui/ThemedText';
 import { CreateDeckData } from '@shared/types/category';
 import { DEFAULT_CREATE_DECK_VALUES } from '@shared/constants/deck';
 
 function DeckContentCreation() {
-  const { createDeck } = useDeckRepository();
+  const { createDeck } = useCategoryRepository();
   const { id } = useLocalSearchParams();
-  const router = useRouter();
 
   const { control, handleSubmit } = useForm<CreateDeckData>({
     defaultValues: DEFAULT_CREATE_DECK_VALUES,
@@ -38,9 +38,11 @@ function DeckContentCreation() {
       SNACKBAR_TYPE.SUCCESS,
     );
 
+    console.log('created Deck');
+
     router.replace({
-      pathname: `/categories/${id}/decks/${deck.id}`,
-      params: { name: deck.name },
+      pathname: '/(tabs)/categories/[id]/decks/[deckId]',
+      params: { id: String(id), deckId: String(deck.id), name: deck.name },
     });
   }, []);
 

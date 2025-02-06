@@ -1,14 +1,16 @@
 import React from 'react';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet } from 'react-native';
 
 import { ThemedView } from '@shared/components/ui/ThemedView';
 import { useThemeColor } from '@shared/hooks/useThemeColor';
-// import SubcategoryDataContent from '@features/categories/components/SubcategoryDataContent';
-import WaveButton from '@shared/components/WaveButton';
-import ScrollView from '@shared/components/ScrollView';
-// import Search from '@shared/components/Search';
+import CardsDataContent from '@features/decks/components/CardsDataContent';
+import CardsWaveButton from '@features/decks/components/CardsWaveButton';
+import DeleteModal from '@features/categories/components/DeleteModal';
+import BlurModal from '@shared/components/modal/BlurModal';
+import ThemedButton from '@shared/components/ui/ThemedButton';
+import { Text } from '@shared/components/ui/ThemedText';
 
 const DeckPage = () => {
   const { id, name, deckId } = useLocalSearchParams<{
@@ -18,14 +20,12 @@ const DeckPage = () => {
   }>();
   const { primary } = useThemeColor();
 
-  console.log(useLocalSearchParams());
-
   if (typeof id === 'undefined' || typeof deckId === 'undefined') {
     return null;
   }
 
   return (
-    <ThemedView style={{ flex: 1 }}>
+    <ThemedView style={styles.container}>
       <Stack.Screen
         options={{
           headerTitle: `${name}`,
@@ -34,12 +34,16 @@ const DeckPage = () => {
           ),
         }}
       />
+      <CardsDataContent />
+      <CardsWaveButton
+        href={`/categories/${id}/decks/${deckId}/create-card?action=add`}
+      />
+      <Link href={`/review/${deckId}?name=${name}`}>
+        <Text>Link</Text>
+      </Link>
 
-      <ScrollView style={styles.container}>
-        {/* <Search />
-        <SubcategoryDataContent /> */}
-      </ScrollView>
-      <WaveButton href={`/categories/${id}/decks/${deckId}/create-card`} />
+      <BlurModal />
+      <DeleteModal />
     </ThemedView>
   );
 };
@@ -47,7 +51,6 @@ const DeckPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 0,
   },
 });
 

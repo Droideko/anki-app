@@ -13,11 +13,10 @@ function GoogleButton() {
   return (
     <ThemedButton
       buttonColor="#fff"
-      textColor="rgb(16, 26, 43)"
       icon={() => <GoogleIcon width={20} height={20} />}
       onPress={onAuth}
     >
-      <Text>Continue with Google</Text>
+      <Text style={{ color: 'rgb(16, 26, 43)' }}>Continue with Google</Text>
     </ThemedButton>
   );
 }

@@ -1,0 +1,86 @@
+import { useCallback, useState } from 'react';
+
+import { useProgressRepository } from './useProgressRepository';
+
+import { Card } from '@shared/store/useCardsStore';
+import { Progress, useProgressStore } from '@shared/store/useProgressStore';
+import updateSrs, { Rating, RATING_MAPPER } from '@shared/utils/updateSrs';
+import { useUserStore } from '@shared/store/useUserStore';
+
+const createNewProgress = (cardId: number, userId: number) => {
+  const tempId = Date.now();
+
+  const newProgress: Progress = {
+    id: Number(tempId),
+    userId,
+    cardId,
+    easeFactor: 2.5,
+    repetition: 0,
+    interval: 0,
+    studyProgress: 0,
+    lastReviewed: null,
+    nextReview: null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    dirty: true,
+  };
+  return newProgress;
+};
+
+const useReview = (initialCards: Card[]) => {
+  const { progressByCardId } = useProgressStore();
+  const { saveProgressLocally } = useProgressRepository();
+  const { user } = useUserStore();
+
+  const [reviewCards, setReviewCards] = useState<Card[]>(() => [
+    ...initialCards,
+  ]);
+
+  const [index, setIndex] = useState<number>(0);
+
+  const currentCard = reviewCards[index];
+
+  const markCard = useCallback(
+    async (rating: Rating) => {
+      if (!currentCard) return;
+
+      let progress = progressByCardId[currentCard.id];
+
+      if (!progress) {
+        progress = createNewProgress(currentCard.id, Number(user?.id));
+      }
+
+      const newSrc = updateSrs(progress, rating);
+
+      const updatedProgress: Progress = {
+        ...progress,
+        ...newSrc,
+        dirty: true,
+      };
+
+      await saveProgressLocally(updatedProgress);
+
+      if (rating === RATING_MAPPER.again) {
+        setReviewCards((prev) => {
+          const arr = [...prev];
+          const [removed] = arr.splice(index, 1);
+          arr.push(removed);
+          return arr;
+        });
+      } else {
+        setIndex((prev) => prev + 1);
+      }
+    },
+    [currentCard, progressByCardId, saveProgressLocally, user?.id, index],
+  );
+
+  const hasMore = index < reviewCards.length;
+
+  return {
+    currentCard,
+    hasMore,
+    markCard,
+  };
+};
+
+export default useReview;

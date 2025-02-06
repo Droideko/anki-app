@@ -2,44 +2,54 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
+import useFilteredCategoriesAndDecks from '../hooks/useFilteredCategoriesAndDecks';
+
 import { CategoryItem } from './CategoryItem';
-import CategoryBlurModal from './CategoryBlurModal';
 import DeleteModal from './DeleteModal';
 
 import DeckItem from '@features/decks/components/DeckItem';
 import { ThemedView } from '@shared/components/ui/ThemedView';
 import { Text } from '@shared/components/ui/ThemedText';
 import { useFetchCategories } from '@features/categories/hooks/useFetchCategories';
+import BlurModal from '@shared/components/modal/BlurModal';
 
-export default function SubcategoryDataContent() {
+interface SubcategoryDataContentProps {
+  searchQuery: string;
+}
+
+export default function SubcategoryDataContent({
+  searchQuery,
+}: SubcategoryDataContentProps) {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { loading, error, categories, decks } = useFetchCategories(Number(id));
+
+  const { filteredCategories, filteredDecks } = useFilteredCategoriesAndDecks(
+    searchQuery,
+    categories,
+    decks,
+  );
 
   if (typeof id === 'undefined') {
     return <Text>Id category is undefined</Text>;
   }
-
-  const { loading, error, categories, decks } = useFetchCategories(Number(id));
 
   if (loading) {
     return <Text>Loading</Text>;
   }
 
   if (error) {
-    return <Text>Error loading categories</Text>;
+    return <Text>{error.message}</Text>;
   }
-
-  console.log(categories);
-  console.log(decks);
 
   return (
     <ThemedView style={styles.container}>
-      {categories.map((item) => (
-        <CategoryItem key={item.id} item={item} />
+      {filteredCategories.map((item) => (
+        <CategoryItem key={`category-${item.id}`} item={item} />
       ))}
-      {decks.map((item) => (
-        <DeckItem key={item.id} item={item} />
+      {filteredDecks?.map((item) => (
+        <DeckItem key={`deck-${item.id}`} item={item} />
       ))}
-      <CategoryBlurModal />
+      <BlurModal />
       <DeleteModal />
     </ThemedView>
   );

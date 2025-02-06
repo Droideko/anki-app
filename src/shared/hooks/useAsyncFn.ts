@@ -56,6 +56,7 @@ export function useAsyncFn<T extends FunctionReturningPromise>(
     );
 
     return promise as ReturnType<T>;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 
   return [state, callback as unknown as T];

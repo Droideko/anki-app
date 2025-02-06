@@ -22,7 +22,8 @@ export const normalizeCategories = (
 
     const deckIds = category.decks ? category.decks.map((deck) => deck.id) : [];
 
-    const { subcategories, decks, ...categoryWithoutChildren } = category;
+    const { subcategories, decks, lastFetched, ...categoryWithoutChildren } =
+      category;
 
     const existingCategory = categoriesById[category.id];
 
@@ -37,12 +38,14 @@ export const normalizeCategories = (
         deckIds: Array.from(
           new Set([...(existingCategory.deckIds || []), ...deckIds]),
         ),
+        lastFetched: existingCategory.lastFetched || lastFetched,
       };
     } else {
       categoriesById[category.id] = {
         ...categoryWithoutChildren,
         childIds,
         deckIds,
+        lastFetched,
       };
     }
 

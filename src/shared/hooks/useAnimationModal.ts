@@ -14,7 +14,8 @@ const useAnimationModal = () => {
     elementPosition,
     hideModal,
     // setElementPosition,
-    selectedCategory,
+    // selectedCategory,
+    // selectedItem
   } = useModalStore();
 
   const opacity = useSharedValue(0);
@@ -28,7 +29,7 @@ const useAnimationModal = () => {
       opacity.value = withTiming(0, { duration: 200 });
       scale.value = withTiming(0.9, { duration: 200 });
     }
-  }, [isModalVisible]);
+  }, [isModalVisible, opacity, scale]);
 
   const closeModal = () => {
     opacity.value = withTiming(0, { duration: 200 }, () => {

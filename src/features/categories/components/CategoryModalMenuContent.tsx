@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Divider, Icon } from 'react-native-paper';
+import { router } from 'expo-router';
 
 import { useThemeColor } from '@shared/hooks/useThemeColor';
 import { useModalStore } from '@shared/store/useModalStore';
@@ -8,18 +9,35 @@ import { Text } from '@shared/components/ui/ThemedText';
 
 function CategoryModalMenuContent() {
   const { error } = useThemeColor();
-  const { hideModal, showDeleteModal, selectedCategory } = useModalStore();
+  const { hideModal, showDeleteModal, selectedItem } = useModalStore();
 
   const onDelete = () => {
     hideModal();
-    showDeleteModal(selectedCategory);
+
+    showDeleteModal(selectedItem);
+  };
+
+  const onEdit = () => {
+    hideModal();
+
+    if (selectedItem === null || selectedItem.type !== 'CATEGORY') {
+      return;
+    }
+
+    router.push({
+      pathname: `/categories/[id]/edit`,
+      params: {
+        name: selectedItem.name,
+        id: String(selectedItem.id),
+      },
+    });
   };
 
   return (
     <>
-      <Pressable style={styles.item} onPress={() => {}}>
-        <Text variant="bodyMedium">Share</Text>
-        <Icon size={25} source="share-variant" />
+      <Pressable style={styles.item} onPress={onEdit}>
+        <Text variant="bodyMedium">Edit</Text>
+        <Icon size={25} source="pencil" />
       </Pressable>
       <Divider />
       <Pressable style={styles.item} onPress={onDelete}>

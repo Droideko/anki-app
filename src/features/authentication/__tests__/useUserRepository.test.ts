@@ -16,7 +16,7 @@ import { apiService } from '@shared/api/apiService';
 import { useUserRepository } from '@shared/hooks/repository/userRepository';
 import { useUserStore } from '@shared/store/useUserStore';
 import * as authUtils from '@shared/utils/authTokens';
-import isWeb from '@shared/utils/isWeb';
+import isWeb from '@shared/utils/isWeb/useGetSQLiteContext.native';
 
 // Start writing your tests
 describe('useUserRepository', () => {

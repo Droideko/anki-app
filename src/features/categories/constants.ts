@@ -26,8 +26,8 @@ export const CATEGORY_SEGMENT_BUTTON = {
 
 const { width } = Dimensions.get('window');
 
-export const ITEM_WIDTH = width * 0.7; // Устанавливаем ширину элемента меньше ширины экрана
-export const ITEM_SPACING = 16; // Отступ между элементами
+export const ITEM_WIDTH = width * 0.7;
+export const ITEM_SPACING = 16;
 
 export const ADD_SUBCATEGORY_ITEM = {
   id: 'add_new',

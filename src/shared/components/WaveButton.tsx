@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Href } from 'expo-router';
 
 import CreateIconButton from '@shared/components/CreateIconButton';
 import { WaveIconWrapper } from '@shared/components/WaveIconWrapper';
@@ -7,16 +8,16 @@ import { WaveIconWrapper } from '@shared/components/WaveIconWrapper';
 const ICON_SIZE = 50;
 
 interface WaveButtonProps {
-  href: string;
-  style?: StyleProp<ViewStyle>;
+  href: Href;
+  isActivePulse: boolean;
 }
 
-function WaveButton({ href, style }: WaveButtonProps) {
+function WaveButton({ href, isActivePulse }: WaveButtonProps) {
   return (
     <WaveIconWrapper
       style={styles.iconWrapper}
-      isActivePulse={true}
-      iconSize={ICON_SIZE} // было бы хорошо убрать от привязки size и чтобы он автоматически вычислял границы анимации
+      isActivePulse={isActivePulse}
+      iconSize={ICON_SIZE}
     >
       <CreateIconButton href={href} size={ICON_SIZE} />
     </WaveIconWrapper>

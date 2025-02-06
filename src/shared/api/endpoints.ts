@@ -12,5 +12,15 @@ export const API_ENDPOINTS = {
   DECKS: {
     BASE: '/decks',
     DETAIL: (id: number) => `/decks/${id}`,
+    CARDS: (id: number) => `/decks/${id}/cards`,
+  },
+  CARDS: {
+    BASE: '/cards',
+    DETAIL: (id: number) => `/cards/${id}`,
+  },
+  PROGRESS: {
+    BASE: '/progress',
+    BATCH: '/progress/batch',
+    DETAIL: (id: number) => `/progress/${id}`,
   },
 };

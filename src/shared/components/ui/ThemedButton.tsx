@@ -13,7 +13,7 @@ const ThemedButton = ({ children, ...props }: OwnProps) => {
 
   return (
     <Button
-      buttonColor={props.buttonColor || primary} // background
+      // buttonColor={props.buttonColor || primary} // background
       mode={props.mode || 'outlined'}
       textColor={props.textColor || onPrimary} // onSecondary
       style={[{ ...styles.button }, props.style]}

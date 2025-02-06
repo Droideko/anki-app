@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { render } from '@/src/shared/utils/test-utils';
+import { render } from '@shared/utils/test-utils';
 
 jest.mock('@/src/hooks/useThemeColor', () => ({
   useThemeColor: jest.fn(),
 }));
 
-import { useThemeColor } from '@/src/shared/hooks/useThemeColor';
+import { useThemeColor } from '@shared/hooks/useThemeColor';
 
 import { Text } from '../ui/ThemedText';
 

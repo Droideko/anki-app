@@ -1,4 +1,5 @@
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
+import { MD3LightTheme, MD3DarkTheme } from 'react-native-paper';
 
 /**
  * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
@@ -56,6 +57,7 @@ export const theme = {
       backdrop: 'rgba(51, 47, 55, 0.4)',
       tint: 'rgb(162, 54, 241)',
     },
+    fonts: MD3LightTheme.fonts,
   },
   dark: {
     ...DarkTheme,
@@ -111,6 +113,7 @@ export const theme = {
       backdrop: 'rgba(51, 47, 55, 0.4)',
       tint: 'rgb(109, 38, 227)',
     },
+    fonts: MD3DarkTheme.fonts,
   },
 } as const;
 

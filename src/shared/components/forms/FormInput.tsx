@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, StyleProp, TextStyle } from 'react-native';
 import { TextInput, TextInputProps } from 'react-native-paper';
 import {
   Control,
@@ -22,6 +22,8 @@ export interface FormInputProps<TFieldValues extends FieldValues>
   secureTextEntry?: boolean;
   rightIcon?: IconSource;
   onRightIconPress?: () => void;
+  mode?: 'flat' | 'outlined';
+  errorStyles?: StyleProp<TextStyle>;
 }
 
 const FormInput = <TFieldValues extends FieldValues>({
@@ -30,8 +32,11 @@ const FormInput = <TFieldValues extends FieldValues>({
   label,
   rules = {},
   secureTextEntry = false,
+  mode = 'outlined',
   rightIcon,
   onRightIconPress,
+  onChangeText,
+  errorStyles,
   ...inputProps
 }: FormInputProps<TFieldValues>) => {
   const { error: errorColor } = useThemeColor();
@@ -48,9 +53,14 @@ const FormInput = <TFieldValues extends FieldValues>({
         <>
           <TextInput
             label={label}
-            mode="outlined"
+            mode={mode}
             onBlur={onBlur}
-            onChangeText={onChange}
+            onChangeText={(text) => {
+              onChange(text); // Обновляем значение в react-hook-form
+              if (onChangeText) {
+                onChangeText(text); // Вызываем дополнительный обработчик
+              }
+            }}
             value={value}
             secureTextEntry={secureTextEntry}
             error={!!error}
@@ -66,7 +76,7 @@ const FormInput = <TFieldValues extends FieldValues>({
             style={styles.input}
             {...inputProps}
           />
-          <Text style={[styles.errorText, { color: errorColor }]}>
+          <Text style={[styles.errorText, { color: errorColor }, errorStyles]}>
             {!!error && error.message}
           </Text>
         </>

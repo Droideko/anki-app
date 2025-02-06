@@ -1,11 +1,14 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
+import sortByUpdatedAtDesc from '../utils/sortByUpdatedAtDesc';
+
 import { Deck } from '@shared/types/deck';
 import { useCategoriesStore } from '@shared/store/useCategoriesStore';
 import { useCategoryRepository } from '@features/categories/hooks/useCategoryRepository';
 import { useMountedState } from '@shared/hooks/useMountedState';
 import { NormalizedCategory } from '@shared/types/category';
+import { RepositoryError } from '@shared/utils/errorHandler';
 
 interface UseFetchCategoriesResult {
   loading: boolean;
@@ -13,6 +16,8 @@ interface UseFetchCategoriesResult {
   categories: NormalizedCategory[];
   decks: Deck[];
 }
+
+const EMPTY_CATEGORIES_AND_DECKS = { categories: [], decks: [] };
 
 export function useFetchCategories(
   categoryId?: number,
@@ -40,10 +45,13 @@ export function useFetchCategories(
         } else {
           await getCategories();
         }
-      } catch (err: any) {
+      } catch (error) {
         if (isMounted()) {
-          console.error('Ошибка при загрузке категорий:', err);
-          setError(err);
+          if (error instanceof RepositoryError) {
+            setError(error);
+          } else {
+            setError(new Error('Something was wrong'));
+          }
         }
       } finally {
         if (isMounted()) {
@@ -53,53 +61,40 @@ export function useFetchCategories(
     };
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId]);
 
   const { categories, decks } = useMemo(() => {
     if (loading || error) {
-      return { categories: [], decks: [] };
+      return EMPTY_CATEGORIES_AND_DECKS;
     }
-
-    let categoryList: NormalizedCategory[] = [];
-    let deckList: Deck[] = [];
 
     if (typeof categoryId === 'number') {
       const category = categoriesById[categoryId];
 
-      if (category) {
-        // Получаем подкатегории
-        categoryList = category.childIds.map(
-          (childId) => categoriesById[childId],
-        );
-
-        // Получаем колоды, связанные с категорией
-        deckList = category.deckIds
-          .map((deckId) => decksById[deckId])
-          .filter(Boolean); // Исключаем undefined, если какие-то колоды не найдены
-      } else {
-        return { categories: [], decks: [] };
+      if (!category) {
+        return EMPTY_CATEGORIES_AND_DECKS;
       }
-    } else {
-      // Если нет categoryId, получаем корневые категории
-      categoryList = rootCategoryIds.map((id) => categoriesById[id]);
 
-      // Опционально: получить колоды без категории (если такие есть)
-      deckList = Object.values(decksById).filter((deck) => !deck.categoryId);
+      const categoryList = category.childIds.map((id) => categoriesById[id]);
+      const deckList = category.deckIds.map((id) => decksById[id]);
+
+      categoryList.sort(sortByUpdatedAtDesc);
+      deckList.sort(sortByUpdatedAtDesc);
+
+      return { categories: categoryList, decks: deckList };
     }
 
-    // Сортируем категории и колоды по updatedAt
-    categoryList.sort(
-      (a, b) =>
-        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
-    );
+    const categoryList = rootCategoryIds.map((id) => categoriesById[id]);
+    categoryList.sort(sortByUpdatedAtDesc);
 
-    deckList.sort(
-      (a, b) =>
-        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
-    );
-
-    return { categories: categoryList, decks: deckList };
+    return { categories: categoryList, decks: [] };
   }, [categoriesById, decksById, rootCategoryIds, categoryId, loading, error]);
 
-  return { loading, error, categories, decks };
+  return {
+    loading,
+    error,
+    categories,
+    decks,
+  };
 }

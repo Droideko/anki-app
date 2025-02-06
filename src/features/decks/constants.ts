@@ -1,5 +1,8 @@
-// export const DEFAULT_CREATE_DECK_VALUES = {
-//   name: '',
-// } as const;
+import { Dimensions } from 'react-native';
 
-// export type CreateDeckData = typeof DEFAULT_CREATE_DECK_VALUES;
+const screenWidth = Dimensions.get('window').width;
+const paddingHorizontal = 20;
+const numColumns = 2;
+const gap = 16;
+const availableWidth = screenWidth - paddingHorizontal * 2;
+export const cardWidth = (availableWidth - gap) / numColumns;

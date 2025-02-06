@@ -1,15 +1,9 @@
-import React, { forwardRef, Ref } from 'react';
-import { useRouter } from 'expo-router';
-import { StyleSheet, TouchableHighlight } from 'react-native';
+import React from 'react';
 
 import SubcategoryAddItem from './SubcategoryAddItem';
-import SubcategoryCard from './SubcategoryCard';
+import SubcategoryTouchable from './SubcategoryTouchable';
 
-import {
-  ADD_SUBCATEGORY_ITEM,
-  ITEM_SPACING,
-  ITEM_WIDTH,
-} from '@features/categories/constants';
+import { ADD_SUBCATEGORY_ITEM } from '@features/categories/constants';
 import {
   NormalizedCategory,
   SubCategoryItemType,
@@ -18,46 +12,14 @@ import {
 type SubcategoryItemProps = {
   parentCategoryId: NormalizedCategory['id'];
   item: SubCategoryItemType;
-  onLongPress: () => void;
 };
 
-function SubcategoryItemInner(
-  { parentCategoryId, item, onLongPress }: SubcategoryItemProps,
-  ref: Ref<TouchableHighlight>,
-) {
-  const router = useRouter();
-
+function SubcategoryItem({ parentCategoryId, item }: SubcategoryItemProps) {
   if (item.id === ADD_SUBCATEGORY_ITEM.id) {
     return <SubcategoryAddItem parentCategoryId={parentCategoryId} />;
   }
 
-  return (
-    <TouchableHighlight
-      ref={ref}
-      style={styles.subcategoryItem}
-      onLongPress={onLongPress}
-      onPress={() => {
-        const pathname =
-          item.type === 'CATEGORY'
-            ? `/categories/${item.id}`
-            : `/categories/${parentCategoryId}/decks/${item.id}`;
-        router.push({ pathname, params: { name: item.name } });
-      }}
-    >
-      <SubcategoryCard item={item} />
-    </TouchableHighlight>
-  );
+  return <SubcategoryTouchable item={item} />;
 }
 
-const SubcategoryItem = forwardRef<TouchableHighlight, SubcategoryItemProps>(
-  SubcategoryItemInner,
-);
-
 export default SubcategoryItem;
-
-const styles = StyleSheet.create({
-  subcategoryItem: {
-    marginRight: ITEM_SPACING,
-    width: ITEM_WIDTH,
-  },
-});

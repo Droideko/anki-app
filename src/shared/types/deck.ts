@@ -1,3 +1,5 @@
+import { Card } from '@shared/store/useCardsStore';
+
 export interface Deck {
   id: number;
   name: string;
@@ -7,6 +9,14 @@ export interface Deck {
   createdAt: string;
   updatedAt: string;
   type: 'DECK';
+}
+
+export interface DeckWithCardIds extends Deck {
+  cardIds?: number[];
+}
+
+export interface DeckWithCards extends Deck {
+  cards: Card[];
 }
 
 export type DeckFormData = {

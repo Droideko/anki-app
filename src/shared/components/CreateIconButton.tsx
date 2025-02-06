@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconButtonProps } from 'react-native-paper';
-import { Link } from 'expo-router';
+import { Href, Link } from 'expo-router';
 import { Pressable } from 'react-native';
 
 import ThemedIconButton from '@shared/components/ui/ThemedIconButton';
@@ -9,7 +9,7 @@ export default function CreateIconButton({
   href,
   style,
   size,
-}: Pick<IconButtonProps, 'style' | 'size'> & { href: string }) {
+}: Pick<IconButtonProps, 'style' | 'size'> & { href: Href }) {
   return (
     <Link href={href} asChild>
       <Pressable>
@@ -18,5 +18,3 @@ export default function CreateIconButton({
     </Link>
   );
 }
-
-// Остановился на моменте использование модалок, и куда поместить компонент с модальным окном? Возможно стоит использовать состояние (цуштанд)

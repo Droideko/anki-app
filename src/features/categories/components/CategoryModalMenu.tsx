@@ -36,6 +36,7 @@ export default function CategoryModalMenu({ scale }: CategoryModalMenuProps) {
 
   const animatedMenuStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.3)',
   }));
 
   return (
@@ -57,15 +58,10 @@ export default function CategoryModalMenu({ scale }: CategoryModalMenuProps) {
 }
 
 const styles = StyleSheet.create({
-  // eslint-disable-next-line react-native/no-color-literals
   menu: {
     borderRadius: 5,
     elevation: 5,
     position: 'absolute',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
     width: 150,
   },
 });

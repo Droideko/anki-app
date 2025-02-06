@@ -3,6 +3,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
     'plugin:react-native/all',
     'plugin:prettier/recommended',
     'prettier',
@@ -14,6 +15,7 @@ module.exports = {
     },
     ecmaVersion: 2021,
     sourceType: 'module',
+    project: './tsconfig.json',
   },
   plugins: [
     'boundaries',
@@ -32,6 +34,10 @@ module.exports = {
         pattern: 'src/shared/**',
       },
       {
+        type: 'pages',
+        pattern: 'src/pages/**',
+      },
+      {
         type: 'feature',
         pattern: 'src/features/*/**',
         capture: ['featureName'],
@@ -43,15 +49,33 @@ module.exports = {
     ],
     'import/resolver': {
       node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        extensions: [
+          '.js',
+          '.jsx',
+          '.ts',
+          '.tsx',
+          '.native.ts',
+          '.web.ts',
+          '.native.tsx',
+          '.web.tsx',
+        ],
       },
       alias: {
         map: [
           ['@features', './src/features'],
           ['@shared', './src/shared'],
-          // ['@app', './app'],
+          ['@pages', './src/pages'],
         ],
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        extensions: [
+          '.js',
+          '.jsx',
+          '.ts',
+          '.tsx',
+          '.native.ts',
+          '.web.ts',
+          '.native.tsx',
+          '.web.tsx',
+        ],
       },
     },
     react: {
@@ -69,7 +93,8 @@ module.exports = {
         ignoreRestSiblings: false,
         argsIgnorePattern: '^_',
         varsIgnorePattern: '^_',
-        ignoreImports: true,
+        destructuredArrayIgnorePattern: '^_',
+        caughtErrors: 'all',
       },
     ],
     'react/prop-types': 'off',
@@ -80,6 +105,8 @@ module.exports = {
     'prettier/prettier': 'warn',
     'boundaries/no-unknown': 'error',
     'boundaries/no-unknown-files': 'error',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'error',
     'boundaries/element-types': [
       'error',
       {
@@ -97,8 +124,12 @@ module.exports = {
             ],
           },
           {
-            from: 'app',
+            from: 'pages',
             allow: ['shared', 'feature'],
+          },
+          {
+            from: 'app',
+            allow: ['shared', 'feature', 'pages'],
           },
         ],
       },

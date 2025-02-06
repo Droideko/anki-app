@@ -2,43 +2,19 @@ import React, { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
-import { PaperProvider } from 'react-native-paper';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
-import ThemeProvider, { useTheme } from '@shared/contexts/CustomThemeProvide';
-import GlobalSnackbar from '@shared/components/GlobalSnackbar';
-import { SQLiteProvider } from '@shared/contexts/SQLiteProvider';
-import { SessionProvider } from '@shared/contexts/SessionProvider';
-import { useLanguageStore } from '@shared/store/useLanguageStore';
 import 'react-native-reanimated';
+
+import GlobalSnackbar from '@shared/components/GlobalSnackbar';
+import { useLanguageStore } from '@shared/store/useLanguageStore';
+import Providers from '@shared/contexts/providers';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-function Stacks() {
-  return (
-    <Stack>
-      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="drawer" options={{ headerShown: false }} />
-      <Stack.Screen name="+not-found" />
-    </Stack>
-  );
-}
-
-function Layout({ children }: { children: React.ReactNode }) {
-  const { theme } = useTheme();
-
-  return (
-    <PaperProvider theme={theme}>
-      <SafeAreaProvider>
-        <SQLiteProvider>
-          <SessionProvider>{children}</SessionProvider>
-        </SQLiteProvider>
-      </SafeAreaProvider>
-    </PaperProvider>
-  );
-}
+// SplashScreen.setOptions({
+//   duration: 3000,
+//   fade: true,
+// });
 
 export default function RootLayout() {
   // useEffect(() => {
@@ -102,7 +78,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     initializeLanguage();
-  }, []);
+  }, [initializeLanguage]);
 
   useEffect(() => {
     if (loaded) {
@@ -115,11 +91,17 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider>
-      <Layout>
-        <Stacks />
-        <GlobalSnackbar />
-      </Layout>
-    </ThemeProvider>
+    <Providers>
+      <Stack>
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="review"
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      <GlobalSnackbar />
+    </Providers>
   );
 }

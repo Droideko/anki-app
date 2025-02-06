@@ -23,8 +23,8 @@ export default function SubcategoryAddItem({
       style={styles.subcategoryItem}
       onPress={() => {
         router.push({
-          pathname: `/categories/${parentCategoryId}/create-deck-or-subcategory`,
-          // params: { parentCategoryId },
+          pathname: `/categories/[id]/create-deck-or-subcategory`,
+          params: { id: parentCategoryId },
         });
       }}
     >

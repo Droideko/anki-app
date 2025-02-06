@@ -1,20 +1,26 @@
 import NetInfo from '@react-native-community/netinfo';
-import { useSQLiteContext } from 'expo-sqlite';
+// import { useSQLiteContext } from 'expo-sqlite';
 
 // import { deckService } from '@shared/api/apiService';
 import { useUserStore } from '@shared/store/useUserStore';
-import isWeb from '@shared/utils/isWeb';
 import { useCategoriesStore } from '@shared/store/useCategoriesStore';
 import { Deck, DeckFormData } from '@shared/types/deck';
 import saveDeckToSQLite from '@shared/db/deck/saveDeckToSQLite';
 import getDeckFromSQLite from '@shared/db/deck/getDeckFromSQLite';
 import { deckService } from '@shared/api/deckService';
+import useGetSQLiteContext from '@shared/utils/isWeb/useGetSQLiteContext';
 
 export const useDeckRepository = () => {
-  const db = isWeb() ? null : useSQLiteContext();
+  // const db = isWeb() ? null : useSQLiteContext();
+
+  const db = useGetSQLiteContext();
+
   const { user } = useUserStore();
-  const { addDeck, updateDeckInStore, deleteDeckFromStore } =
-    useCategoriesStore();
+  const {
+    addDeck,
+    updateDeck: updateDeckInStore,
+    deleteDeck: deleteDeckFromStore,
+  } = useCategoriesStore();
 
   // const getDecks = async (): Promise<Deck[]> => {
   //   const networkState = await NetInfo.fetch();
@@ -76,8 +82,7 @@ export const useDeckRepository = () => {
 
     if (networkState.isConnected) {
       try {
-        const response = await deckService.getDeck(id);
-        const deck = response.data;
+        const deck = await deckService.getDeck(id);
 
         if (db) {
           await saveDeckToSQLite(db, deck);
@@ -113,6 +118,8 @@ export const useDeckRepository = () => {
   };
 
   const createDeck = async (data: DeckFormData): Promise<Deck> => {
+    console.log('createDeck');
+
     if (!user?.id) {
       throw new Error('Пользователь не авторизован');
     }
@@ -121,8 +128,7 @@ export const useDeckRepository = () => {
 
     if (networkState.isConnected) {
       try {
-        const response = await deckService.createDeck(data);
-        const deck = response.data;
+        const deck = await deckService.createDeck(data);
 
         if (db) {
           await saveDeckToSQLite(db, deck);
@@ -234,51 +240,51 @@ export const useDeckRepository = () => {
   //   }
   // };
 
-  // const deleteDeck = async (id: number): Promise<void> => {
-  //   const networkState = await NetInfo.fetch();
+  const deleteDeck = async (id: number): Promise<void> => {
+    const networkState = await NetInfo.fetch();
 
-  //   if (networkState.isConnected) {
-  //     try {
-  //       await apiService.deleteDeck(id);
+    if (networkState.isConnected) {
+      try {
+        await apiService.deleteDeck(id);
 
-  //       // Удаляем колоду из SQLite
-  //       if (db) {
-  //         await deleteDeckFromSQLite(db, id);
-  //       }
+        // Удаляем колоду из SQLite
+        if (db) {
+          await deleteDeckFromSQLite(db, id);
+        }
 
-  //       // Обновляем Zustand-хранилище
-  //       deleteDeckFromStore(id);
-  //     } catch (error: any) {
-  //       throw new Error(
-  //         "Ошибка при удалении колоды на сервере: " + error.message
-  //       );
-  //     }
-  //   } else {
-  //     try {
-  //       if (!db) {
-  //         throw new Error("Браузер не поддерживается");
-  //       }
+        // Обновляем Zustand-хранилище
+        deleteDeckFromStore(id);
+      } catch (error: any) {
+        throw new Error(
+          'Ошибка при удалении колоды на сервере: ' + error.message,
+        );
+      }
+    } else {
+      try {
+        if (!db) {
+          throw new Error('Браузер не поддерживается');
+        }
 
-  //       // Удаляем колоду из SQLite
-  //       await deleteDeckFromSQLite(db, id);
+        // Удаляем колоду из SQLite
+        await deleteDeckFromSQLite(db, id);
 
-  //       // Обновляем Zustand-хранилище
-  //       deleteDeckFromStore(id);
+        // Обновляем Zustand-хранилище
+        deleteDeckFromStore(id);
 
-  //       // Добавляем в очередь синхронизации, если требуется
-  //     } catch (error: any) {
-  //       throw new Error(
-  //         "Ошибка при удалении колоды в офлайн-режиме: " + error.message
-  //       );
-  //     }
-  //   }
-  // };
+        // Добавляем в очередь синхронизации, если требуется
+      } catch (error: any) {
+        throw new Error(
+          'Ошибка при удалении колоды в офлайн-режиме: ' + error.message,
+        );
+      }
+    }
+  };
 
   return {
     // getDecks,
     getDeck,
     createDeck,
     // updateDeck,
-    // deleteDeck,
+    deleteDeck,
   };
 };

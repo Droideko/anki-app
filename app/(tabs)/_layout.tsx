@@ -15,9 +15,10 @@ export default function TabLayout() {
         tabBarActiveBackgroundColor: background,
         tabBarInactiveBackgroundColor: background,
         headerShown: false,
+        tabBarHideOnKeyboard: true,
         tabBarStyle: {
           // borderTopColor: "red",
-          backgroundColor: background, // TODO сделать немного другой бэк (добавить более светлый глобальный бэк)
+          backgroundColor: background,
         },
       }}
     >
@@ -47,21 +48,6 @@ export default function TabLayout() {
           ),
         }}
       />
-
-      <Tabs.Screen
-        name="decks"
-        options={{
-          title: `${i18n.t('tabs.decks')}`, // NOT NEED (just example)
-          headerShown: false, // NOT NEED (just example)
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? 'folder-open' : 'folder-open-outline'}
-              color={color}
-            />
-          ),
-        }}
-      />
-
       <Tabs.Screen
         name="settings"
         options={{

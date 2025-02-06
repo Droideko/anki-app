@@ -20,7 +20,7 @@ import { CreateCategoryData } from '@features/categories/types';
 
 export default function SubcategoryContentCreation() {
   const { createCategory } = useCategoryRepository();
-  const { id } = useLocalSearchParams();
+  const { id: parentId } = useLocalSearchParams();
   const router = useRouter();
 
   const { control, handleSubmit } = useForm<CreateCategoryData>({
@@ -29,18 +29,18 @@ export default function SubcategoryContentCreation() {
   const { showSnackbar } = useSnackbarStore();
 
   const [state, onSubmit] = useAsyncFn(async (data: CreateCategoryData) => {
-    const category = await createCategory({
+    const { name, id } = await createCategory({
       ...data,
-      parentId: Number(id), // TODO подумать перенаправление когда parentCategoryId === 'undefined
+      parentId: Number(parentId),
     });
     showSnackbar(
-      `Subcategory '${category.name}' has been successful created`,
+      `Subcategory '${name}' has been successful created`,
       SNACKBAR_TYPE.SUCCESS,
     );
 
     router.replace({
-      pathname: `/categories/${category.id}`,
-      params: { name: category.name },
+      pathname: `/categories/[id]`,
+      params: { id: String(id), name },
     });
   }, []);
 

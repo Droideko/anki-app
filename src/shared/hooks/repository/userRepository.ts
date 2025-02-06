@@ -1,12 +1,11 @@
 import NetInfo from '@react-native-community/netinfo';
-import { useSQLiteContext } from 'expo-sqlite';
 
+import useGetSQLiteContext from '@shared/utils/isWeb/useGetSQLiteContext';
 import {
   deleteTokens,
   getAccessToken,
   saveTokens,
 } from '@shared/utils/authTokens';
-import isWeb from '@shared/utils/isWeb';
 import { useUserStore } from '@shared/store/useUserStore';
 import { User } from '@shared/types/auth';
 import { LoginFormData, SignUpFormData } from '@shared/types/category';
@@ -15,7 +14,8 @@ import { handleRepositoryError } from '@shared/utils/errorHandler';
 
 export const useUserRepository = () => {
   const { setUser, clearUser } = useUserStore();
-  const db = isWeb() ? null : useSQLiteContext();
+  const db = useGetSQLiteContext();
+
   const isAuthenticated = async (): Promise<boolean> => {
     const token = await getAccessToken();
     return token !== null;
@@ -84,7 +84,6 @@ export const useUserRepository = () => {
           'SELECT * FROM User WHERE email = ?;',
           loginData.email,
         );
-
         if (result) {
           // Проверяем пароль, если он хранится локально (хранение пароля в БД не рекомендуется)
           // Дополнительная логика проверки пароля может быть здесь
@@ -106,7 +105,7 @@ export const useUserRepository = () => {
 
     // Очищаем данные пользователя из локальной базы данных
     if (db) {
-      await db.runAsync('DELETE FROM User;');
+      // await db.runAsync('DELETE FROM User;');
     }
 
     clearUser();
@@ -143,7 +142,6 @@ export const useUserRepository = () => {
         const result = await db.getFirstAsync<User>(
           'SELECT * FROM User LIMIT 1;',
         );
-
         if (result) {
           setUser(result);
           return result;

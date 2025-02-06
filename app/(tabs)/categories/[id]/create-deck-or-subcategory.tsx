@@ -39,9 +39,4 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  iconCreate: {
-    bottom: 0,
-    position: 'absolute',
-    right: 0,
-  },
 });

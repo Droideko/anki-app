@@ -14,18 +14,23 @@ import { ThemedView } from '@shared/components/ui/ThemedView';
 import { Text } from '@shared/components/ui/ThemedText';
 
 export default function DeleteModal() {
-  const { isDeleteModalVisible, hideDeleteModal, selectedCategory } =
+  const { isDeleteModalVisible, hideDeleteModal, selectedItem } =
     useModalStore();
 
-  const { deleteCategory } = useCategoryRepository();
+  const { deleteCategory, deleteDeck } = useCategoryRepository();
   const { error, primary, background, border } = useThemeColor();
 
   const onDelete = async () => {
     try {
-      if (selectedCategory === null) {
-        throw new Error('Selected category is null');
+      if (selectedItem === null) {
+        throw new Error('Selected item is null');
       }
-      await deleteCategory(selectedCategory.id);
+
+      if (selectedItem.type === 'DECK') {
+        await deleteDeck(selectedItem.id);
+      } else {
+        await deleteCategory(selectedItem.id);
+      }
     } catch (error: unknown) {
       console.error(error);
     } finally {
@@ -33,7 +38,7 @@ export default function DeleteModal() {
     }
   };
 
-  if (!isDeleteModalVisible || !selectedCategory) {
+  if (!isDeleteModalVisible || !selectedItem) {
     return null;
   }
 
@@ -53,7 +58,7 @@ export default function DeleteModal() {
             pointerEvents="box-none"
           >
             <Text style={styles.deleteModalText}>
-              Delete &quot;{selectedCategory.name}&quot;?
+              Delete &quot;{selectedItem.name}&quot;?
             </Text>
             <View style={styles.deleteModalButtons}>
               <TouchableOpacity

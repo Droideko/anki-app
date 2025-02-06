@@ -31,9 +31,10 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "softwareKeyboardLayoutMode": "pan",
       "userInterfaceStyle": "automatic",
-      "package": "com.yourapp",
-      "googleServicesFile": "./google-services.json"
+      "package": "com.yourapp"
+      // "googleServicesFile": "./google-services.json" // TODO: Firebase
     },
     "web": {
       "bundler": "metro",
