@@ -32,4 +32,8 @@ export const cardsService = {
     handleApiRequest(
       apiClient.patch<Card[]>(API_ENDPOINTS.DECKS.DETAIL(id), data),
     ),
+  updateCard: async (id: number, data: UpdateCardDto) =>
+    handleApiRequest(
+      apiClient.patch<Card>(API_ENDPOINTS.CARDS.DETAIL(id), data),
+    ),
 };

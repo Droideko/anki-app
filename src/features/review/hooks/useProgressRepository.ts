@@ -1,5 +1,3 @@
-// import { srsService } from '@/api/srsService'; // Например, ваш сервис для Progress
-
 import withErrorHandling from '@features/categories/utils/withErrorHandling';
 import { progressService } from '@shared/api/progressService';
 import { Progress, useProgressStore } from '@shared/store/useProgressStore';
@@ -17,16 +15,26 @@ export const useProgressRepository = () => {
   const syncProgress = async () => {
     // 1. Получаем из SQLite все dirty-записи
     // const dirty = await progressSQLiteService.getDirtyProgress();
-    const dirty = Object.values(progressByCardId).filter((p) => p.dirty);
+    const dirtyProgress = Object.values(progressByCardId).filter(
+      (p) => p.dirty,
+    );
 
-    if (!dirty.length) return;
+    console.log(dirtyProgress);
+
+    if (!dirtyProgress.length) return;
 
     // 2. Отправляем одним запросом на сервер
     // Предположим, что сервер принимает массив
 
-    console.log('syncProgress', dirty);
+    console.log('syncProgress', dirtyProgress);
 
-    const updated = await progressService.batchProgress({ items: dirty });
+    const updatedProgress = await progressService.batchProgress({
+      items: dirtyProgress,
+    });
+
+    console.log(updatedProgress);
+
+    setProgress(updatedProgress);
 
     // // 3. Обновляем локально (Zustand + SQLite) записи, убирая dirty
     // // Предположим, что сервер вернул актуальные объекты

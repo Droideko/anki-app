@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 
 import { useProgressRepository } from '../hooks/useProgressRepository';
 
@@ -9,6 +9,10 @@ import ThemedButton from '@shared/components/ui/ThemedButton';
 
 export default function ReviewCompletedPage() {
   const { syncProgress } = useProgressRepository();
+  const { name, deckId } = useLocalSearchParams<{
+    name: string;
+    deckId: string;
+  }>();
 
   useEffect(() => {
     syncProgress();
@@ -33,6 +37,7 @@ export default function ReviewCompletedPage() {
         <ThemedButton
           style={styles.button}
           onPress={() => {
+            syncProgress();
             router.back();
           }}
         >
@@ -42,7 +47,7 @@ export default function ReviewCompletedPage() {
           style={styles.button}
           onPress={() => {
             syncProgress();
-            /* Navigate to continue learning */
+            router.replace(`/review/${deckId}?name=${name}`);
           }}
         >
           <Text>Continue</Text>
@@ -55,6 +60,7 @@ export default function ReviewCompletedPage() {
 const styles = StyleSheet.create({
   button: {
     flex: 1,
+    marginBottom: 0,
   },
   buttonContainer: {
     flexDirection: 'row',

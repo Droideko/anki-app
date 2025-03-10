@@ -7,13 +7,15 @@ import { useThemeColor } from '@shared/hooks/useThemeColor';
 import { useModalStore } from '@shared/store/useModalStore';
 import { Text } from '@shared/components/ui/ThemedText';
 import { useCardsRepository } from '@features/decks/hooks/useCardsRepository';
+import { useSelectStore } from '@shared/store/useSelectStore';
 
 function CardModalMenuContent() {
   const { error } = useThemeColor();
   const { hideModal, selectedItem } = useModalStore();
-  const { removeCard } = useCardsRepository();
+  const { removeCard, reverseCard } = useCardsRepository();
+  const { selectCard } = useSelectStore();
 
-  const { id, deckId } = useLocalSearchParams<{
+  const { deckId } = useLocalSearchParams<{
     id: string;
     deckId: string;
   }>();
@@ -40,9 +42,8 @@ function CardModalMenuContent() {
     }
 
     router.push({
-      pathname: `/categories/[id]/decks/[deckId]/create-card`,
+      pathname: `/deck/[deckId]/card/create`,
       params: {
-        id: id,
         deckId: deckId,
         action: 'edit',
         cardId: selectedItem.id,
@@ -50,11 +51,38 @@ function CardModalMenuContent() {
     });
   };
 
+  const onReverse = async () => {
+    if (!selectedItem) return;
+
+    try {
+      await reverseCard(selectedItem.id);
+    } catch (error: unknown) {
+      console.error(error);
+    } finally {
+      hideModal();
+    }
+  };
+
+  const onSelect = () => {
+    if (!selectedItem) return;
+
+    hideModal();
+    selectCard(selectedItem.id);
+  };
+
   return (
     <>
+      <Pressable style={styles.item} onPress={onSelect}>
+        <Text variant="bodyMedium">Select</Text>
+        <Icon size={25} source="check-circle-outline" />
+      </Pressable>
       <Pressable style={styles.item} onPress={onEdit}>
         <Text variant="bodyMedium">Edit</Text>
         <Icon size={25} source="pencil" />
+      </Pressable>
+      <Pressable style={styles.item} onPress={onReverse}>
+        <Text variant="bodyMedium">Reverse</Text>
+        <Icon size={25} source="swap-horizontal" />
       </Pressable>
       <Divider />
       <Pressable style={styles.item} onPress={onDelete}>

@@ -73,6 +73,7 @@ function ReviewShowAnswer({
 const styles = StyleSheet.create({
   button: {
     flex: 1,
+    marginBottom: 0,
     marginTop: 0,
   },
   container: {

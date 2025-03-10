@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react';
 
+import createNewProgress from '../utils/createNewProgress';
+
 import { useProgressRepository } from './useProgressRepository';
 
 import { Card } from '@shared/store/useCardsStore';
@@ -7,24 +9,32 @@ import { Progress, useProgressStore } from '@shared/store/useProgressStore';
 import updateSrs, { Rating, RATING_MAPPER } from '@shared/utils/updateSrs';
 import { useUserStore } from '@shared/store/useUserStore';
 
-const createNewProgress = (cardId: number, userId: number) => {
-  const tempId = Date.now();
+const getTimeProgress = (progress: Progress): number => {
+  if (!progress?.nextReview) return 0;
+  return new Date(progress.nextReview).getTime();
+};
 
-  const newProgress: Progress = {
-    id: Number(tempId),
-    userId,
-    cardId,
-    easeFactor: 2.5,
-    repetition: 0,
-    interval: 0,
-    studyProgress: 0,
-    lastReviewed: null,
-    nextReview: null,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    dirty: true,
-  };
-  return newProgress;
+const getSortedCards = (
+  cards: Card[],
+  progressByCardId: Record<number, Progress>,
+) => {
+  const now = new Date();
+
+  const dueCards = cards.filter((card) => {
+    const progress = progressByCardId[card.id];
+    if (!progress) return true;
+    if (!progress.nextReview) return true;
+    return new Date(progress.nextReview) <= now;
+  });
+
+  const cardsToReview = dueCards.length > 0 ? dueCards : cards;
+
+  return cardsToReview.sort((cardA, cardB) => {
+    const nextReviewA = getTimeProgress(progressByCardId[cardA.id]);
+    const nextReviewB = getTimeProgress(progressByCardId[cardB.id]);
+
+    return nextReviewA - nextReviewB;
+  });
 };
 
 const useReview = (initialCards: Card[]) => {
@@ -32,11 +42,12 @@ const useReview = (initialCards: Card[]) => {
   const { saveProgressLocally } = useProgressRepository();
   const { user } = useUserStore();
 
-  const [reviewCards, setReviewCards] = useState<Card[]>(() => [
-    ...initialCards,
-  ]);
-
   const [index, setIndex] = useState<number>(0);
+
+  const [reviewCards, setReviewCards] = useState<Card[]>(() => {
+    const sortedCards = getSortedCards(initialCards, progressByCardId);
+    return [...sortedCards];
+  });
 
   const currentCard = reviewCards[index];
 

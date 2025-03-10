@@ -3,7 +3,7 @@ import React from 'react';
 
 import ReviewCards from './ReviewCards';
 
-import useFetchDeckCards from '@features/decks/hooks/useFetchDeckCards';
+import useFetchDeckCards from '@shared/hooks/useFetchDeckCards';
 import { Text } from '@shared/components/ui/ThemedText';
 
 export default function ReviewContent() {

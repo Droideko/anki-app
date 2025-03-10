@@ -3,6 +3,10 @@ export type User = {
   id: string;
   name: string;
   email: string;
+  nativeLanguage?: string;
+  targetLanguage?: string;
+  languageLevel?: string;
+  isFirstLogin: boolean;
 };
 
 export type Tokens = {

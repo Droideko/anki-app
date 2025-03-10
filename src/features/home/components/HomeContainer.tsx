@@ -1,13 +1,28 @@
 import React from 'react';
-import { Text } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
+import { router } from 'expo-router';
 
 import ScrollView from '@shared/components/ScrollView';
 import { ThemedView } from '@shared/components/ui/ThemedView';
 import { WaveIconWrapper } from '@shared/components/WaveIconWrapper';
 import CreateIconButton from '@shared/components/CreateIconButton';
+import { useAsync } from '@shared/hooks/useAsync';
+import { useUserRepository } from '@shared/hooks/repository/userRepository';
+import { useUserStore } from '@shared/store/useUserStore';
 
 function HomeContainer() {
+  const { user } = useUserStore();
+  const { finishFirstLogin } = useUserRepository();
+
+  console.log(user);
+
+  useAsync(async () => {
+    if (user?.isFirstLogin) {
+      await finishFirstLogin();
+      router.push('/(wizard)/steps/step1');
+    }
+  }, [user?.isFirstLogin]);
+
   return (
     <ScrollView>
       <ThemedView>

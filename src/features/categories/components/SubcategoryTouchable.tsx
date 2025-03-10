@@ -26,20 +26,32 @@ export default function SubcategoryTouchable({
     });
   };
 
-  const onPress = () => {
-    const pathname =
-      item.type === 'CATEGORY'
-        ? '/(tabs)/categories/[id]'
-        : '/(tabs)/categories/[id]/decks/[deckId]';
+  const onPress = (item: SubCategoryItemTypeWithoutAddSubcategory) => {
+    if (item.type === 'CATEGORY') {
+      router.push({
+        pathname: '/(tabs)/categories/[id]',
+        params: { name: item.name, id: String(item.id) },
+      });
+      return;
+    }
 
     router.push({
-      pathname,
-      params: {
-        name: item.name,
-        id: String(item.id),
-        deckId: String(item.id),
-      },
+      pathname: '/deck/[deckId]',
+      params: { name: item.name, deckId: String(item.id) },
     });
+    // const pathname =
+    //   item.type === 'CATEGORY'
+    //     ? '/(tabs)/categories/[id]'
+    //     : '/(tabs)/categories/[id]/decks/[deckId]';
+
+    // router.push({
+    //   pathname,
+    //   params: {
+    //     name: item.name,
+    //     id: String(item.id),
+    //     deckId: String(item.id),
+    //   },
+    // });
   };
 
   return (
@@ -47,7 +59,7 @@ export default function SubcategoryTouchable({
       ref={elementRef}
       style={styles.subcategoryItem}
       onLongPress={() => onLongPress(item)}
-      onPress={onPress}
+      onPress={() => onPress(item)}
     >
       <SubcategoryCard item={item} />
     </TouchableHighlight>

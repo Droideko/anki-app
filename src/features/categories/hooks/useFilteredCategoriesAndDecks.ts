@@ -8,10 +8,10 @@ import { useCategoriesStore } from '@shared/store/useCategoriesStore';
 function useFilteredCategoriesAndDecks(
   searchQuery: string,
   categories: NormalizedCategory[],
-  decks?: Deck[],
+  decks: Deck[],
 ): {
   filteredCategories: NormalizedCategory[];
-  filteredDecks?: Deck[];
+  filteredDecks: Deck[];
 } {
   const { categoriesById, decksById } = useCategoriesStore(
     useShallow((state) => ({
@@ -27,7 +27,7 @@ function useFilteredCategoriesAndDecks(
 
     const lowercasedQuery = searchQuery.toLowerCase();
 
-    const filteredDecks = decks?.filter(
+    const filteredDecks = decks.filter(
       (deck) =>
         !deck.categoryId && deck.name.toLowerCase().includes(lowercasedQuery),
     );
@@ -42,7 +42,7 @@ function useFilteredCategoriesAndDecks(
           return category;
         }
 
-        const matchingChildIds = category.childIds.filter((childId) => {
+        const matchingSubcategoryIds = category.childIds.filter((childId) => {
           const childCategory = categoriesById[childId];
           return childCategory.name.toLowerCase().includes(lowercasedQuery);
         });
@@ -52,10 +52,10 @@ function useFilteredCategoriesAndDecks(
           return deck.name.toLowerCase().includes(lowercasedQuery);
         });
 
-        if (matchingChildIds.length > 0 || matchingDeckIds.length > 0) {
+        if (matchingSubcategoryIds.length > 0 || matchingDeckIds.length > 0) {
           return {
             ...category,
-            childIds: matchingChildIds,
+            childIds: matchingSubcategoryIds,
             deckIds: matchingDeckIds,
           };
         }

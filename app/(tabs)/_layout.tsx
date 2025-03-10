@@ -38,8 +38,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="categories"
         options={{
-          title: `Categories`, // NOT NEED (just example)
-          headerShown: false, // NOT NEED (just example)
+          title: `Categories`,
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               name={focused ? 'folder-open' : 'folder-open-outline'}

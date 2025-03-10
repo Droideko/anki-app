@@ -1,5 +1,5 @@
-import React from 'react';
-import { Redirect } from 'expo-router';
+import React, { useEffect } from 'react';
+import { Redirect, router } from 'expo-router';
 
 import { Text } from '@shared/components/ui/ThemedText';
 import useRenderChangedLanguage from '@shared/hooks/useRenderChangedLanguage';

@@ -14,6 +14,7 @@ import saveDeckToSQLite from '@shared/db/deck/saveDeckToSQLite';
 import deleteDeckFromSQLite from '@features/decks/services/deleteDeckFromSQLite';
 import getDeckFromSQLite from '@shared/db/deck/getDeckFromSQLite';
 import { UpdateCardDto } from '@shared/api/deckService';
+import getDecksFromSQLite from '@features/decks/services/getDecksFromSQLite';
 
 const useCategorySQLiteService = () => {
   const {
@@ -21,6 +22,7 @@ const useCategorySQLiteService = () => {
     addCategory,
     updateCategory: updateCategoryInStore,
     deleteCategory: deleteCategoryFromStore,
+    setDecks,
     addDeck,
     updateDeck: updateDeckInStore,
     deleteDeck: deleteDeckFromStore,
@@ -158,6 +160,24 @@ const useCategorySQLiteService = () => {
       return newDeck;
     });
 
+  // TODO !!!!!!!!!!!!!!!!!!!???????????????
+  const getDecks = async (): Promise<Deck[]> =>
+    withErrorHandling(async () => {
+      if (!db) {
+        throw new Error('Local database unavailable');
+      }
+
+      const decks = await getDecksFromSQLite(db);
+
+      const decksWithTimestamp = decks.map((deck) => ({
+        ...deck,
+        lastFetched: new Date().toISOString(),
+      }));
+
+      setDecks(decksWithTimestamp);
+      return decksWithTimestamp;
+    });
+
   const updateDeck = async (
     id: number,
     data: Partial<DeckFormData>,
@@ -212,6 +232,7 @@ const useCategorySQLiteService = () => {
     updateCategory,
     deleteCategory,
     deleteCategories,
+    getDecks,
     createDeck,
     updateDeck,
     deleteDeck,

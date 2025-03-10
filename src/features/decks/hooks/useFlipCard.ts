@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   useSharedValue,
   useAnimatedStyle,
@@ -5,13 +6,27 @@ import {
   interpolate,
   Extrapolation,
   useDerivedValue,
+  runOnJS,
+  useAnimatedReaction,
 } from 'react-native-reanimated';
 
 const useFlipCard = () => {
   const rotation = useSharedValue(0);
-  const isFlipped = useDerivedValue(() => {
+
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  // derived value
+  const rawIsFlipped = useDerivedValue(() => {
     return rotation.value > 0.5;
   });
+
+  useAnimatedReaction(
+    () => rawIsFlipped.value,
+    (flipped: boolean) => {
+      // в runOnJS можно дергать setState
+      runOnJS(setIsFlipped)(flipped);
+    },
+  );
 
   const frontAnimatedStyle = useAnimatedStyle(() => {
     const rotateY = interpolate(
@@ -50,6 +65,7 @@ const useFlipCard = () => {
     backAnimatedStyle,
     toggleFlip,
     isFlipped,
+    // isFlipped: isFlipped.value,
   };
 };
 

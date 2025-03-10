@@ -15,7 +15,7 @@ import { ThemedView } from '@shared/components/ui/ThemedView';
 
 export default function LogInPage() {
   return (
-    <ThemedView style={{ flex: 1 }}>
+    <ThemedView style={styles.container}>
       <KeyboardAvoidingContainer>
         <ScrollView style={styles.titleContainer}>
           <Text style={styles.title} variant="headlineMedium">
@@ -27,7 +27,7 @@ export default function LogInPage() {
           <GoogleButton />
           <AppleButton />
           <SignUpPrompt />
-          <TermsAndPrivacyNotice style={{ marginBottom: 20 }} />
+          <TermsAndPrivacyNotice style={styles.terms} />
         </ScrollView>
       </KeyboardAvoidingContainer>
     </ThemedView>
@@ -35,6 +35,12 @@ export default function LogInPage() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  terms: {
+    marginBottom: 20,
+  },
   title: {
     marginBottom: 16,
     textAlign: 'center',

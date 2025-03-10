@@ -1,20 +1,53 @@
 import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { Alert, Pressable, StyleSheet } from 'react-native';
 import { Divider, Icon } from 'react-native-paper';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
+
+import { useCategoryRepository } from '../hooks/useCategoryRepository';
 
 import { useThemeColor } from '@shared/hooks/useThemeColor';
 import { useModalStore } from '@shared/store/useModalStore';
 import { Text } from '@shared/components/ui/ThemedText';
+import isWeb from '@shared/utils/isWeb';
 
 function CategoryModalMenuContent() {
   const { error } = useThemeColor();
-  const { hideModal, showDeleteModal, selectedItem } = useModalStore();
+  const { hideModal, selectedItem } = useModalStore();
+  const { deleteCategory } = useCategoryRepository();
+  const { id } = useLocalSearchParams<{ id: string }>();
 
-  const onDelete = () => {
+  const onDelete = async () => {
     hideModal();
 
-    showDeleteModal(selectedItem);
+    if (isWeb()) {
+      const discard = confirm('Delete Category?');
+
+      if (discard) {
+        await deleteCategory(Number(id));
+      }
+      router.back();
+      return;
+    }
+
+    Alert.alert(
+      'Delete Category?',
+      'Deleting this category will also delete all nested categories and boards. This action cannot be undone.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+          onPress: () => {},
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            await deleteCategory(Number(id));
+            router.back();
+          },
+        },
+      ],
+    );
   };
 
   const onEdit = () => {

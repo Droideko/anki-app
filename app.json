@@ -34,7 +34,6 @@
       "softwareKeyboardLayoutMode": "pan",
       "userInterfaceStyle": "automatic",
       "package": "com.yourapp"
-      // "googleServicesFile": "./google-services.json" // TODO: Firebase
     },
     "web": {
       "bundler": "metro",
@@ -49,7 +48,9 @@
         {
           "iosUrlScheme": "com.googleusercontent.apps.784367259899-5elpilhf3t54srh89acugtbpvcauk30d"
         }
-      ]
+      ],
+      "expo-secure-store",
+      "expo-sqlite"
     ],
     "experiments": {
       "typedRoutes": true

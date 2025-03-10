@@ -1,28 +1,27 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
-import useSearchDebounce from '@shared/hooks/useSearchDebounce';
 import { Card } from '@shared/store/useCardsStore';
 
 const useDebouncedCards = (cards: Card[]) => {
-  const [searchQuery, debouncedSearch] = useSearchDebounce();
+  const [search, setSearch] = useState('');
 
   const filteredCards = useMemo(() => {
-    if (!searchQuery.trim()) {
+    if (!search.trim()) {
       return cards;
     }
 
-    const lowercasedQuery = searchQuery.toLowerCase();
+    const lowercasedQuery = search.toLowerCase();
 
     return cards.filter(
       ({ front, back }) =>
         front.toLowerCase().includes(lowercasedQuery) ||
         back.toLowerCase().includes(lowercasedQuery),
     );
-  }, [cards, searchQuery]);
+  }, [cards, search]);
 
   return {
     filteredCards,
-    debouncedSearch,
+    setSearch,
   };
 };
 

@@ -42,12 +42,12 @@ export const useProgressStore = create<ProgressState & ProgressActions>(
   (set) => ({
     progressByCardId: {},
     setProgress: (progresses) =>
-      set((state) => {
-        const newState = { ...state.progressByCardId };
+      set(({ progressByCardId }) => {
+        const newProgressByCardId = { ...progressByCardId };
         for (const p of progresses) {
-          newState[p.cardId] = p;
+          newProgressByCardId[p.cardId] = p;
         }
-        return { progressByCardId: newState };
+        return { progressByCardId: newProgressByCardId };
       }),
     updateProgress: (progress) =>
       set((state) => ({

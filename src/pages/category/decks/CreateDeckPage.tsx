@@ -1,15 +1,7 @@
 import React, { useEffect } from 'react';
 import { Alert, StyleSheet } from 'react-native';
-// import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useFieldArray, useForm } from 'react-hook-form';
-
-// import Animated, {
-//   useSharedValue,
-//   useAnimatedStyle,
-//   withTiming,
-// } from 'react-native-reanimated';
-// import { SafeAreaView } from 'react-native-safe-area-context';
 
 // import {
 //   KeyboardAwareScrollView,
@@ -22,11 +14,12 @@ import DeckCardsContainer, {
   CardFormValues,
 } from '@features/decks/components/DeckCardsContainer';
 import KeyboardAvoidingContainer from '@shared/components/KeyboardAvoidingContainer';
-import useFetchDeckCards from '@features/decks/hooks/useFetchDeckCards';
+import useFetchDeckCards from '@shared/hooks/useFetchDeckCards';
 import buildPayload from '@features/decks/utils/buildPayloadCards';
 import usePreventRemoveCards from '@features/decks/hooks/usePreventRemoveCards';
 import { useCardsRepository } from '@features/decks/hooks/useCardsRepository';
 import getFilteredCard from '@features/decks/utils/getFilteredCard';
+import GenerateButton from '@features/decks/components/GenerateButton';
 
 export default function CreateDeckPage() {
   const { deckId, action } = useLocalSearchParams<{
@@ -76,7 +69,7 @@ export default function CreateDeckPage() {
         options={{
           headerShown: true,
           // headerBackButtonMenuEnabled: false,
-          headerTitle: 'Create Card',
+          headerTitle: () => <GenerateButton deckId={deckId} />,
           headerRight: () => (
             <ThemedIconButton
               icon="check"

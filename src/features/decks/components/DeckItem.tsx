@@ -29,13 +29,20 @@ function DeckItem({ item }: { item: Deck }) {
         onLongPress={() => onLongPress(item)}
         onPress={() => {
           router.push({
-            pathname: `/categories/[id]/decks/[deckId]`,
+            pathname: `/deck/[deckId]`,
             params: {
               name: item.name,
-              id: String(item.categoryId),
               deckId: String(item.id),
             },
           });
+          // router.push({
+          //   pathname: `/categories/[id]/decks/[deckId]`,
+          //   params: {
+          //     name: item.name,
+          //     id: String(item.categoryId),
+          //     deckId: String(item.id),
+          //   },
+          // });
         }}
       >
         <Card

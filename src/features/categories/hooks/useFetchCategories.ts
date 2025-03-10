@@ -32,7 +32,7 @@ export function useFetchCategories(
     })),
   );
 
-  const { getCategories, getCategory } = useCategoryRepository();
+  const { getCategories, getCategory, getDecks } = useCategoryRepository();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -43,7 +43,7 @@ export function useFetchCategories(
         if (typeof categoryId === 'number') {
           await getCategory(categoryId);
         } else {
-          await getCategories();
+          await Promise.all([getCategories(), getDecks()]);
         }
       } catch (error) {
         if (isMounted()) {
@@ -88,7 +88,11 @@ export function useFetchCategories(
     const categoryList = rootCategoryIds.map((id) => categoriesById[id]);
     categoryList.sort(sortByUpdatedAtDesc);
 
-    return { categories: categoryList, decks: [] };
+    const deckList = Object.values(decksById)
+      .filter((deck) => deck.categoryId === null)
+      .sort(sortByUpdatedAtDesc);
+
+    return { categories: categoryList, decks: deckList };
   }, [categoriesById, decksById, rootCategoryIds, categoryId, loading, error]);
 
   return {

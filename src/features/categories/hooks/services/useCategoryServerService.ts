@@ -24,6 +24,7 @@ const useCategoryServerService = () => {
     deleteCategory: deleteCategoryFromStore,
     updateCategory: updateCategoryInStore,
     addDeck,
+    setDecks,
     deleteDeck: deleteDeckFromStore,
     updateDeck: updateDeckInStore,
   } = useCategoriesStore();
@@ -123,6 +124,21 @@ const useCategoryServerService = () => {
       // Если newParentId не null, нужно обновить родительскую категорию в хранилище
     });
 
+  const getDecks = async (): Promise<Deck[]> =>
+    withErrorHandling(async () => {
+      const decks = await deckService.getDecks();
+
+      // for (const deck of decks) {
+      //   if (db) {
+      //     await saveDeckToSQLite(db, deck);
+      //   }
+      // }
+
+      setDecks(decks);
+
+      return decks; // return decks after processing
+    });
+
   const createDeck = async (data: DeckFormData): Promise<Deck> =>
     withErrorHandling(async () => {
       const deck = await deckService.createDeck(data);
@@ -186,6 +202,7 @@ const useCategoryServerService = () => {
     updateCategory,
     deleteCategory,
     deleteCategories,
+    getDecks,
     createDeck,
     updateDeck,
     deleteDeck,

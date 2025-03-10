@@ -18,7 +18,7 @@ export default function CategoryScrollView({
   const { getCategory } = useCategoryRepository();
   const { id } = useLocalSearchParams<{ id: string }>();
 
-  const [refreshing, onRefresh] = useRefresh(() => getCategory(Number(id)));
+  const [refreshing, onRefresh] = useRefresh([() => getCategory(Number(id))]);
 
   return (
     <KeyboardAvoidingContainer>

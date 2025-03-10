@@ -2,6 +2,12 @@ import React from 'react';
 import { FlatList, Pressable, StyleSheet } from 'react-native';
 import { Control, FieldArrayWithId } from 'react-hook-form';
 import { useLocalSearchParams } from 'expo-router';
+import Animated, {
+  SharedValue,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 
 import DeckCard from './DeckCard';
 
@@ -24,6 +30,21 @@ interface DeckCardsContainerProps {
   onEdit: () => void;
   onAddCard: () => void;
   onRemoveCard: (index: number) => void;
+}
+
+function RightAction(progress: SharedValue<number>, drag: SharedValue<number>) {
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      // transform: [{ translateX: drag.value / 2 }],
+      opacity: drag.value < 0 ? Math.min(-drag.value / 80, 1) : 0,
+    };
+  });
+
+  return (
+    <Animated.View style={[styles.rightAction, animatedStyle]}>
+      <Text style={styles.actionText}>🗑</Text>
+    </Animated.View>
+  );
 }
 
 export function DeckCardsContainer({
@@ -58,13 +79,25 @@ export function DeckCardsContainer({
         item.id ? `id-${item.id}` : `new-${index}`
       }
       renderItem={({ item, index }) => (
-        <DeckCard
-          control={control}
-          index={index}
-          onEdit={onEdit}
-          autoFocus={getAutoFocus(item, index)}
-          // onRemove={() => onRemoveCard(index)}
-        />
+        <ReanimatedSwipeable
+          enableTrackpadTwoFingerGesture
+          renderRightActions={RightAction}
+          rightThreshold={40}
+          leftThreshold={1000}
+          overshootRight={false}
+          onSwipeableOpen={(direction) => {
+            if (direction === 'right') {
+              onRemoveCard(index);
+            }
+          }}
+        >
+          <DeckCard
+            control={control}
+            index={index}
+            autoFocus={getAutoFocus(item, index)}
+            onEdit={onEdit}
+          />
+        </ReanimatedSwipeable>
       )}
       ListFooterComponent={
         <Pressable style={styles.addButton} onPress={onAddCard}>
@@ -77,70 +110,12 @@ export function DeckCardsContainer({
 
 export default DeckCardsContainer;
 
-// export default function DeckCardsContainerRef({
-//   onEdit,
-// }: DeckCardsContainerProps) {
-//   const { deckId, action } = useLocalSearchParams<{
-//     deckId: string;
-//     action?: string;
-//   }>();
-
-//   const { cards } = useFetchDeckCards(Number(deckId));
-
-//   const { control, handleSubmit } = useForm<CardFormValues>({
-//     defaultValues: {
-//       deckId: Number(deckId),
-//       cards: cards,
-//     },
-//   });
-
-//   const { fields, append } = useFieldArray({
-//     control,
-//     name: 'cards',
-//   });
-
-//   useEffect(() => {
-//     if (action === 'add') {
-//       append({ front: '', back: '' });
-//     }
-//   }, [append, action]);
-
-//   const addCard = () => {
-//     append({ front: '', back: '' });
-//   };
-
-//   // const onSubmit = (data: CardFormValues) => {
-//   //   console.log('Отправляем на сервер:', data);
-//   // }; // Нужно реализовать в навигации логику
-
-//   return (
-//     <>
-//       <FlatList
-//         data={fields}
-//         contentContainerStyle={styles.listContent}
-//         keyExtractor={(item, index) => item.id || index.toString()}
-//         renderItem={({ item, index }) => (
-//           <DeckCard
-//             index={index}
-//             onEdit={onEdit}
-//             control={control}
-//             autoFocus={index === fields.length - 1}
-//           />
-//         )}
-//         ListFooterComponent={
-//           <Pressable
-//             style={{ backgroundColor: 'red', padding: 6 }}
-//             onPress={addCard}
-//           >
-//             <Text style={{ textAlign: 'center' }}>Add card</Text>
-//           </Pressable>
-//         }
-//       />
-//     </>
-//   );
-// }
-
 const styles = StyleSheet.create({
+  actionText: {
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: '600',
+  },
   addButton: {
     backgroundColor: 'red',
     padding: 6,
@@ -152,5 +127,15 @@ const styles = StyleSheet.create({
   listContent: {
     paddingBottom: 55,
     padding: 20,
+  },
+  rightAction: {
+    alignItems: 'center',
+    backgroundColor: '#dd2c00',
+    borderBottomRightRadius: 12,
+    borderTopRightRadius: 12,
+    justifyContent: 'center',
+    marginBottom: 8,
+    width: 100,
+    // Если нужно, задайте явную высоту, совпадающую с высотой карточки
   },
 });

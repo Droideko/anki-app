@@ -4,6 +4,7 @@ export const API_ENDPOINTS = {
     LOGIN: '/auth/login',
     REFRESH_TOKEN: '/refresh',
     USER_PROFILE: '/users/profile',
+    FINISH_LOGIN: '/users/finish-first-login',
   },
   CATEGORIES: {
     BASE: '/categories',
@@ -22,5 +23,8 @@ export const API_ENDPOINTS = {
     BASE: '/progress',
     BATCH: '/progress/batch',
     DETAIL: (id: number) => `/progress/${id}`,
+  },
+  OPENAI: {
+    BASE: '/openai/generate-cards',
   },
 };

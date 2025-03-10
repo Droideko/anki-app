@@ -18,11 +18,6 @@ export default function ReviewCards({ cards }: ReviewCardsProps) {
   const { currentCard, hasMore, markCard } = useReview(cards);
   const [showAnswer, setShowAnswer] = useState(false);
 
-  // const finishReview = async () => {
-  //   await syncProgress();
-  //   // navigation.goBack()...
-  // };
-
   if (!hasMore) {
     return <ReviewCompletedPage />;
   }
@@ -34,9 +29,7 @@ export default function ReviewCards({ cards }: ReviewCardsProps) {
           {currentCard.front}
         </Text>
       </View>
-
       <Divider />
-
       <View style={styles.bottomBlock}>
         {showAnswer && (
           <Text variant="bodyLarge" style={styles.text}>
@@ -44,7 +37,6 @@ export default function ReviewCards({ cards }: ReviewCardsProps) {
           </Text>
         )}
       </View>
-
       <ReviewShowAnswer
         showAnswer={showAnswer}
         setShowAnswer={setShowAnswer}

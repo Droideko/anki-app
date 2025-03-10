@@ -5,6 +5,7 @@ import { HeaderBackButton } from '@react-navigation/elements';
 import { ThemedView } from '@shared/components/ui/ThemedView';
 import { Text } from '@shared/components/ui/ThemedText';
 import ReviewContent from '@features/review/components/ReviewContent';
+import ReviewBackButton from '@features/review/components/ReviewBackButton';
 
 export default function ReviewPage() {
   const { name } = useLocalSearchParams<{ name: string }>();
@@ -15,14 +16,16 @@ export default function ReviewPage() {
         options={{
           headerTitle: `${name}`,
           headerRight: () => <Text>Right</Text>,
-          headerLeft: (props) => (
-            <HeaderBackButton
-              style={{ marginLeft: -12 }}
-              {...props}
-              onPress={() => router.back()}
-            />
-          ),
-          headerBackTitle: 'Back',
+          headerLeft: (props) => <ReviewBackButton {...props} />,
+          // headerBackTitle: 'Back',
+
+          // headerLeft: (props) => (
+          //   <HeaderBackButton
+          //     style={{ marginLeft: -12 }}
+          //     {...props}
+          //     onPress={() => router.back()}
+          //   />
+          // ),
         }}
       />
       <ThemedView style={{ flex: 1, padding: 20 }}>

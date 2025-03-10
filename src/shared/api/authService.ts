@@ -21,4 +21,10 @@ export const authService = {
     ),
   getUserProfile: async () =>
     handleApiRequest(apiClient.get<User>(API_ENDPOINTS.AUTH.USER_PROFILE)),
+  finishFirstLogin: async () =>
+    handleApiRequest(apiClient.patch<User>(API_ENDPOINTS.AUTH.FINISH_LOGIN)),
+  updateUser: async (data: Partial<User>) =>
+    handleApiRequest(
+      apiClient.patch<User>(API_ENDPOINTS.AUTH.USER_PROFILE, data),
+    ),
 };

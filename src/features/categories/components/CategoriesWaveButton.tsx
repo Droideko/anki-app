@@ -16,7 +16,11 @@ function CategoriesWaveButton({ href }: CategoriesWaveButtonProps) {
 
   const isActivePulse = useMemo(() => {
     if (categoryId === null) {
-      return rootCategoryIds.length === 0;
+      const hasRootDeck = Object.values(decksById).some(
+        (deck) => deck.categoryId === null,
+      );
+
+      return rootCategoryIds.length === 0 && !hasRootDeck;
     }
 
     const hasSubcategories = Object.values(categoriesById).some(

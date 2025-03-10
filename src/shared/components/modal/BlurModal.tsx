@@ -14,8 +14,6 @@ export default function BlurModal() {
   const { isModalVisible, elementPosition, selectedItem } = useModalStore();
   const { animatedOverlayStyle, closeModal, scale } = useAnimationModal();
 
-  console.log('BlurModal refactored');
-
   if (!isModalVisible || !elementPosition || !selectedItem) {
     return null;
   }

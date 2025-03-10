@@ -4,21 +4,30 @@ import { Button, ButtonProps } from 'react-native-paper';
 
 import { useThemeColor } from '@shared/hooks/useThemeColor';
 
-interface OwnProps extends ButtonProps {
+interface ThemedButtonProps extends ButtonProps {
   children: React.ReactNode;
 }
 
-const ThemedButton = ({ children, ...props }: OwnProps) => {
+const ThemedButton = ({
+  children,
+  mode = 'outlined',
+  style,
+  labelStyle,
+  textColor,
+  buttonColor,
+  ...rest
+}: ThemedButtonProps) => {
   const { onPrimary, primary } = useThemeColor();
 
   return (
     <Button
-      // buttonColor={props.buttonColor || primary} // background
-      mode={props.mode || 'outlined'}
-      textColor={props.textColor || onPrimary} // onSecondary
-      style={[{ ...styles.button }, props.style]}
+      // buttonColor={buttonColor || primary} // background
+      mode={mode || 'outlined'}
+      textColor={textColor || onPrimary}
+      style={[styles.button, style]}
       contentStyle={styles.contentStyle}
-      {...props}
+      labelStyle={[styles.label, labelStyle]}
+      {...rest}
     >
       {children}
     </Button>
@@ -35,5 +44,8 @@ const styles = StyleSheet.create({
   contentStyle: {
     paddingBottom: 6,
     paddingTop: 6,
+  },
+  label: {
+    fontSize: 16,
   },
 });

@@ -91,6 +91,13 @@ export const useCategoryRepository = () => {
       () => SQLiteService.updateCategory(id, data),
     );
 
+  const getDecks = async (): Promise<Deck[]> => {
+    return executeWithNetworkFallback(
+      () => serverService.getDecks(),
+      () => SQLiteService.getDecks(),
+    );
+  };
+
   const deleteCategory = async (
     id: number,
     newParentId: number | null = null,
@@ -143,6 +150,7 @@ export const useCategoryRepository = () => {
     updateCategory,
     deleteCategory,
     deleteAllCategories,
+    getDecks,
     createDeck,
     deleteDeck,
     updateDeck,

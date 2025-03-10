@@ -4,7 +4,7 @@ export interface Deck {
   id: number;
   name: string;
   userId: number;
-  categoryId: number;
+  categoryId: number | null;
   accessLevel: string;
   createdAt: string;
   updatedAt: string;

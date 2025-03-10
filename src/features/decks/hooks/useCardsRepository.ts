@@ -1,25 +1,20 @@
 import withErrorHandling from '@features/categories/utils/withErrorHandling';
+import { useProgressRepository } from '@features/review/hooks/useProgressRepository';
 import { cardsService } from '@shared/api/cardsService';
 import { deckService, UpdateCardDto } from '@shared/api/deckService';
 import { Card, useCardsStore } from '@shared/store/useCardsStore';
 import { useCategoriesStore } from '@shared/store/useCategoriesStore';
+import { useProgressStore } from '@shared/store/useProgressStore';
 
 export const useCardsRepository = () => {
   const { cardsById, setCards, addCard, updateCard, deleteCard } =
     useCardsStore();
+  const { setProgress } = useProgressStore();
 
-  const { decksById, updateDeck } = useCategoriesStore();
+  const { decksById, updateDeck, addDeck } = useCategoriesStore();
 
   // const serverService = useCardsServerService();
   // const SQLiteService = useCardsSQLiteService();
-
-  // Получение карточек конкретной колоды
-  // const getDeckCards = async (deckId: number) => {
-  //   const deck = await deckService.getDeck(deckId);
-  //   if (!deck.cards) return [];
-  //   setCards(deck.cards);
-  //   return deck.cards;
-  // };
 
   const getDeckCards = async (deckId: number): Promise<Card[]> => {
     return withErrorHandling(async () => {
@@ -31,13 +26,23 @@ export const useCardsRepository = () => {
 
       setCards(deck.cards);
 
+      const progresses = deck.cards.map((card) => card.progress[0]);
+      setProgress(progresses);
+
       const existingDeck = decksById[deckId];
+
       if (existingDeck) {
         updateDeck({
           ...existingDeck,
           cardIds: deck.cards.map((card) => card.id),
         });
       } else {
+        const { cards, ...newDeck } = {
+          ...deck,
+          cardIds: deck.cards.map((card) => card.id),
+        };
+
+        addDeck(newDeck);
         console.warn(`Deck with id ${deckId} not found in the store`);
       }
 
@@ -105,32 +110,28 @@ export const useCardsRepository = () => {
     });
   };
 
-  // const updateCards = async (
-  //   deckId: number,
-  //   data: { cards: UpdateCardDto[] },
-  // ): Promise<Card[]> => {
-  //   return withErrorHandling(async () => {
-  //     const updatedCards = await deckService.patchDeckCards(deckId, data);
+  const reverseCard = async (cardId: number): Promise<Card> => {
+    const card = cardsById[cardId];
 
-  //     console.log('updatedCards', updatedCards);
+    if (!card) {
+      throw new Error(`Card with id ${cardId} not found in the store`);
+    }
 
-  //     // update cards in store
-  //     setCards(updatedCards);
+    const reversedCard: Card = {
+      ...card,
+      front: card.back,
+      back: card.front,
+    };
 
-  //     // 2. Удаляем из стора те карточки, которых нет в updatedCards
-  //     //    (предполагаем, что если карточки нет в списке, значит она была удалена)
-  //     // const existingCardIds = Object.keys(cardsById).map((id) => Number(id));
-  //     // const returnedIds = updatedCards.map(({ id }) => id);
+    cardsService.updateCard(cardId, {
+      front: reversedCard.front,
+      back: reversedCard.back,
+    });
 
-  //     // for (const cardId of existingCardIds) {
-  //     //   if (!returnedIds.includes(cardId)) {
-  //     //     deleteCard(cardId);
-  //     //   }
-  //     // }
+    updateCard(reversedCard);
 
-  //     return updatedCards;
-  //   });
-  // };
+    return reversedCard;
+  };
 
   // // Создание карточек для колоды
   // const createCards = async (
@@ -165,6 +166,7 @@ export const useCardsRepository = () => {
     getDeckCards,
     updateCards,
     removeCard,
+    reverseCard,
     // createCards,
     // updateDeckCard,
     // removeCard,

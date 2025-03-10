@@ -13,7 +13,7 @@ import { authService } from '@shared/api/authService';
 import { handleRepositoryError } from '@shared/utils/errorHandler';
 
 export const useUserRepository = () => {
-  const { setUser, clearUser } = useUserStore();
+  const { setUser, clearUser, user } = useUserStore();
   const db = useGetSQLiteContext();
 
   const isAuthenticated = async (): Promise<boolean> => {
@@ -153,11 +153,58 @@ export const useUserRepository = () => {
     }
   };
 
+  const finishFirstLogin = async (): Promise<User> => {
+    const networkState = await NetInfo.fetch();
+
+    if (networkState.isConnected) {
+      try {
+        const updatedUser = await authService.finishFirstLogin();
+
+        setUser(updatedUser);
+
+        return updatedUser;
+      } catch (error) {
+        handleRepositoryError(error);
+      }
+    }
+
+    throw new Error('Not Local DB');
+  };
+
+  const updateUser = async (data: Partial<User>) => {
+    const networkState = await NetInfo.fetch();
+
+    if (networkState.isConnected) {
+      try {
+        const user = await authService.updateUser(data);
+
+        // if (db) {
+        //   await db.runAsync(
+        //     'UPDATE User SET name = ?, role = ?, updatedAt = ? WHERE id = ?;',
+        //     user.name,
+        //     user.role,
+        //     new Date().toISOString(),
+        //     user.id,
+        //   );
+        // }
+
+        setUser(user);
+        return user;
+      } catch (error) {
+        handleRepositoryError(error);
+      }
+    } else {
+      throw new Error('Not connected to the network');
+    }
+  };
+
   return {
     isAuthenticated,
     signUp,
     login,
     logout,
     getUserProfile,
+    finishFirstLogin,
+    updateUser,
   };
 };

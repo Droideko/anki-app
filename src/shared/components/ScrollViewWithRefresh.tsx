@@ -4,6 +4,7 @@ import {
   ViewStyle,
   RefreshControl,
   RefreshControlProps,
+  ScrollViewProps as RNScrollViewProps,
 } from 'react-native';
 
 import ScrollView from './ScrollView';
@@ -13,7 +14,8 @@ type ScrollViewProps = PropsWithChildren<{
   refreshing?: boolean;
   onRefresh?: () => void;
   refreshControlProps?: Omit<RefreshControlProps, 'refreshing' | 'onRefresh'>;
-}>;
+}> &
+  RNScrollViewProps;
 
 export default function ScrollViewWithRefresh({
   children,

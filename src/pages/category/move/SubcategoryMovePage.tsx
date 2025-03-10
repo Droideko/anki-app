@@ -11,7 +11,6 @@ export default function SubcategoryMovePage() {
     <>
       <Stack.Screen
         options={{
-          headerBackTitleVisible: false,
           headerTitle: `Move ${name}`,
         }}
       />

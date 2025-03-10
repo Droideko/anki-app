@@ -1,42 +1,38 @@
-import React from 'react';
+// import React, { useState } from 'react';
 
-import useFilteredCategoriesAndDecks from '../hooks/useFilteredCategoriesAndDecks';
+// import useFilteredCategoriesAndDecks from '../hooks/useFilteredCategoriesAndDecks';
 
-// import CategorySkeleton from './CategorySkeleton';
+// import { Text } from '@shared/components/ui/ThemedText';
+// import { useFetchCategories } from '@features/categories/hooks/useFetchCategories';
+// import CategoryDataContentInner from '@features/categories/components/CategoryDataContentInner';
+// import Search from '@shared/components/Search';
 
-import { Text } from '@shared/components/ui/ThemedText';
-import { useFetchCategories } from '@features/categories/hooks/useFetchCategories';
-import CategoryDataContentInner from '@features/categories/components/CategoryDataContentInner';
-import useSearchDebounce from '@shared/hooks/useSearchDebounce';
-import Search from '@shared/components/Search';
+// export default function CategoryDataContent() {
+//   const [search, setSearch] = useState('');
 
-export default function CategoryDataContent() {
-  const [searchQuery, debouncedSearch] = useSearchDebounce();
+//   const { loading, error, categories } = useFetchCategories();
 
-  const { loading, error, categories } = useFetchCategories();
+//   const { filteredCategories } = useFilteredCategoriesAndDecks(
+//     search,
+//     categories,
+//   );
 
-  const { filteredCategories } = useFilteredCategoriesAndDecks(
-    searchQuery,
-    categories,
-  );
+//   if (loading) {
+//     return <Text>Loading</Text>;
+//   }
 
-  if (loading) {
-    // TODO Spinner
-    return <Text>Loading</Text>;
-  }
+//   if (error) {
+//     return <Text>{error.message}</Text>;
+//   }
 
-  if (error) {
-    return <Text>{error.message}</Text>;
-  }
+//   if (categories.length === 0) {
+//     return <Text>No categories available</Text>;
+//   }
 
-  if (categories.length === 0) {
-    return <Text>No categories available</Text>;
-  }
-
-  return (
-    <>
-      <Search onChangeCallback={debouncedSearch} />
-      <CategoryDataContentInner categories={filteredCategories} />
-    </>
-  );
-}
+//   return (
+//     <>
+//       <Search onChange={setSearch} debounceTime={300} />
+//       <CategoryDataContentInner />
+//     </>
+//   );
+// }

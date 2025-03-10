@@ -46,13 +46,6 @@ function CategoryLayout() {
           presentation: 'modal',
         }}
       />
-      {/* <Stack.Screen
-        name="[id]/decks/[deckId]/create-card"
-        options={{
-          headerShown: true,
-          headerTitle: 'Create Card',
-        }}
-      /> */}
       <Stack.Screen
         name="[id]/edit"
         options={{
@@ -61,7 +54,7 @@ function CategoryLayout() {
         }}
       />
       <Stack.Screen
-        name="[id]/decks/[deckId]/edit"
+        name="deck-edit"
         options={{
           headerShown: true,
           presentation: 'modal',

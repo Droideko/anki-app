@@ -1,13 +1,15 @@
 import { useNavigation, usePreventRemove } from '@react-navigation/native';
 import { useState } from 'react';
-import { Alert, Platform } from 'react-native';
+import { Alert } from 'react-native';
+
+import isWeb from '@shared/utils/isWeb';
 
 export default function usePreventRemoveCards() {
   const navigation = useNavigation();
   const [unsavedChanges, setUnsavedChanges] = useState(false);
 
   usePreventRemove(unsavedChanges, ({ data }) => {
-    if (Platform.OS === 'web') {
+    if (isWeb()) {
       const discard = confirm(
         'You have unsaved changes. Discard them and leave the screen?',
       );

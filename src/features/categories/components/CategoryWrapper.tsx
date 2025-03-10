@@ -1,19 +1,18 @@
-import React from 'react';
+// import React, { useState } from 'react';
 
-import SubcategoryDataContent from './SubcategoryDataContent';
+// import SubcategoryDataContent from './SubcategoryDataContent';
 
-import Search from '@shared/components/Search';
-import useSearchDebounce from '@shared/hooks/useSearchDebounce';
+// // import Search from '@shared/components/Search';
 
-function CategoryWrapper() {
-  const [searchQuery, debouncedSearch] = useSearchDebounce();
+// function CategoryWrapper({ search }: { search: string }) {
+//   // const [search, setSearch] = useState('');
 
-  return (
-    <>
-      <Search onChangeCallback={debouncedSearch} />
-      <SubcategoryDataContent searchQuery={searchQuery} />
-    </>
-  );
-}
+//   return (
+//     <>
+//       {/* <Search onChange={setSearch} debounceTime={300} /> */}
+//       <SubcategoryDataContent searchQuery={search} />
+//     </>
+//   );
+// }
 
-export default CategoryWrapper;
+// export default CategoryWrapper;

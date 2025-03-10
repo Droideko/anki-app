@@ -17,7 +17,7 @@ function CardsWaveButton({ href }: CardsWaveButtonProps) {
 
   const isActivePulse = useMemo(() => {
     const deck = decksById[Number(deckId)];
-    return !deck.cardIds?.some((id) => cardsById[id]);
+    return !deck?.cardIds?.some((id) => cardsById[id]);
   }, [cardsById, deckId, decksById]);
 
   return <WaveButton href={href} isActivePulse={isActivePulse} />;

@@ -1,10 +1,13 @@
+import { FlatListProps } from 'react-native';
+
 import {
   CATEGORY_SEGMENT_BUTTON,
   DEFAULT_CREATE_CATEGORY_VALUES,
   DEFAULT_UPDATE_CATEGORY_VALUES,
 } from '@features/categories/constants';
 import { Brand } from '@shared/types/global';
-import { Category } from '@shared/types/category';
+import { Category, NormalizedCategory } from '@shared/types/category';
+import { Deck } from '@shared/types/deck';
 
 export type CategoryFormData = {
   name: string;
@@ -26,4 +29,13 @@ export type MenuWidth = Brand<number, 'MenuWidth'>;
 export type BrandedMenuSize = {
   height: MenuHeight;
   width: MenuWidth;
+};
+
+export type ListItem =
+  | { type: 'header'; title: string }
+  | { type: 'category'; item: NormalizedCategory }
+  | { type: 'deck'; item: Deck };
+
+export type RenderersCategoryFactory = {
+  [K in ListItem['type']]: React.ComponentType<Extract<ListItem, { type: K }>>;
 };

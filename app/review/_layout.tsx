@@ -1,7 +1,6 @@
 import React from 'react';
 import { Stack } from 'expo-router';
 
-import useStackScreenOptions from '@shared/hooks/useStackScreenOptions';
 import { useThemeColor } from '@shared/hooks/useThemeColor';
 
 export const ReviewLayout = () => {
