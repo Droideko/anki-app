@@ -6,21 +6,17 @@ import DeckModalMenuContent from '../modal/DeckModalMenuContent';
 import { useModalStore } from '@shared/store/useModalStore';
 import CategoryModalMenuContent from '@features/categories/components/CategoryModalMenuContent';
 
+const CONTENT_COMPONENTS = {
+  CATEGORY: CategoryModalMenuContent,
+  DECK: DeckModalMenuContent,
+  CARD: CardModalMenuContent,
+};
+
 export default function MenuContentFactory() {
   const { selectedItem } = useModalStore();
 
-  if (!selectedItem) {
-    return null;
-  }
-
-  switch (selectedItem.type) {
-    case 'CATEGORY':
-      return <CategoryModalMenuContent />;
-    case 'DECK':
-      return <DeckModalMenuContent />;
-    case 'CARD':
-      return <CardModalMenuContent />;
-    default:
-      return null;
-  }
+  const ContentComponent = selectedItem
+    ? CONTENT_COMPONENTS[selectedItem.type]
+    : null;
+  return ContentComponent ? <ContentComponent /> : null;
 }

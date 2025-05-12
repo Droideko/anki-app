@@ -14,8 +14,6 @@ function HomeContainer() {
   const { user } = useUserStore();
   const { finishFirstLogin } = useUserRepository();
 
-  console.log(user);
-
   useAsync(async () => {
     if (user?.isFirstLogin) {
       await finishFirstLogin();

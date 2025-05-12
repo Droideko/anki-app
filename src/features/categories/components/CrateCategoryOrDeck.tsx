@@ -34,8 +34,6 @@ export default function CrateCategoryOrDeck() {
   });
   const { showSnackbar } = useSnackbarStore();
 
-  console.log('parentId : ', parentId);
-
   const [state, onSubmit] = useAsyncFn(
     async (data: { name: string }) => {
       const isDeck = value === 'deck';

@@ -8,11 +8,7 @@ export default function EditDeck() {
 
   return (
     <>
-      <Stack.Screen
-        options={{
-          headerTitle: `Edit ${name}`,
-        }}
-      />
+      <Stack.Screen options={{ headerTitle: `Edit ${name}` }} />
       <DeckEditContainer />
     </>
   );

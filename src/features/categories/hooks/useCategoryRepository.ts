@@ -13,7 +13,6 @@ import {
   CategoryWithoutSubcategories,
 } from '@features/categories/types';
 import { Deck, DeckFormData } from '@shared/types/deck';
-import { UpdateCardDto } from '@shared/api/deckService';
 
 export const useCategoryRepository = () => {
   const { user } = useUserStore();

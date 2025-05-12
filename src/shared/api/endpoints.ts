@@ -26,5 +26,9 @@ export const API_ENDPOINTS = {
   },
   OPENAI: {
     BASE: '/openai/generate-cards',
+    GENERATE: '/openai/detect-languages',
+  },
+  TTS: {
+    BASE: '/tts',
   },
 };

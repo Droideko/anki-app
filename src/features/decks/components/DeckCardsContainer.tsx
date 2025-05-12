@@ -1,27 +1,21 @@
 import React from 'react';
 import { FlatList, Pressable, StyleSheet } from 'react-native';
 import { Control, FieldArrayWithId } from 'react-hook-form';
-import { useLocalSearchParams } from 'expo-router';
-import Animated, {
-  SharedValue,
-  useAnimatedStyle,
-} from 'react-native-reanimated';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { router, useLocalSearchParams } from 'expo-router';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 
 import DeckCard from './DeckCard';
 
 import { Text } from '@shared/components/ui/ThemedText';
 import { Card } from '@shared/store/useCardsStore';
+import { PartialWithRequiredKeys } from '@shared/types/global';
+import SwiperDelete from '@shared/components/SwiperDelete';
 
-export type PartialWithRequiredKeys<T, K extends keyof T> = Pick<T, K> &
-  Partial<Omit<T, K>>;
-
-type CardWithCardId = Card & { cardId: number };
+type CardWithCardId = Card & { cardId: number | string };
 
 export interface CardFormValues {
   deckId: number;
-  cards: PartialWithRequiredKeys<CardWithCardId, 'front' | 'back'>[];
+  cards: PartialWithRequiredKeys<CardWithCardId, 'front' | 'back' | 'cardId'>[];
 }
 
 interface DeckCardsContainerProps {
@@ -30,21 +24,7 @@ interface DeckCardsContainerProps {
   onEdit: () => void;
   onAddCard: () => void;
   onRemoveCard: (index: number) => void;
-}
-
-function RightAction(progress: SharedValue<number>, drag: SharedValue<number>) {
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      // transform: [{ translateX: drag.value / 2 }],
-      opacity: drag.value < 0 ? Math.min(-drag.value / 80, 1) : 0,
-    };
-  });
-
-  return (
-    <Animated.View style={[styles.rightAction, animatedStyle]}>
-      <Text style={styles.actionText}>🗑</Text>
-    </Animated.View>
-  );
+  onAddExample: (cardId: number | string) => void;
 }
 
 export function DeckCardsContainer({
@@ -53,6 +33,7 @@ export function DeckCardsContainer({
   onEdit,
   onAddCard,
   onRemoveCard,
+  onAddExample,
 }: DeckCardsContainerProps) {
   const { action, cardId } = useLocalSearchParams<{
     action?: 'add' | 'edit';
@@ -81,7 +62,7 @@ export function DeckCardsContainer({
       renderItem={({ item, index }) => (
         <ReanimatedSwipeable
           enableTrackpadTwoFingerGesture
-          renderRightActions={RightAction}
+          renderRightActions={SwiperDelete}
           rightThreshold={40}
           leftThreshold={1000}
           overshootRight={false}
@@ -91,11 +72,13 @@ export function DeckCardsContainer({
             }
           }}
         >
-          <DeckCard
+          <DeckCard<CardFormValues, 'cards'>
             control={control}
             index={index}
+            namePrefix="cards"
             autoFocus={getAutoFocus(item, index)}
             onEdit={onEdit}
+            onAddExample={() => onAddExample(item.cardId)}
           />
         </ReanimatedSwipeable>
       )}
@@ -111,11 +94,6 @@ export function DeckCardsContainer({
 export default DeckCardsContainer;
 
 const styles = StyleSheet.create({
-  actionText: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: '600',
-  },
   addButton: {
     backgroundColor: 'red',
     padding: 6,
@@ -127,15 +105,5 @@ const styles = StyleSheet.create({
   listContent: {
     paddingBottom: 55,
     padding: 20,
-  },
-  rightAction: {
-    alignItems: 'center',
-    backgroundColor: '#dd2c00',
-    borderBottomRightRadius: 12,
-    borderTopRightRadius: 12,
-    justifyContent: 'center',
-    marginBottom: 8,
-    width: 100,
-    // Если нужно, задайте явную высоту, совпадающую с высотой карточки
   },
 });

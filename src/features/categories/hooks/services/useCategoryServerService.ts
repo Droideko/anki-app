@@ -31,7 +31,6 @@ const useCategoryServerService = () => {
 
   const getCategories = async (): Promise<Category[]> =>
     withErrorHandling(async () => {
-      console.log('requested getCategories');
       const categories = await categoryService.getCategories();
 
       if (db) {
@@ -53,7 +52,6 @@ const useCategoryServerService = () => {
 
   const getCategory = async (id: number): Promise<Category> =>
     withErrorHandling(async () => {
-      console.log('requested getCategory 1');
       const category = await categoryService.getCategory(id);
 
       if (db) {
@@ -152,7 +150,10 @@ const useCategoryServerService = () => {
       return deck;
     });
 
-  const updateDeck = async (id: number, data: Partial<Deck>): Promise<Deck> =>
+  const updateDeck = async (
+    id: number,
+    data: Partial<DeckFormData>,
+  ): Promise<Deck> =>
     withErrorHandling(async () => {
       const deck = await deckService.updateDeck(id, data);
 

@@ -7,6 +7,7 @@ export type User = {
   targetLanguage?: string;
   languageLevel?: string;
   isFirstLogin: boolean;
+  isHaptic: boolean;
 };
 
 export type Tokens = {

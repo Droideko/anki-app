@@ -7,8 +7,13 @@ import { useCategoriesStore } from '@shared/store/useCategoriesStore';
 import { useProgressStore } from '@shared/store/useProgressStore';
 
 export const useCardsRepository = () => {
-  const { cardsById, setCards, addCard, updateCard, deleteCard } =
-    useCardsStore();
+  const {
+    cardsById,
+    setCards,
+    addCard,
+    updateCard: updateCardInStore,
+    deleteCard,
+  } = useCardsStore();
   const { setProgress } = useProgressStore();
 
   const { decksById, updateDeck, addDeck } = useCategoriesStore();
@@ -47,6 +52,14 @@ export const useCardsRepository = () => {
       }
 
       return deck.cards;
+    });
+  };
+
+  const updateCard = async (cardId: number, data: UpdateCardDto) => {
+    return withErrorHandling(async () => {
+      const updatedCard = await cardsService.updateCard(cardId, data);
+      updateCardInStore(updatedCard);
+      return updatedCard;
     });
   };
 
@@ -128,9 +141,22 @@ export const useCardsRepository = () => {
       back: reversedCard.back,
     });
 
-    updateCard(reversedCard);
+    updateCardInStore(reversedCard);
 
     return reversedCard;
+  };
+
+  const reverseCards = async (deckId: number, ids: number[]) => {
+    const cards = ids.map((id) => {
+      const card = cardsById[id];
+      return {
+        id: card.id,
+        front: card.back,
+        back: card.front,
+      };
+    });
+
+    return updateCards(deckId, { cards });
   };
 
   // // Создание карточек для колоды
@@ -164,9 +190,11 @@ export const useCardsRepository = () => {
 
   return {
     getDeckCards,
+    updateCard,
     updateCards,
     removeCard,
     reverseCard,
+    reverseCards,
     // createCards,
     // updateDeckCard,
     // removeCard,

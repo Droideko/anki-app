@@ -8,8 +8,6 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Icon } from 'react-native-paper';
 
-import useDeleteSelectedCards from '../hooks/useDeleteSelectedCards';
-
 import { useThemeColor } from '@shared/hooks/useThemeColor';
 import { Text } from '@shared/components/ui/ThemedText';
 
@@ -17,6 +15,7 @@ interface BottomPanelProps {
   visible: boolean;
   onSelectAll: () => void;
   onDelete: () => void;
+  onReverse: () => void;
 }
 
 const { height } = Dimensions.get('window');
@@ -25,10 +24,9 @@ export default function BottomPanel({
   visible,
   onSelectAll,
   onDelete,
+  onReverse,
 }: BottomPanelProps) {
   const { elevation, error, primary } = useThemeColor();
-
-  // const onDelete = useDeleteSelectedCards();
 
   const translateY = useSharedValue(height);
   const opacity = useSharedValue(0);
@@ -78,7 +76,7 @@ export default function BottomPanel({
         Select All
       </Text>
 
-      <TouchableOpacity onPress={() => {}}>
+      <TouchableOpacity onPress={onReverse}>
         <Icon size={28} source="swap-horizontal" color={primary} />
       </TouchableOpacity>
     </Animated.View>

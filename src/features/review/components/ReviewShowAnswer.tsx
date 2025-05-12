@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import ThemedButton from '@shared/components/ui/ThemedButton';
 import { Text } from '@shared/components/ui/ThemedText';
 import { RATING_MAPPER, Rating } from '@shared/utils/updateSrs';
+import HapticButton from '@shared/components/ui/HapticButton';
 
 interface ReviewShowAnswerProps {
   showAnswer: boolean;
@@ -18,54 +18,47 @@ function ReviewShowAnswer({
 }: ReviewShowAnswerProps) {
   if (!showAnswer) {
     return (
-      <ThemedButton onPress={() => setShowAnswer(true)}>
+      <HapticButton onPress={() => setShowAnswer(true)}>
         <Text>Show Answer</Text>
-      </ThemedButton>
+      </HapticButton>
     );
   }
 
+  const handlePress = (rating: Rating) => {
+    markCard(rating);
+    setShowAnswer(false);
+  };
+
   return (
     <View style={styles.container}>
-      <ThemedButton
+      <HapticButton
         compact
         style={styles.button}
-        onPress={() => {
-          markCard(RATING_MAPPER.again);
-          setShowAnswer(false);
-        }}
+        onPress={() => handlePress(RATING_MAPPER.again)}
       >
         <Text>Again</Text>
-      </ThemedButton>
-      <ThemedButton
+      </HapticButton>
+      <HapticButton
         compact
         style={styles.button}
-        onPress={() => {
-          markCard(RATING_MAPPER.hard);
-          setShowAnswer(false);
-        }}
+        onPress={() => handlePress(RATING_MAPPER.hard)}
       >
         <Text style={{ padding: 0 }}>Hard</Text>
-      </ThemedButton>
-      <ThemedButton
+      </HapticButton>
+      <HapticButton
         compact
         style={styles.button}
-        onPress={() => {
-          markCard(RATING_MAPPER.good);
-          setShowAnswer(false);
-        }}
+        onPress={() => handlePress(RATING_MAPPER.good)}
       >
         <Text>Good</Text>
-      </ThemedButton>
-      <ThemedButton
+      </HapticButton>
+      <HapticButton
         compact
         style={styles.button}
-        onPress={() => {
-          markCard(RATING_MAPPER.easy);
-          setShowAnswer(false);
-        }}
+        onPress={() => handlePress(RATING_MAPPER.easy)}
       >
         <Text>Easy</Text>
-      </ThemedButton>
+      </HapticButton>
     </View>
   );
 }

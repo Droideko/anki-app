@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useFonts } from 'expo-font';
-import 'react-native-reanimated';
-
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Portal } from 'react-native-paper';
+import { useFonts } from 'expo-font';
+import 'react-native-reanimated';
 
 import GlobalSnackbar from '@shared/components/GlobalSnackbar';
 import { useLanguageStore } from '@shared/store/useLanguageStore';

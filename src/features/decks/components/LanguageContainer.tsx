@@ -24,7 +24,7 @@ type CountriesName = (typeof popularCountryLanguages)[number]['name'];
 
 export default function LanguageContainer() {
   const [search, setSearch] = useState('');
-  const { type } = useLocalSearchParams<{ type: string }>();
+  const { type } = useLocalSearchParams<{ type: 'front' | 'back' }>();
   const { updateForm, frontLanguage, backLanguage } = useFormStore();
 
   const filteredLanguages = useMemo(() => {

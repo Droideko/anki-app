@@ -1,3 +1,5 @@
+// GeneratedButtons.tsx
+
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { FontAwesome6 } from '@expo/vector-icons';
@@ -8,31 +10,44 @@ import { useThemeColor } from '@shared/hooks/useThemeColor';
 
 interface GeneratedButtonsProps {
   onGenerate: () => void;
+  onToggleExamples: () => void;
+  allOpen: boolean;
+  hasExamples: boolean;
 }
 
-function GeneratedButtons({ onGenerate }: GeneratedButtonsProps) {
+export default function GeneratedButtons({
+  onGenerate,
+  onToggleExamples,
+  allOpen,
+  hasExamples,
+}: GeneratedButtonsProps) {
   const { primary } = useThemeColor();
 
   return (
     <View style={styles.buttonContainer}>
+      {hasExamples && (
+        <ThemedButton
+          onPress={onToggleExamples}
+          contentStyle={{ margin: 0 }}
+          style={[styles.btn, { borderColor: primary, marginRight: 8 }]}
+        >
+          <Text style={{ color: primary }}>
+            {allOpen ? 'Hide examples' : 'Show examples'}
+          </Text>
+        </ThemedButton>
+      )}
       <ThemedButton
-        contentStyle={{ margin: 0 }}
-        style={[styles.button, { borderColor: primary }]}
-      >
-        <Text style={{ color: primary }}>Examples</Text>
-      </ThemedButton>
-      <ThemedButton
-        contentStyle={{ margin: 0 }}
-        style={[styles.button, { borderColor: primary }]}
         onPress={onGenerate}
+        contentStyle={{ margin: 0 }}
+        style={[styles.btn, { borderColor: primary }]}
       >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={styles.iconRow}>
           <Text style={{ color: primary }}>Regenerate</Text>
           <FontAwesome6
-            style={{ marginLeft: 4 }}
             name="arrow-rotate-left"
             size={16}
             color={primary}
+            style={{ marginLeft: 4 }}
           />
         </View>
       </ThemedButton>
@@ -40,19 +55,19 @@ function GeneratedButtons({ onGenerate }: GeneratedButtonsProps) {
   );
 }
 
-export default GeneratedButtons;
-
 const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    flex: 1,
+  btn: {
+    flex: 1, // <-- равное "весло" для обеих кнопок
   },
   buttonContainer: {
-    display: 'flex',
     flexDirection: 'row',
-    gap: 8,
-    justifyContent: 'space-between',
     marginTop: 16,
     paddingHorizontal: 12,
+    // space-between уже не нужен, мы управляем через margin у кнопок
+  },
+  iconRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });

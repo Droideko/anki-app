@@ -9,9 +9,9 @@ import { useSelectStore } from '@shared/store/useSelectStore';
 
 const useDeleteSelectedCards = (deckId: number) => {
   const { updateCards } = useCardsRepository();
-  const { selectedCards } = useSelectStore();
+  const { selectedCards, clearCards } = useSelectStore();
 
-  const [{ loading }, sendData] = useAsyncFn(
+  const [_, sendData] = useAsyncFn(
     async (deckId: number, cards: UpdateCardDto[]) => {
       return updateCards(deckId, { cards });
     },
@@ -22,11 +22,14 @@ const useDeleteSelectedCards = (deckId: number) => {
     showAlert({
       alertTitle: 'Delete selected Cards?',
       alertMessage: 'This action cannot be undone.',
-      onConfirm: () => {
-        console.log(selectedCards);
+      onConfirm: async () => {
+        const cards = selectedCards.map((id) => ({ deleted: true, id }));
+        // TODO: Возможно нужно поменять на сервере API, так как сейчас используется PATCH и возвращается большой массив данных в ответе
+        await sendData(deckId, cards);
+        clearCards();
       },
     });
-  }, [selectedCards]);
+  }, [deckId, selectedCards, sendData, clearCards]);
 };
 
 export default useDeleteSelectedCards;

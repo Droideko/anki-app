@@ -36,4 +36,6 @@ export const cardsService = {
     handleApiRequest(
       apiClient.patch<Card>(API_ENDPOINTS.CARDS.DETAIL(id), data),
     ),
+  // deleteCard: async (id: number) =>
+  //   handleApiRequest(apiClient.delete<Card>(API_ENDPOINTS.CARDS.DETAIL(id))),
 };

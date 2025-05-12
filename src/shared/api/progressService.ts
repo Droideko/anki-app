@@ -2,7 +2,7 @@ import { apiClient } from './apiClient';
 import { handleApiRequest } from './apiHelpers';
 import { API_ENDPOINTS } from './endpoints';
 
-import { PartialWithRequiredKeys } from '@features/decks/components/DeckCardsContainer';
+import { PartialWithRequiredKeys } from '@shared/types/global';
 import { Progress } from '@shared/store/useProgressStore';
 
 type PatchProgressItemDto = Omit<

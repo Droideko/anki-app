@@ -6,6 +6,10 @@ export interface Deck {
   userId: number;
   categoryId: number | null;
   accessLevel: string;
+  frontLanguage?: string;
+  backLanguage?: string;
+  fontSize?: number;
+  showOnlyBackSound?: boolean;
   createdAt: string;
   updatedAt: string;
   type: 'DECK';
@@ -24,4 +28,8 @@ export type DeckFormData = {
   categoryId?: number;
   accessLevel?: string;
   sharedWithUserIds?: number[];
+  frontLanguage?: string;
+  backLanguage?: string;
+  fontSize?: number;
+  showOnlyBackSound?: boolean;
 };

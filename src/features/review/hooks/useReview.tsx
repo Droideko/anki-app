@@ -37,6 +37,13 @@ const getSortedCards = (
   });
 };
 
+const pushCardToEnd = (cards: Card[], index: number) => {
+  const newCards = [...cards];
+  const [removed] = newCards.splice(index, 1);
+  newCards.push(removed);
+  return newCards;
+};
+
 const useReview = (initialCards: Card[]) => {
   const { progressByCardId } = useProgressStore();
   const { saveProgressLocally } = useProgressRepository();
@@ -72,12 +79,7 @@ const useReview = (initialCards: Card[]) => {
       await saveProgressLocally(updatedProgress);
 
       if (rating === RATING_MAPPER.again) {
-        setReviewCards((prev) => {
-          const arr = [...prev];
-          const [removed] = arr.splice(index, 1);
-          arr.push(removed);
-          return arr;
-        });
+        setReviewCards((prev) => pushCardToEnd(prev, index));
       } else {
         setIndex((prev) => prev + 1);
       }
@@ -91,6 +93,7 @@ const useReview = (initialCards: Card[]) => {
     currentCard,
     hasMore,
     markCard,
+    setIndex,
   };
 };
 

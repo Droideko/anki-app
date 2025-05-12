@@ -5,7 +5,7 @@ import { Href } from 'expo-router';
 import CreateIconButton from '@shared/components/CreateIconButton';
 import { WaveIconWrapper } from '@shared/components/WaveIconWrapper';
 
-const ICON_SIZE = 50;
+const ICON_SIZE = 44;
 
 interface WaveButtonProps {
   href: Href;

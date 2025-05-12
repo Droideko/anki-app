@@ -14,7 +14,6 @@ export interface ElementPosition {
 
 export type CardWithFlipped = Card & { flipped: boolean };
 
-// type ModalItem = Category | Deck | Card;
 type ModalItem =
   | SubCategoryItemTypeWithoutAddSubcategory
   | Deck

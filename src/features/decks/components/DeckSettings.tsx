@@ -21,8 +21,6 @@ export default function DeckSettings() {
   const onEdit = () => {
     hideModal();
 
-    console.log('123');
-
     router.push({
       pathname: `/deck/[deckId]/edit`,
       params: { deckId, name },

@@ -61,13 +61,9 @@ function GenerateContainer() {
     return <LoadingSpinner />;
   }
 
-  if (value?.cards) {
-    return (
-      <CreatedCards cards={value.cards} onGenerate={handleSubmit(onSubmit)} />
-    );
+  if (value) {
+    return <CreatedCards cards={value} onGenerate={handleSubmit(onSubmit)} />;
   }
-
-  console.log(error);
 
   return (
     <ScrollView>

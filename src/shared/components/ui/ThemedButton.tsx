@@ -21,7 +21,7 @@ const ThemedButton = ({
 
   return (
     <Button
-      // buttonColor={buttonColor || primary} // background
+      // buttonColor={buttonColor || primary} //
       mode={mode || 'outlined'}
       textColor={textColor || onPrimary}
       style={[styles.button, style]}

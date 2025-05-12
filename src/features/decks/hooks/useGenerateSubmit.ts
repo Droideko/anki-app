@@ -2,15 +2,17 @@ import { useFormStore } from '@shared/store/useGenerateFormStore';
 import { useAsyncFn } from '@shared/hooks/useAsyncFn';
 import { openaiService } from '@shared/api/openaiService';
 import { GenerateFormData } from '@shared/types/language';
+import { useDetectSoundStore } from '@shared/store/useDetectSoundStore';
 
 const useGenerateSubmit = () => {
   const formStore = useFormStore();
+  const { setCheck } = useDetectSoundStore();
 
   const [state, sendData] = useAsyncFn(async (payload: GenerateFormData) => {
     return openaiService.generateCards(payload);
   }, []);
 
-  const onSubmit = (data: { topic: string }) => {
+  const onSubmit = async (data: { topic: string }) => {
     const payload: GenerateFormData = {
       ...data,
       type: formStore.type,
@@ -22,7 +24,8 @@ const useGenerateSubmit = () => {
       usedPhrases: formStore.usedPhrases,
     };
 
-    sendData(payload);
+    await sendData(payload);
+    setCheck(true);
   };
 
   return { state, onSubmit };

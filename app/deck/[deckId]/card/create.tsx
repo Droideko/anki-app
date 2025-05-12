@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { Alert, StyleSheet } from 'react-native';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { HeaderBackButton } from '@react-navigation/elements';
+import { customAlphabet } from 'nanoid/non-secure';
 
 // import {
 //   KeyboardAwareScrollView,
@@ -21,6 +22,9 @@ import usePreventRemoveCards from '@features/decks/hooks/usePreventRemoveCards';
 import { useCardsRepository } from '@features/decks/hooks/useCardsRepository';
 import getFilteredCard from '@features/decks/utils/getFilteredCard';
 import GenerateButton from '@features/decks/components/GenerateButton';
+import { useDetectSoundStore } from '@shared/store/useDetectSoundStore';
+
+const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 10);
 
 export default function CreateDeckPage() {
   const { deckId, action } = useLocalSearchParams<{
@@ -28,24 +32,46 @@ export default function CreateDeckPage() {
     action?: 'add' | 'edit';
   }>();
 
-  const { cards } = useFetchDeckCards(Number(deckId));
+  const { cards, loading } = useFetchDeckCards(Number(deckId));
 
   const { updateCards } = useCardsRepository();
+  const { setCheck } = useDetectSoundStore();
 
   const setUnsavedChanges = usePreventRemoveCards();
 
-  const { control, handleSubmit } = useForm<CardFormValues>({
-    defaultValues: {
-      deckId: Number(deckId),
-      cards: cards.map((card) => ({ ...card, cardId: card.id })),
-    },
-  });
+  // const methods = useFormContext();
+  // console.log('methods', methods);
+
+  const { control, handleSubmit, reset, setValue } =
+    useFormContext<CardFormValues>();
+
+  // const { control, handleSubmit } = useForm<CardFormValues>({
+  //   defaultValues: {
+  //     deckId: Number(deckId),
+  //     cards: cards.map((card) => ({ ...card, cardId: card.id })),
+  //   },
+  // });
+
+  useEffect(() => {
+    if (!loading) {
+      reset({
+        deckId: Number(deckId),
+        cards: cards.map((card) => ({ ...card, cardId: card.id })),
+      });
+    }
+  }, [loading, cards, deckId, reset]);
 
   const { fields, append, remove } = useFieldArray({ control, name: 'cards' });
 
+  // useEffect(() => {
+  //   if (action === 'add') append({ front: '', back: '', cardId: nanoid() });
+  // }, [append, action]);
+
   useEffect(() => {
-    if (action === 'add') append({ front: '', back: '' });
-  }, [append, action]);
+    if (action === 'add' && !loading) {
+      append({ front: '', back: '', cardId: nanoid() });
+    }
+  }, [action, loading, append]);
 
   const onSubmit = async (formData: CardFormValues) => {
     try {
@@ -55,13 +81,16 @@ export default function CreateDeckPage() {
       await updateCards(formData.deckId, { cards: payload });
       setUnsavedChanges(false);
 
-      setTimeout(() => {
-        router.back();
-      }, 0);
+      setCheck(true);
+      setTimeout(router.back);
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to update deck cards');
     }
+  };
+
+  const handleAddExample = (cardId: number | string) => {
+    router.push(`/deck/${deckId}/card/${cardId}/add-example`);
   };
 
   return (
@@ -69,10 +98,8 @@ export default function CreateDeckPage() {
       <Stack.Screen
         options={{
           headerShown: true,
-          // headerBackButtonMenuEnabled: false,
           headerTitle: () => <GenerateButton deckId={deckId} />,
           headerBackTitle: '',
-          // headerBackTitle: 'Back',
           headerLeft: (props) => (
             <HeaderBackButton
               style={styles.button}
@@ -88,7 +115,6 @@ export default function CreateDeckPage() {
               }}
             />
           ),
-          // gestureEnabled: false,
         }}
       />
       <ThemedView style={styles.container}>
@@ -97,9 +123,10 @@ export default function CreateDeckPage() {
             fields={fields}
             control={control}
             onEdit={() => setUnsavedChanges(true)}
+            onAddExample={handleAddExample}
             onAddCard={() => {
               setUnsavedChanges(true);
-              append({ front: '', back: '' });
+              append({ front: '', back: '', cardId: nanoid() });
             }}
             onRemoveCard={(index) => {
               setUnsavedChanges(true);

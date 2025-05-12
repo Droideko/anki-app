@@ -1,27 +1,33 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { router, useLocalSearchParams } from 'expo-router';
 
 import { useCardsRepository } from '../hooks/useCardsRepository';
+import useShowExamples from '../hooks/useShowExamples';
 
 import GeneratedButtons from './GeneratedButtons';
 
-import { GeneratedCard } from '@shared/api/openaiService';
+// import { GeneratedCard } from '@shared/api/openaiService';
 import { Text } from '@shared/components/ui/ThemedText';
 import CardCheckbox from '@shared/components/CardCheckbox';
 import ThemedButton from '@shared/components/ui/ThemedButton';
 import { useAsyncFn } from '@shared/hooks/useAsyncFn';
 import { UpdateCardDto } from '@shared/api/deckService';
 import { useFormStore } from '@shared/store/useGenerateFormStore';
+import { Card } from '@shared/api/openaiService';
+import { CardFormValues } from './DeckCardsContainer';
 
 type CreatedCardFormValues = {
-  checkboxes: boolean[];
   deckId: number;
+  cards: {
+    selected: boolean; // сама карточка
+    examples: boolean[]; // её примеры
+  }[];
 };
 
 interface CreatedCardsProps {
-  cards: GeneratedCard['cards'];
+  cards: Card[];
   onGenerate: () => void;
 }
 
@@ -30,7 +36,10 @@ function CreatedCards({ cards, onGenerate }: CreatedCardsProps) {
   const { control, handleSubmit } = useForm<CreatedCardFormValues>({
     defaultValues: {
       deckId: Number(deckId),
-      checkboxes: Array(cards.length).fill(true),
+      cards: cards.map((c) => ({
+        selected: true,
+        examples: Array(c.examples?.length ?? 0).fill(true),
+      })),
     },
   });
   const { updateCards } = useCardsRepository();
@@ -43,20 +52,65 @@ function CreatedCards({ cards, onGenerate }: CreatedCardsProps) {
     [],
   );
 
-  console.log('w', usedPhrases);
+  const { expandedStates, handleExpandChange, allOpen, toggleAllExamples } =
+    useShowExamples(cards);
+
+  // console.log(cards);
+  // console.log('w', usedPhrases);
+  // const {
+  //   control: parentControl,
+  //   /* setValue, etc. */
+  // } = useFormContext<CardFormValues>();
+
+  // const { append: appendCard } = useFieldArray({
+  //   control: parentControl,
+  //   name: 'cards',
+  // });
 
   useEffect(() => {
     const frontCards = cards.map((card) => card.front);
     addPhrases(frontCards);
   }, [cards, addPhrases]);
 
-  console.log(cards);
-
   const onSubmit = async (data: CreatedCardFormValues) => {
-    const selectedCards = cards.filter((_, index) => data.checkboxes[index]);
+    const selectedCards: UpdateCardDto[] = data.cards.reduce<UpdateCardDto[]>(
+      (acc, flags, i) => {
+        if (!flags.selected) {
+          return acc;
+        }
+
+        const card = cards[i];
+        const filteredExamples = (card.examples ?? []).filter(
+          (_, exampleIndex) => flags.examples[exampleIndex],
+        );
+
+        acc.push({
+          front: card.front,
+          back: card.back,
+          examples: filteredExamples.length ? filteredExamples : [],
+        } satisfies UpdateCardDto);
+
+        return acc;
+      },
+      [],
+    );
+
     await sendData(data.deckId, selectedCards);
-    router.dismiss(2);
+
+    // 2) добавляем в форму, чтобы сразу увидеть их в create.tsx
+    // selected.forEach(
+    //   (c) => appendCard({ ...c, cardId: nanoid() }), // cardId нужен для key
+    // );
+
+    // Нужно добавить в форму которая будет находиться в layout.tsx
+
+    router.back();
+    // router.dismiss(2);
   };
+
+  const hasExamples = useMemo(() => {
+    return cards.some((card) => Number(card.examples?.length) > 0);
+  }, [cards]);
 
   if (loading) {
     return <Text>Loading...</Text>;
@@ -65,26 +119,25 @@ function CreatedCards({ cards, onGenerate }: CreatedCardsProps) {
   return (
     <>
       <View style={{ flex: 1 }}>
-        <GeneratedButtons onGenerate={onGenerate} />
+        <GeneratedButtons
+          onGenerate={onGenerate}
+          onToggleExamples={toggleAllExamples}
+          allOpen={allOpen}
+          hasExamples={hasExamples}
+        />
         <FlatList
           data={cards}
           contentContainerStyle={styles.listContent}
           renderItem={({ item: card, index }) => (
-            <CardCheckbox index={index} card={card} control={control} />
-          )}
-        />
-        {/* <View>
-        {cards.map((card, index) => {
-          return (
             <CardCheckbox
-              key={index}
-              index={index}
               card={card}
               control={control}
+              index={index}
+              expanded={expandedStates[index]}
+              onExpandChange={handleExpandChange}
             />
-          );
-        })}
-      </View> */}
+          )}
+        />
         <ThemedButton
           mode="contained"
           onPress={handleSubmit(onSubmit)}
@@ -107,13 +160,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     transform: [{ translateX: '-50%' }],
     width: '40%',
-  },
-  buttonContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 16,
-    paddingHorizontal: 12,
   },
   buttonContent: {
     padding: 0,

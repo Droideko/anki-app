@@ -26,12 +26,10 @@ export function AccordionItem({
 }: AccordionItemProps) {
   const contentHeight = useSharedValue(0);
 
-  // Анимированная высота: 0, если закрыто, или contentHeight, если открыто
   const animatedHeight = useDerivedValue(() => {
     return withTiming(isExpanded.value ? contentHeight.value : 0, { duration });
   });
 
-  // Опционально: анимация поворота стрелочки (0 -> 180 градусов)
   const arrowRotation = useDerivedValue(() => {
     return withTiming(isExpanded.value ? 180 : 0, { duration });
   });

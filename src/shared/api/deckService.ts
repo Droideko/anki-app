@@ -10,6 +10,10 @@ export interface UpdateCardDto {
   front?: string;
   back?: string;
   deleted?: boolean;
+  examples?: {
+    front: string;
+    back: string;
+  }[];
   // tagIds?: number[];
 }
 

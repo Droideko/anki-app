@@ -2,6 +2,12 @@ import { create } from 'zustand';
 
 import { Progress } from './useProgressStore';
 
+export type Example = {
+  id: number;
+  front: string;
+  back: string;
+};
+
 export interface Card {
   type: 'CARD';
   id: number;
@@ -12,6 +18,7 @@ export interface Card {
   updatedAt: string;
   tagIds: number[];
   progress: Progress[];
+  examples: Example[];
 }
 
 interface CardsState {
@@ -29,6 +36,8 @@ export const useCardsStore = create<CardsState & CardsActions>((set) => ({
   cardsById: {},
   setCards: (cards) =>
     set(({ cardsById }) => {
+      console.log('cardsById : ', cardsById);
+
       const newCardsById = { ...cardsById };
       for (const card of cards) {
         newCardsById[card.id] = card;

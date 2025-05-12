@@ -47,21 +47,20 @@ const useGradientColors = (
   }, [colors, studyProgress, selected]);
 };
 
-function CardView({ card }: CardViewProps) {
+function CardContent({
+  card,
+  selectionMode,
+  selected,
+}: {
+  card: Card;
+  selected: boolean;
+  selectionMode: boolean;
+}) {
   const showModal = useModalStore((state) => state.showModal);
   const progressByCardId = useProgressStore((state) => state.progressByCardId);
   const studyProgress = progressByCardId[card.id]?.studyProgress ?? 0;
 
-  const { selectedCards, selectCard } = useSelectStore(
-    useShallow((state) => ({
-      selectedCards: state.selectedCards,
-      selectCard: state.selectCard,
-    })),
-  );
-
-  // const selectedCards = useSelectStore((state) => state.selectedCards);
-
-  const selectionMode = selectedCards.length > 0;
+  const selectCard = useSelectStore((state) => state.selectCard);
 
   const elementRef = useRef<ElementRef<typeof Pressable> | null>(null);
 
@@ -72,10 +71,6 @@ function CardView({ card }: CardViewProps) {
     });
   };
 
-  console.log(selectionMode);
-
-  const selected = selectedCards.includes(card.id);
-
   const gradientColors = useGradientColors(studyProgress, selected);
 
   const { frontAnimatedStyle, backAnimatedStyle, toggleFlip, isFlipped } =
@@ -84,8 +79,6 @@ function CardView({ card }: CardViewProps) {
   const onPress = () => {
     return selectionMode ? selectCard(card.id) : toggleFlip();
   };
-
-  console.log('rerender');
 
   return (
     <View style={[styles.cardWrapper, { width: cardWidth }]}>
@@ -113,7 +106,21 @@ function CardView({ card }: CardViewProps) {
   );
 }
 
-export default memo(CardView);
+const CardContentMemo = memo(CardContent);
+
+export default function CardView({ card }: CardViewProps) {
+  const selectedCards = useSelectStore((state) => state.selectedCards);
+  const selectionMode = selectedCards.length > 0;
+  const selected = selectedCards.includes(card.id);
+
+  return (
+    <CardContentMemo
+      card={card}
+      selected={selected}
+      selectionMode={selectionMode}
+    />
+  );
+}
 
 const styles = StyleSheet.create({
   backCard: {

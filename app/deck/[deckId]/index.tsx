@@ -12,7 +12,7 @@ import DeckSettings from '@features/decks/components/DeckSettings';
 import { useSelectStore } from '@shared/store/useSelectStore';
 import { Text } from '@shared/components/ui/ThemedText';
 import DeckHeaderButton from '@features/decks/components/DeckHeaderButton';
-// import TestingFlat from '@shared/components/TestingFlat';
+import DeckGenerateButton from '@features/decks/components/DeckGenerateButton';
 
 function HeaderTitle({ name }: { name: string }) {
   const { selectedCards, selectCard } = useSelectStore();
@@ -29,11 +29,10 @@ const DeckPage = () => {
     name: string;
     deckId: string;
   }>();
+
   if (typeof deckId === 'undefined') {
     return null;
   }
-
-  console.log('DeckPage rerender');
 
   return (
     <ThemedView style={styles.container}>
@@ -54,10 +53,10 @@ const DeckPage = () => {
       <View style={{ flex: 1, position: 'relative' }}>
         <KeyboardAvoidingContainer>
           <DeckSettings />
-          {/* <TestingFlat /> */}
           <CardsDataContent />
         </KeyboardAvoidingContainer>
         <CardsWaveButton href={`/deck/${deckId}/card/create?action=add`} />
+        <DeckGenerateButton href={`/deck/${deckId}/generate`} />
       </View>
       <BlurModal />
     </ThemedView>

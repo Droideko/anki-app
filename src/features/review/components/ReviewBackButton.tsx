@@ -16,7 +16,14 @@ function ReviewBackButton(props: HeaderBackButtonProps) {
     router.back();
   };
 
-  return <HeaderBackButton style={styles.button} {...props} onPress={onBack} />;
+  return (
+    <HeaderBackButton
+      style={styles.button}
+      {...props}
+      onPress={onBack}
+      label=""
+    />
+  );
 }
 
 const styles = StyleSheet.create({
