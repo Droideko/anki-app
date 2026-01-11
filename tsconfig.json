@@ -2,16 +2,30 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
+    // "noUncheckedIndexedAccess": true,
+    // "baseUrl": ".",
+    // "paths": {
+    //   "@features/*": ["src/features/*"],
+    //   "@shared/*": ["src/shared/*"],
+    //   "@app/*": ["app/*"],
+    //   "@/*": ["./*"]
+    // },
     "paths": {
-      "@/*": [
-        "./*"
-      ]
-    }
+      "@features/*": ["./src/features/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@/*": ["./*"]
+    },
+    "types": ["jest", "@testing-library/jest-native/extend-expect"],
+    "moduleSuffixes": [".native", ".web", ""]
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-  ]
+    "expo-env.d.ts",
+    "jest.config.js",
+    "metro.config.js"
+  ],
+  "exclude": ["node_modules", "build"]
 }

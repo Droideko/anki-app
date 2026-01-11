@@ -1,0 +1,31 @@
+import { Dimensions } from 'react-native';
+
+export const DEFAULT_CREATE_CATEGORY_VALUES = {
+  name: '',
+} as const;
+
+export const DEFAULT_UPDATE_CATEGORY_VALUES = {
+  name: '',
+} as const;
+
+export const CATEGORY_SEGMENT_BUTTON = {
+  deck: {
+    value: 'deck',
+    label: 'Deck',
+    icon: 'cards',
+  },
+  category: {
+    value: 'category',
+    label: 'Category',
+    icon: 'folder',
+  },
+} as const;
+
+const { width } = Dimensions.get('window');
+
+export const ITEM_WIDTH = width * 0.7;
+export const ITEM_SPACING = 16;
+
+export const ADD_SUBCATEGORY_ITEM = {
+  id: 'add_new',
+} as const;

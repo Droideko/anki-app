@@ -1,34 +1,63 @@
-import { Tabs } from 'expo-router';
 import React from 'react';
+import { Tabs } from 'expo-router';
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { TabBarIcon } from '@shared/components/TabBarIcon';
+import { useThemeColor } from '@shared/hooks/useThemeColor';
+import i18n from '@shared/utils/i18n';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { tint, background } = useThemeColor();
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: tint,
+        tabBarActiveBackgroundColor: background,
+        tabBarInactiveBackgroundColor: background,
         headerShown: false,
-      }}>
+        tabBarHideOnKeyboard: true,
+        tabBarStyle: {
+          // borderTopColor: "red",
+          backgroundColor: background,
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: `${i18n.t('tabs.home')}`,
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <TabBarIcon
+              name={focused ? 'home' : 'home-outline'}
+              color={color}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="categories"
+        options={{
+          title: `Categories`,
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? 'folder-open' : 'folder-open-outline'}
+              color={color}
+            />
           ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="settings"
         options={{
-          title: 'Explore',
+          title: `${i18n.t('tabs.settings')}`,
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon
+              name={focused ? 'settings' : 'settings-outline'}
+              color={color}
+            />
           ),
         }}
       />
