@@ -55,7 +55,7 @@ export default function Font() {
 
         <View style={styles.sliderContainer}>
           <Text style={styles.fontSizeLabel}>Font Size: {fontSize}px</Text>
-          <Slider
+          <Slider // !!! Works on Android and iOS
             style={styles.slider}
             minimumValue={8}
             maximumValue={40}

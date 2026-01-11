@@ -10,38 +10,44 @@ import { CardFormValues } from './DeckCardsContainer';
 import { useThemeColor } from '@shared/hooks/useThemeColor';
 import FormTextarea from '@shared/components/forms/FormTextarea';
 
-type ArrayKey<T> = {
-  [K in keyof T]: T[K] extends any[] ? K : never;
-}[keyof T] &
-  string;
+// type ArrayKey<T> = {
+//   [K in keyof T]: T[K] extends any[] ? K : never;
+// }[keyof T] &
+//   string;
 
-type NameFor<T extends FieldValues, P extends ArrayKey<T>> =
-  | `${P}.${number}.front`
-  | `${P}.${number}.back`;
+// type NameFor<T extends FieldValues, P extends ArrayKey<T>> =
+//   | `${P}.${number}.front`
+//   | `${P}.${number}.back`;
 
-interface DeckCardProps<
-  TFieldValues extends FieldValues,
-  P extends ArrayKey<TFieldValues>,
-> {
+// interface DeckCardProps<
+//   TFieldValues extends FieldValues,
+//   P extends ArrayKey<TFieldValues>,
+// > {
+//   control: Control<TFieldValues>;
+//   index: number;
+//   namePrefix: P;
+//   autoFocus?: boolean;
+//   onEdit?: () => void;
+//   onAddExample?: () => void;
+// }
+
+interface DeckCardProps<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>;
   index: number;
-  namePrefix: P;
+  namePrefix: string; // ← было P extends ArrayKey<…>
   autoFocus?: boolean;
   onEdit?: () => void;
   onAddExample?: () => void;
 }
 
-export default function DeckCard<
-  TFieldValues extends FieldValues,
-  P extends ArrayKey<TFieldValues>,
->({
+export default function DeckCard<TFieldValues extends FieldValues>({
   control,
   index,
-  namePrefix,
+  namePrefix, // теперь это просто строка-префикс
   autoFocus,
   onEdit,
   onAddExample,
-}: DeckCardProps<TFieldValues, P>) {
+}: DeckCardProps<TFieldValues>) {
   const { border, elevation, primary } = useThemeColor();
 
   const makeName = <K extends 'front' | 'back'>(field: K) =>
@@ -155,24 +161,11 @@ export default function DeckCard<
 // }
 
 const styles = StyleSheet.create({
-  card: {
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  content: {
-    paddingTop: 8,
-  },
+  card: { borderRadius: 8, marginBottom: 8 },
+  content: { paddingTop: 8 },
+  icon: { bottom: 4, padding: 4, position: 'absolute', right: 4 },
   textArea: {
     // marginBottom: 8,
   },
-  textareaWrapper: {
-    marginBottom: 8,
-    position: 'relative',
-  },
-  icon: {
-    bottom: 4,
-    padding: 4,
-    position: 'absolute',
-    right: 4,
-  },
+  textareaWrapper: { marginBottom: 8, position: 'relative' },
 });

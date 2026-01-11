@@ -8,7 +8,7 @@ import HapticButton from '@shared/components/ui/HapticButton';
 interface ReviewShowAnswerProps {
   showAnswer: boolean;
   setShowAnswer: (showAnswer: boolean) => void;
-  markCard: (ease: Rating) => void;
+  markCard: (rating: Rating) => void;
 }
 
 function ReviewShowAnswer({
@@ -43,7 +43,7 @@ function ReviewShowAnswer({
         style={styles.button}
         onPress={() => handlePress(RATING_MAPPER.hard)}
       >
-        <Text style={{ padding: 0 }}>Hard</Text>
+        <Text style={styles.textNoPadding}>Hard</Text>
       </HapticButton>
       <HapticButton
         compact
@@ -64,16 +64,9 @@ function ReviewShowAnswer({
 }
 
 const styles = StyleSheet.create({
-  button: {
-    flex: 1,
-    marginBottom: 0,
-    marginTop: 0,
-  },
-  container: {
-    flexDirection: 'row',
-    gap: 6,
-    marginBottom: 16,
-  },
+  button: { flexGrow: 1, marginBottom: 0, marginTop: 0 },
+  container: { flexDirection: 'row', gap: 6, marginBottom: 16 },
+  textNoPadding: { padding: 0 },
 });
 
 export default ReviewShowAnswer;

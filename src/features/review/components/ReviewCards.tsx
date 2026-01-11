@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { useLocalSearchParams } from 'expo-router';
+import {
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 import useReview from '../hooks/useReview';
 import useSpeechLanguage from '../hooks/useSpeechLanguage';
@@ -9,11 +15,13 @@ import useSpeechLanguage from '../hooks/useSpeechLanguage';
 import ReviewShowAnswer from './ReviewShowAnswer';
 import ReviewCompletedPage from './ReviewCompleted';
 import ReviewSpeechCard from './ReviewSpeechCard';
+import ReviewCard from './ReviewCard';
 
 import { Text } from '@shared/components/ui/ThemedText';
 import { Card } from '@shared/store/useCardsStore';
 import { useCategoriesStore } from '@shared/store/useCategoriesStore';
 import { useReviewStore } from '@shared/store/useReviewStore';
+import AccordionArrow from '@shared/components/Accordion/AccordionArrow';
 
 interface ReviewCardsProps {
   cards: Card[];
@@ -34,6 +42,8 @@ export default function ReviewCards({ cards }: ReviewCardsProps) {
   const isDeleted = currentChangedCard?.isDeleted ?? false;
 
   const { fontSize, showOnlyBackSound } = decksById[Number(deckId)];
+
+  console.log(currentCard);
 
   useEffect(() => {
     if (currentCard?.id) {
@@ -66,7 +76,7 @@ export default function ReviewCards({ cards }: ReviewCardsProps) {
       >
         <View style={styles.blocksWrapper}>
           <View style={[styles.topBlock, { minHeight }]}>
-            <Text style={[styles.text, { fontSize }]}>{frontCard}</Text>
+            {/* <Text style={[styles.text, { fontSize }]}>{frontCard}</Text>
             {!showOnlyBackSound && (
               <ReviewSpeechCard
                 key={`${frontCard}_${frontLanguage}`}
@@ -75,21 +85,29 @@ export default function ReviewCards({ cards }: ReviewCardsProps) {
                 style={styles.soundButtonTop}
                 languageCode={frontLanguage}
               />
-            )}
+            )} */}
+            <ReviewCard
+              sideType="front"
+              text={frontCard}
+              fontSize={fontSize}
+              language={frontLanguage}
+              examples={currentCard?.examples}
+              showSoundButton={!showOnlyBackSound}
+              arrowStyle={styles.arrowTop}
+              soundStyle={styles.soundButtonTop}
+            />
           </View>
           <Divider style={styles.divider} />
           <View style={[styles.bottomBlock, { minHeight }]}>
             {showAnswer && (
-              <>
-                <Text style={[styles.text, { fontSize }]}>{backCard}</Text>
-                <ReviewSpeechCard
-                  key={`${backCard}_${backLanguage}`}
-                  type="back"
-                  text={backCard}
-                  style={styles.soundButtonBottom}
-                  languageCode={backLanguage}
-                />
-              </>
+              <ReviewCard
+                sideType="back"
+                text={backCard}
+                fontSize={fontSize}
+                language={backLanguage}
+                examples={currentCard?.examples}
+                soundStyle={styles.soundButtonBottom}
+              />
             )}
           </View>
         </View>
@@ -104,6 +122,9 @@ export default function ReviewCards({ cards }: ReviewCardsProps) {
 }
 
 const styles = StyleSheet.create({
+  arrowTop: {
+    position: 'absolute',
+  },
   blocksWrapper: {
     flex: 1,
     width: '100%',

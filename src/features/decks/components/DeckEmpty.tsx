@@ -1,10 +1,10 @@
 import React from 'react';
-import LottieView from 'lottie-react-native';
+// import LottieView from 'lottie-react-native';
 import { StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import animData from '../../../../assets/images/Animation2.lottie';
+// import animData from '../../../../assets/images/Animation2.lottie';
 
 import isWeb from '@shared/utils/isWeb';
 import { Text } from '@shared/components/ui/ThemedText';
@@ -12,9 +12,7 @@ import ThemedButton from '@shared/components/ui/ThemedButton';
 import { useThemeColor } from '@shared/hooks/useThemeColor';
 
 export default function DeckEmpty() {
-  const { deckId } = useLocalSearchParams<{
-    deckId: string;
-  }>();
+  const { deckId } = useLocalSearchParams<{ deckId: string }>();
   const { onPrimary } = useThemeColor();
 
   return (
@@ -28,13 +26,13 @@ export default function DeckEmpty() {
         </Text>
         {!isWeb() && (
           <View style={{ display: 'flex', alignItems: 'center' }}>
-            <LottieView
+            {/* <LottieView
               source={animData}
               loop
               autoPlay
               // animatedProps={animatedProps}
               style={styles.animation}
-            />
+            /> */}
           </View>
         )}
 
@@ -69,10 +67,7 @@ export default function DeckEmpty() {
 }
 
 const styles = StyleSheet.create({
-  animation: {
-    height: 200,
-    width: 200,
-  },
+  animation: { height: 200, width: 200 },
   container: {
     alignItems: 'center',
     display: 'flex',

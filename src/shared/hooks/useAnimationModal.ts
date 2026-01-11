@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import {
+  cancelAnimation,
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
@@ -8,14 +9,16 @@ import {
 
 import { useModalStore } from '../store/useModalStore';
 
-const useAnimationModal = () => {
+export const DEFAULT_ANIMATION_DURATION_MS = 200;
+
+type UseAnimationModalOptions = {
+  durationMs?: number;
+};
+
+const useAnimationModal = ({ durationMs = DEFAULT_ANIMATION_DURATION_MS }: UseAnimationModalOptions = {}) => {
   const {
     isModalVisible,
-    elementPosition,
     hideModal,
-    // setElementPosition,
-    // selectedCategory,
-    // selectedItem
   } = useModalStore();
 
   const opacity = useSharedValue(0);
@@ -23,22 +26,26 @@ const useAnimationModal = () => {
 
   useEffect(() => {
     if (isModalVisible) {
-      opacity.value = withTiming(1, { duration: 200 });
-      scale.value = withTiming(1, { duration: 200 });
+      cancelAnimation(opacity);
+      cancelAnimation(scale);
+      opacity.value = withTiming(1, { duration: durationMs });
+      scale.value = withTiming(1, { duration: durationMs });
     } else {
-      opacity.value = withTiming(0, { duration: 200 });
-      scale.value = withTiming(0.9, { duration: 200 });
+      cancelAnimation(opacity);
+      cancelAnimation(scale);
+      opacity.value = withTiming(0, { duration: durationMs });
+      scale.value = withTiming(0.9, { duration: durationMs });
     }
-  }, [isModalVisible, opacity, scale]);
+  }, [isModalVisible, opacity, scale, durationMs]);
 
-  const closeModal = () => {
-    opacity.value = withTiming(0, { duration: 200 }, () => {
+  const closeModal = useCallback(() => {
+    cancelAnimation(opacity);
+    cancelAnimation(scale);
+    opacity.value = withTiming(0, { duration: durationMs }, () => {
       runOnJS(hideModal)();
-      // TODO поскольку возможность что будет открыта модалка удаления нужно этот момент продумать
-      // runOnJS(setElementPosition)(null);
     });
-    scale.value = withTiming(0.9, { duration: 200 });
-  };
+    scale.value = withTiming(0.9, { duration: durationMs });
+  }, [hideModal, opacity, scale, durationMs]);
 
   const animatedOverlayStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,

@@ -2,11 +2,7 @@ import { create } from 'zustand';
 
 import { Progress } from './useProgressStore';
 
-export type Example = {
-  id: number;
-  front: string;
-  back: string;
-};
+export type Example = { id?: number; front: string; back: string };
 
 export interface Card {
   type: 'CARD';
@@ -36,8 +32,6 @@ export const useCardsStore = create<CardsState & CardsActions>((set) => ({
   cardsById: {},
   setCards: (cards) =>
     set(({ cardsById }) => {
-      console.log('cardsById : ', cardsById);
-
       const newCardsById = { ...cardsById };
       for (const card of cards) {
         newCardsById[card.id] = card;
@@ -45,13 +39,9 @@ export const useCardsStore = create<CardsState & CardsActions>((set) => ({
       return { cardsById: newCardsById };
     }),
   addCard: (card) =>
-    set((state) => ({
-      cardsById: { ...state.cardsById, [card.id]: card },
-    })),
+    set((state) => ({ cardsById: { ...state.cardsById, [card.id]: card } })),
   updateCard: (card) =>
-    set((state) => ({
-      cardsById: { ...state.cardsById, [card.id]: card },
-    })),
+    set((state) => ({ cardsById: { ...state.cardsById, [card.id]: card } })),
   deleteCard: (id) =>
     set((state) => {
       const { [id]: _, ...rest } = state.cardsById;

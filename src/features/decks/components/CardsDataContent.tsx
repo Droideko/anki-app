@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { StyleSheet } from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
@@ -13,8 +13,8 @@ import useEffectSoundLanguages from '../utils/useEffectOnce';
 
 import CardView from './CardView';
 import DeckEmpty from './DeckEmpty';
-import ConditionalButton from './ConditionalButton';
 import BottomPanel from './BottomPanel';
+import StartButton from './StartButton';
 
 import { Text } from '@shared/components/ui/ThemedText';
 import useRefresh from '@shared/hooks/useRefresh';
@@ -81,14 +81,14 @@ export default function CardsDataContent() {
         onDelete={onDeleteSelectedCards}
         visible={selectionMode}
       />
-      <ConditionalButton />
+      <StartButton />
     </>
   );
 }
 
 const styles = StyleSheet.create({
   listContent: {
-    paddingBottom: 60,
+    paddingBottom: 80,
     padding: 20,
   },
   searchStyle: {

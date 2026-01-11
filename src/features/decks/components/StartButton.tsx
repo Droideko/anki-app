@@ -9,7 +9,7 @@ import { Text } from '@shared/components/ui/ThemedText';
 import { ThemedView } from '@shared/components/ui/ThemedView';
 import { useThemeColor } from '@shared/hooks/useThemeColor';
 
-const ConditionalButton = () => {
+const StartButton = () => {
   const { name, deckId } = useLocalSearchParams<{
     id: string;
     name: string;
@@ -93,7 +93,7 @@ const ConditionalButton = () => {
 
 const styles = StyleSheet.create({
   button: {
-    bottom: 0,
+    bottom: 16,
     left: '50%',
     position: 'absolute',
     transform: [{ translateX: '-50%' }],
@@ -126,4 +126,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConditionalButton;
+export default StartButton;

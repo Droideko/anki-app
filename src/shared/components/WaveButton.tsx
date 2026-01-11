@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { Href } from 'expo-router';
 
 import CreateIconButton from '@shared/components/CreateIconButton';
@@ -10,12 +10,13 @@ const ICON_SIZE = 44;
 interface WaveButtonProps {
   href: Href;
   isActivePulse: boolean;
+  style?: StyleProp<ViewStyle>;
 }
 
-function WaveButton({ href, isActivePulse }: WaveButtonProps) {
+function WaveButton({ href, isActivePulse, style }: WaveButtonProps) {
   return (
     <WaveIconWrapper
-      style={styles.iconWrapper}
+      style={[styles.iconWrapper, style]}
       isActivePulse={isActivePulse}
       iconSize={ICON_SIZE}
     >

@@ -1,6 +1,13 @@
 import { CardFormValues } from '../components/DeckCardsContainer';
 
-const getFilteredCard = (cards: CardFormValues['cards']) =>
-  cards.filter((card) => card.front.trim() || card.back.trim());
+const isEmptyCard = (card: { front?: string; back?: string }) =>
+  !card.front?.trim() && !card.back?.trim();
 
-export default getFilteredCard;
+export default function getFilteredCard(cards: CardFormValues['cards']) {
+  return cards
+    .filter((card) => !isEmptyCard(card))
+    .map((card) => ({
+      ...card,
+      examples: (card.examples ?? []).filter((ex) => !isEmptyCard(ex)),
+    }));
+}

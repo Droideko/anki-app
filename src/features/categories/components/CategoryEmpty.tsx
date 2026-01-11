@@ -1,9 +1,9 @@
 import React from 'react';
-import LottieView from 'lottie-react-native';
+// import LottieView from 'lottie-react-native';
 import { StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 
-import animData from '../../../../assets/images/Animation2.lottie';
+// import animData from '../../../../assets/images/Animation2.lottie';
 
 import isWeb from '@shared/utils/isWeb';
 import { Text } from '@shared/components/ui/ThemedText';
@@ -23,13 +23,13 @@ export default function CategoryEmpty() {
         </Text>
         {!isWeb() && (
           <View style={{ display: 'flex', alignItems: 'center' }}>
-            <LottieView
+            {/* <LottieView
               source={animData}
               loop
               autoPlay
               // animatedProps={animatedProps}
               style={styles.animation}
-            />
+            /> */}
           </View>
         )}
 
@@ -47,10 +47,7 @@ export default function CategoryEmpty() {
 }
 
 const styles = StyleSheet.create({
-  animation: {
-    height: 200,
-    width: 200,
-  },
+  animation: { height: 200, width: 200 },
   container: {
     alignItems: 'center',
     display: 'flex',

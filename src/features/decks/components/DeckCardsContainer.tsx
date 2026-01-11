@@ -11,7 +11,7 @@ import { Card } from '@shared/store/useCardsStore';
 import { PartialWithRequiredKeys } from '@shared/types/global';
 import SwiperDelete from '@shared/components/SwiperDelete';
 
-type CardWithCardId = Card & { cardId: number | string };
+type CardWithCardId = Card & { cardId: number };
 
 export interface CardFormValues {
   deckId: number;
@@ -67,12 +67,13 @@ export function DeckCardsContainer({
           leftThreshold={1000}
           overshootRight={false}
           onSwipeableOpen={(direction) => {
-            if (direction === 'right') {
+            console.log('onSwipeableOpen', direction);
+            if (direction === 'left') {
               onRemoveCard(index);
             }
           }}
         >
-          <DeckCard<CardFormValues, 'cards'>
+          <DeckCard
             control={control}
             index={index}
             namePrefix="cards"
@@ -94,16 +95,7 @@ export function DeckCardsContainer({
 export default DeckCardsContainer;
 
 const styles = StyleSheet.create({
-  addButton: {
-    backgroundColor: 'red',
-    padding: 6,
-  },
-  addButtonText: {
-    color: '#fff',
-    textAlign: 'center',
-  },
-  listContent: {
-    paddingBottom: 55,
-    padding: 20,
-  },
+  addButton: { backgroundColor: 'red', padding: 6 },
+  addButtonText: { color: '#fff', textAlign: 'center' },
+  listContent: { paddingBottom: 55, padding: 20 },
 });

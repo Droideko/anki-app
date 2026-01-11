@@ -5,17 +5,30 @@ import { API_ENDPOINTS } from '@shared/api/endpoints';
 import { Card } from '@shared/store/useCardsStore';
 import { Deck, DeckFormData, DeckWithCards } from '@shared/types/deck';
 
-export interface UpdateCardDto {
-  id?: number;
-  front?: string;
-  back?: string;
-  deleted?: boolean;
-  examples?: {
-    front: string;
-    back: string;
-  }[];
-  // tagIds?: number[];
-}
+// export interface UpdateCardDto {
+//   id?: number;
+//   front?: string;
+//   back?: string;
+//   deleted?: boolean;
+//   examples?: {
+//     front: string;
+//     back: string;
+//   }[];
+//   // tagIds?: number[];
+// }
+
+type UpdateExampleDto =
+  | { id: number; deleted: true } // удалить
+  | { id?: number; front: string; back: string }; // создать или изменить
+
+export type UpdateCardDto =
+  | { id: number; deleted: true } // удалить карточку
+  | {
+      id?: number;
+      front?: string;
+      back?: string;
+      examples?: UpdateExampleDto[];
+    };
 
 export const deckService = {
   getDecks: async () =>

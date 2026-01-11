@@ -6,17 +6,17 @@ import Animated, {
   withRepeat,
   Easing,
 } from 'react-native-reanimated';
-import LottieView from 'lottie-react-native';
+// import LottieView from 'lottie-react-native';
 import { StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 
-import animData from '../../../../assets/images/Animation2.lottie';
+// import animData from '../../../../assets/images/Animation2.lottie';
 
 import isWeb from '@shared/utils/isWeb';
 import { Text } from '@shared/components/ui/ThemedText';
 import ThemedButton from '@shared/components/ui/ThemedButton';
 
-const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
+// const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
 
 export default function CategoriesEmpty() {
   // const progress = useSharedValue(0);
@@ -45,13 +45,13 @@ export default function CategoriesEmpty() {
         </Text>
         {!isWeb() && (
           <View style={{ display: 'flex', alignItems: 'center' }}>
-            <AnimatedLottieView
+            {/* <AnimatedLottieView
               source={animData}
               loop
               autoPlay
               // animatedProps={animatedProps}
               style={styles.animation}
-            />
+            /> */}
           </View>
         )}
 

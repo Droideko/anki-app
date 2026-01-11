@@ -55,7 +55,10 @@ const DeckPage = () => {
           <DeckSettings />
           <CardsDataContent />
         </KeyboardAvoidingContainer>
-        <CardsWaveButton href={`/deck/${deckId}/card/create?action=add`} />
+        <CardsWaveButton
+          style={styles.waveButton}
+          href={`/deck/${deckId}/card/create?action=add`}
+        />
         <DeckGenerateButton href={`/deck/${deckId}/generate`} />
       </View>
       <BlurModal />
@@ -69,6 +72,9 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+  },
+  waveButton: {
+    bottom: 16,
   },
 });
 

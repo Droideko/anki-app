@@ -24,7 +24,7 @@ import getFilteredCard from '@features/decks/utils/getFilteredCard';
 import GenerateButton from '@features/decks/components/GenerateButton';
 import { useDetectSoundStore } from '@shared/store/useDetectSoundStore';
 
-const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 10);
+const nanoidNumeric = customAlphabet('0123456789', 10);
 
 export default function CreateDeckPage() {
   const { deckId, action } = useLocalSearchParams<{
@@ -39,18 +39,10 @@ export default function CreateDeckPage() {
 
   const setUnsavedChanges = usePreventRemoveCards();
 
-  // const methods = useFormContext();
-  // console.log('methods', methods);
-
-  const { control, handleSubmit, reset, setValue } =
+  const { control, handleSubmit, reset, watch } =
     useFormContext<CardFormValues>();
 
-  // const { control, handleSubmit } = useForm<CardFormValues>({
-  //   defaultValues: {
-  //     deckId: Number(deckId),
-  //     cards: cards.map((card) => ({ ...card, cardId: card.id })),
-  //   },
-  // });
+  watch('cards');
 
   useEffect(() => {
     if (!loading) {
@@ -63,13 +55,9 @@ export default function CreateDeckPage() {
 
   const { fields, append, remove } = useFieldArray({ control, name: 'cards' });
 
-  // useEffect(() => {
-  //   if (action === 'add') append({ front: '', back: '', cardId: nanoid() });
-  // }, [append, action]);
-
   useEffect(() => {
     if (action === 'add' && !loading) {
-      append({ front: '', back: '', cardId: nanoid() });
+      append({ front: '', back: '', cardId: Number(nanoidNumeric()) });
     }
   }, [action, loading, append]);
 
@@ -77,6 +65,8 @@ export default function CreateDeckPage() {
     try {
       const filteredCard = getFilteredCard(formData.cards);
       const payload = buildPayload(cards, filteredCard);
+
+      console.log('payload', payload);
 
       await updateCards(formData.deckId, { cards: payload });
       setUnsavedChanges(false);
@@ -121,12 +111,13 @@ export default function CreateDeckPage() {
         <KeyboardAvoidingContainer>
           <DeckCardsContainer
             fields={fields}
+            // fields={watchedCards}
             control={control}
             onEdit={() => setUnsavedChanges(true)}
             onAddExample={handleAddExample}
             onAddCard={() => {
               setUnsavedChanges(true);
-              append({ front: '', back: '', cardId: nanoid() });
+              append({ front: '', back: '', cardId: Number(nanoidNumeric()) });
             }}
             onRemoveCard={(index) => {
               setUnsavedChanges(true);
@@ -152,12 +143,8 @@ export default function CreateDeckPage() {
 }
 
 const styles = StyleSheet.create({
-  button: {
-    marginLeft: -16,
-  },
-  container: {
-    flex: 1,
-  },
+  button: { marginLeft: -16 },
+  container: { flex: 1 },
   // input: {
   //   borderColor: 'gray',
   //   borderWidth: 1,

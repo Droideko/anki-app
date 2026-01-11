@@ -12,6 +12,7 @@ import Animated, {
 
 import AccordionSimple from './AccordionSimple';
 import { Text } from './ui/ThemedText';
+import AccordionArrow from './Accordion/AccordionArrow';
 
 import { useThemeColor } from '@shared/hooks/useThemeColor';
 import { Card } from '@shared/api/openaiService';
@@ -45,13 +46,13 @@ export default function CardCheckbox({
     isExpanded.value = expanded;
   }, [expanded, isExpanded]);
 
-  const arrowRotation = useDerivedValue(() =>
-    withTiming(isExpanded.value ? 180 : 0, { duration: 300 }),
-  );
+  // const arrowRotation = useDerivedValue(() =>
+  //   withTiming(isExpanded.value ? 180 : 0, { duration: 300 }),
+  // );
 
-  const arrowStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${arrowRotation.value}deg` }],
-  }));
+  // const arrowStyle = useAnimatedStyle(() => ({
+  //   transform: [{ rotate: `${arrowRotation.value}deg` }],
+  // }));
 
   const onHeaderPress = () => {
     const next = !expanded;
@@ -100,7 +101,13 @@ export default function CardCheckbox({
                   {card.back}
                 </Text>
               </View>
-              {hasExamples && (
+              <AccordionArrow
+                isExpanded={isExpanded}
+                onClick={onHeaderPress}
+                isVisible={hasExamples}
+                style={styles.chevronIcon}
+              />
+              {/* {hasExamples && (
                 <Animated.View style={[styles.chevronIcon, arrowStyle]}>
                   <Ionicons
                     onPress={onHeaderPress}
@@ -109,7 +116,7 @@ export default function CardCheckbox({
                     color="#fff"
                   />
                 </Animated.View>
-              )}
+              )} */}
             </View>
           </Pressable>
         )}
@@ -185,10 +192,6 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 2,
   },
-  iconContainer: {
-    flex: 1,
-    gap: 4,
-  },
   example: {
     alignItems: 'center',
     display: 'flex',
@@ -205,13 +208,17 @@ const styles = StyleSheet.create({
     zIndex: 2,
     // backgroundColor, borderRadius, padding задаются inline
   },
+  exampleWithMargin: {
+    marginTop: 12,
+  },
   exampleWrapper: {
     borderRadius: 12,
     borderWidth: 1,
     marginTop: 4,
     padding: 6,
   },
-  exampleWithMargin: {
-    marginTop: 12,
+  iconContainer: {
+    flex: 1,
+    gap: 4,
   },
 });
